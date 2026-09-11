@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 private-*.md
 .agents
 .astro/
+.playwright-cli/
+output/playwright/
+DESIGN.md

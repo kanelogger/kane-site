@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { sortArticles } from '../../lib/content';
+const articles = (await getCollection('blog')).sort(sortArticles);
+---
+<BaseLayout title="文章" description="关于 AI Coding Agent、Agent Harness、开发者工具与 AI 原生软件工程的实践记录。">
+  <div class="shell writing-index"><header class="page-heading"><span class="eyebrow" data-intro>NOTES & RESEARCH / {String(articles.length).padStart(2, '0')}</span><h1 data-intro>Writing<span class="title-dot">.</span></h1><p data-intro>记录工程实践，拆解工具，连接想法。</p></header><section class="article-list" aria-label="文章列表">{articles.map((article) => <ArticleCard article={article} />)}</section></div>
+</BaseLayout>

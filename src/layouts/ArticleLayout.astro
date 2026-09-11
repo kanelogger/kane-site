@@ -1,0 +1,15 @@
+---
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+interface Props { title: string; description: string; headings: MarkdownHeading[]; article?: { publishedAt: Date; updatedAt?: Date; author: string }; }
+const { title, description, headings, article } = Astro.props;
+---
+<BaseLayout title={title} description={description} article={article}>
+  <div class="shell detail-page">
+    <slot name="header" />
+    <slot name="cover" />
+    <div class="reading-grid"><TableOfContents headings={headings} /><article class="prose"><slot /></article></div>
+    <slot name="after" />
+  </div>
+</BaseLayout>

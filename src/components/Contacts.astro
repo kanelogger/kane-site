@@ -1,0 +1,7 @@
+---
+import { site } from '../data/site';
+const { detailed = false } = Astro.props;
+---
+<ul class:list={['contacts', { detailed }]}>
+  {site.contacts.map((contact) => <li><a href={contact.href}><span>{contact.name}</span>{detailed && <span class="contact-label">{contact.label}</span>}<span aria-hidden="true">↗</span></a></li>)}
+</ul>

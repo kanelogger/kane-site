@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { project: CollectionEntry<'projects'>; index: number; priority?: boolean; }
+const { project, index, priority = false } = Astro.props;
+const { data, id } = project;
+---
+<article class="project" data-reveal>
+  <div class="project-top meta"><span>/{String(index + 1).padStart(2, '0')}</span><span>{data.tags.slice(0, 3).join(' / ')}</span><span>{data.year}</span></div>
+  <a class:list={['project-image-link', { 'skills-cover': id === 'kane-skills' }]} href={`/work/${id}`} aria-label={`查看 ${data.title} 项目详情`}>
+    {id === 'kane-skills' && <div class="skills-cover-label"><strong>KANE<br/>SKILLS</strong><span>28 REUSABLE AGENT SKILLS</span></div>}
+    <img src={data.cover} alt={id === 'kane-skills' ? 'Kane Q 工作状态角色' : `${data.title} 项目封面`} width="1600" height="900" loading={priority ? 'eager' : 'lazy'} fetchpriority={priority ? 'high' : undefined} decoding="async" />
+    <span class="image-arrow" aria-hidden="true">↗</span>
+  </a>
+  <div class="project-bottom">
+    <h3><a href={`/work/${id}`}>{data.title}<span aria-hidden="true">↗</span></a></h3>
+    <div><p>{data.cardDescription ?? data.description}</p><a class="text-link" href={data.github}>GitHub <span aria-hidden="true">↗</span></a></div>
+  </div>
+</article>
