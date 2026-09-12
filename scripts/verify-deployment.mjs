@@ -14,7 +14,7 @@ const files = listFiles('dist');
 const publicPath = (file) => '/' + file.split(sep).map(encodeURIComponent).join('/');
 const resources = new Map();
 const titles = new Map();
-for (const file of files.filter((file) => file.endsWith('.html') && file !== '404.html')) {
+for (const file of files.filter((file) => file.endsWith('.html') && file !== '404.html' && !file.endsWith('/404/index.html'))) {
   const route = '/' + file.replace(/index\.html$/, '').replace(/\/$/, '');
   const html = readFileSync(join('dist', file), 'utf8');
   resources.set(route, file);
