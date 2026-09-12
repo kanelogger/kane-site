@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkspaceLayout from '../layouts/WorkspaceLayout.astro';
 import Contacts from '../components/Contacts.astro';
 import { site } from '../data/site';
 ---
-<BaseLayout title="关于 Kane" description="我是 Kane，一名专注 AI 原生开发的 Software Engineer，关注 Coding Agent、Agent Harness 和开发者工具。">
-  <div class="shell about-page"><header class="page-heading"><span class="eyebrow" data-intro>THE PERSON BEHIND THE WORK</span><h1 data-intro>About me<span class="title-dot">.</span></h1></header><div class="about-grid"><div class="about-statement" data-reveal><span class="meta">SOFTWARE ENGINEER / AI BUILDER</span><h2>保持好奇。<br/>把事情做成。</h2><span class="about-symbol" aria-hidden="true">↗</span></div><div class="about-copy">{site.about.map((paragraph) => <p>{paragraph}</p>)}<section class="about-contact" aria-labelledby="contact-heading"><span class="eyebrow">GET IN TOUCH</span><h2 id="contact-heading">从一次交流开始。</h2><Contacts detailed /></section></div></div></div>
-</BaseLayout>
+<WorkspaceLayout title="关于 Kane" description="我是 Kane，一名专注 AI 原生开发的 Software Engineer，关注 Coding Agent、Agent Harness 和开发者工具。" active="about">
+  <header class="workspace-heading"><div><h1>关于 Kane<span aria-hidden="true">_</span></h1><p>Software Engineer · AI Builder</p></div></header>
+  <div class="workspace-about"><h2>保持好奇。<br />把事情做成。</h2><div class="workspace-about-copy">{site.about.map((paragraph) => <p>{paragraph}</p>)}<section class="workspace-about-contact" aria-labelledby="contact-heading"><h2 id="contact-heading">从一次交流开始。</h2><Contacts detailed /></section></div></div>
+</WorkspaceLayout>

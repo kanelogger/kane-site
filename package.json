@@ -9,6 +9,9 @@
     "check": "astro check",
     "verify:build": "node scripts/verify-build.mjs",
     "verify:deployment": "node scripts/verify-deployment.mjs",
+    "verify:scene": "node scripts/verify-scene-budget.mjs",
+    "test:deployment": "node scripts/test-deployment-verification.mjs",
+    "test:scene": "node scripts/test-scene-budget.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -27,10 +30,12 @@
     "astro": "^7.3.2",
     "gsap": "^3.15.0",
     "image-size": "^2.0.2",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "three": "0.186.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@types/three": "0.185.0",
     "typescript": "^6.0.3"
   }
 }

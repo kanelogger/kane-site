@@ -1,9 +1,12 @@
 ---
-const links = [['WORK', '/work'], ['WRITING', '/writing'], ['ABOUT', '/about']];
+import ThemeControl from './ThemeControl.astro';
+const links = [['内容', '/dashboard'], ['作品', '/work'], ['文章', '/writing']];
+const reading = /^\/(writing|work)\/.+/.test(Astro.url.pathname);
+const backPath = Astro.url.pathname.startsWith('/writing/') ? '/writing' : '/work';
 ---
 <header class="site-header">
   <div class="shell header-inner">
-    <a href="/" class="wordmark" aria-label="KANE 首页">KANE<span aria-hidden="true">↗</span></a>
-    <nav aria-label="主导航">{links.map(([label, href]) => <a href={href} aria-current={Astro.url.pathname.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav>
+    <a href="/" class="wordmark" aria-label="KANE 首页">Kane<span aria-hidden="true">_</span></a>
+    <div class="header-tools"><nav aria-label="主导航">{reading ? <a href={backPath} data-return-results>← {backPath === '/writing' ? '全部文章' : '全部作品'}</a> : links.map(([label, href]) => <a href={href} aria-current={Astro.url.pathname.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav><ThemeControl /></div>
   </div>
 </header>

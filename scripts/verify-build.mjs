@@ -19,6 +19,7 @@ const articlePages = new Map();
 for (const [file, { html }] of pages) {
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `${file}: expected exactly one h1`);
   assert.match(html, /<meta name="description" content="[^"]+"/);
+  assert.match(html, /\bdata-theme-control(?:\s|=|>)/, `${file}: missing theme control`);
   assert(!/\/Users\/(?!yourname\/)/.test(html), `${file}: private source path leaked`);
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => {
     const attrs = attributes(tag);
@@ -106,13 +107,16 @@ const og = imageSize(readFileSync(join(root, 'og.png')));
 assert.deepEqual([og.type, og.width, og.height], ['png', 1200, 630]);
 assert.match(readFileSync(join(root, 'favicon.svg'), 'utf8'), /<svg/);
 // A new Markdown file must be linked from its index and get its own route.
+const dashboard = pages.get(join(root, 'dashboard/index.html'));
+assert(dashboard, 'The content dashboard must have a statically built route');
 for (const [collection, route] of [['blog', 'writing'], ['projects', 'work']]) {
   const index = pages.get(join(root, route, 'index.html')).html;
   for (const file of readdirSync(`src/content/${collection}`).filter((name) => name.endsWith('.md'))) {
     const slug = file.slice(0, -3);
     assert(pages.has(join(root, route, slug, 'index.html')), `${file}: missing detail page`);
     assert(index.includes(`href="/${route}/${slug}"`), `${file}: missing from list`);
+    assert(dashboard.html.includes(`href="/${route}/${slug}"`), `${file}: missing from dashboard`);
   }
 }
-console.log(`Verified ${pages.size} pages, ${links} local references, ${images} images, and every Markdown route.`);
+console.log(`Verified ${pages.size} pages, ${links} local references, ${images} images, theme controls, and every Markdown route in its list and dashboard.`);
 console.log(`Verified ${canonicalUrls.size} canonical/sitemap URLs, ${items.length} RSS entries, robots, OG image, favicon, and 404.`);

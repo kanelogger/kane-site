@@ -1,13 +1,13 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemeInit from '../components/ThemeInit.astro';
 import { site } from '../data/site';
 import '@fontsource-variable/manrope';
-import '@fontsource-variable/noto-sans-sc';
 import '../styles/global.css';
 import { ClientRouter, fade } from 'astro:transitions';
-interface Props { title?: string; description?: string; article?: { publishedAt: Date; updatedAt?: Date; author: string }; noindex?: boolean; }
-const { title, description = site.description, article, noindex = false } = Astro.props;
+interface Props { title?: string; description?: string; article?: { publishedAt: Date; updatedAt?: Date; author: string }; noindex?: boolean; layout?: 'site' | 'workspace'; }
+const { title, description = site.description, article, noindex = false, layout = 'site' } = Astro.props;
 const pageTitle = title ? `${title} — KANE` : 'KANE — Software Engineer & AI Builder';
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site!);
 const shareImage = new URL('/og.png', Astro.site!);
@@ -17,6 +17,9 @@ const shareImage = new URL('/og.png', Astro.site!);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f3f6f0" />
+    <ThemeInit />
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
     <meta property="og:site_name" content="KANE" />
@@ -45,13 +48,15 @@ const shareImage = new URL('/og.png', Astro.site!);
     <ClientRouter fallback="swap" />
     <title>{pageTitle}</title>
   </head>
-  <body id="top">
-    <a class="skip-link" href="#main">跳到主要内容</a>
-    <Header />
+  <body id="top" data-layout={layout}>
+    <a class="skip-link" href={layout === 'workspace' ? '#workspace-content' : '#main'}>跳到主要内容</a>
+    {layout === 'site' && <Header />}
     <main id="main" tabindex="-1" transition:animate={fade({ duration: '0.18s' })}><slot /></main>
-    <Footer />
+    {layout === 'site' && <Footer />}
     <script>
       import '../scripts/motion';
+      import '../scripts/theme';
+      import '../scripts/content-browser';
     </script>
   </body>
 </html>

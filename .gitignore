@@ -145,5 +145,7 @@ private-*.md
 .agents
 .astro/
 .playwright-cli/
-output/playwright/
+output/
+design-previews/
+.DS_Store
 DESIGN.md

@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { imageSize } from 'image-size';
+import { formatDate, readingMinutes } from '../lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  articles?: CollectionEntry<'blog'>[];
+  projects?: CollectionEntry<'projects'>[];
+  categories?: boolean;
+}
+const { title, description, articles = [], projects = [], categories = false } = Astro.props;
+const categoryNames = [...new Set(articles.map((article) => article.data.category))];
+const coverSizes = projects.map(({ data }) => imageSize(readFileSync(join(process.cwd(), 'public', data.cover))));
+const count = projects.length + articles.length;
+---
+<div class="content-browser" data-content-browser>
+  <header class="workspace-heading"><div><h1>{title}<span aria-hidden="true">_</span></h1><p>{description}</p></div><span class="workspace-total">{String(count).padStart(2, '0')} ENTRIES</span></header>
+  <div class="content-tools" data-content-tools hidden>
+    <div class="content-search-line">
+      <label class="content-search"><span aria-hidden="true">⌕</span><span class="sr-only">搜索标题、摘要或标签</span><input type="search" name="q" data-content-query autocomplete="off" placeholder="搜索标题、摘要、标签" aria-controls="content-results" /></label>
+      <button class="content-clear" type="button" data-clear-filters hidden>清空筛选</button>
+      <p class="content-result-count" data-result-count role="status" aria-live="polite" aria-atomic="true">{count} 项内容</p>
+    </div>
+    {categories && <div class="content-categories" data-content-category role="group" aria-label="文章分类"><button type="button" data-category="" aria-pressed="true">全部分类</button>{categoryNames.map((category) => <button type="button" data-category={category} aria-pressed="false">{category}</button>)}</div>}
+  </div>
+  <div id="content-results">
+    {projects.length > 0 && <section class="content-group" data-content-group aria-labelledby="workspace-projects">
+      <header class="content-group-heading"><h2 id="workspace-projects">作品</h2><span><span data-group-count>{String(projects.length).padStart(2, '0')}</span> PROJECTS</span></header>
+      <div class="content-rows">{projects.map((project, index) => <article class="content-row content-project-row" data-content-row data-search={[project.data.title, project.data.description, project.data.cardDescription ?? '', ...project.data.tags].join(' ')}>
+        <a class:list={['content-project-image', { 'content-skills-image': project.id === 'kane-skills' }]} href={`/work/${project.id}`} data-result-link tabindex="-1" aria-hidden="true"><img src={project.data.cover} alt={`${project.data.title} 项目封面`} width={coverSizes[index].width} height={coverSizes[index].height} loading="lazy" decoding="async" /></a>
+        <div class="content-row-copy"><h3><a href={`/work/${project.id}`} data-result-link>{project.data.title}<span aria-hidden="true">↗</span></a></h3><p>{project.data.cardDescription ?? project.data.description}</p><ul class="content-row-tags" aria-label="标签">{project.data.tags.map((tag) => <li>{tag}</li>)}</ul></div>
+        <span class="content-row-year">{project.data.year}</span>
+      </article>)}</div>
+    </section>}
+    {articles.length > 0 && <section class="content-group" data-content-group aria-labelledby="workspace-articles">
+      <header class="content-group-heading"><h2 id="workspace-articles">文章</h2><span><span data-group-count>{String(articles.length).padStart(2, '0')}</span> ARTICLES</span></header>
+      <div class="content-rows">{articles.map((article) => <article class="content-row content-article-row" data-content-row data-category={article.data.category} data-search={[article.data.title, article.data.description, ...article.data.tags].join(' ')}>
+        <div class="content-row-copy"><div class="content-article-meta"><time datetime={article.data.publishedAt.toISOString()}>{formatDate(article.data.publishedAt)}</time><span>{article.data.category}</span><span>约 {readingMinutes(article.body)} 分钟</span></div><h3><a href={`/writing/${article.id}`} data-result-link>{article.data.title}<span aria-hidden="true">↗</span></a></h3><p>{article.data.description}</p><ul class="content-row-tags" aria-label="标签">{article.data.tags.map((tag) => <li>{tag}</li>)}</ul></div>
+      </article>)}</div>
+    </section>}
+  </div>
+  <div class="content-empty" data-content-empty hidden><h2>没有匹配的内容</h2><p>换一个关键词，或清空筛选查看全部内容。</p><button class="content-empty-clear" type="button" data-clear-filters>清空筛选</button></div>
+</div>

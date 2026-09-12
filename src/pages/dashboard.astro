@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import WorkspaceLayout from '../layouts/WorkspaceLayout.astro';
+import ContentBrowser from '../components/ContentBrowser.astro';
+import { sortArticles } from '../lib/content';
+const articles = (await getCollection('blog')).sort(sortArticles);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const description = '开发者工具、Agent 工作流与工程实践。搜索 Kane 的全部作品与文章。';
+---
+<WorkspaceLayout title="内容索引" description={description} active="dashboard"><ContentBrowser title="内容索引" description="开发者工具、Agent 工作流与工程实践。" articles={articles} projects={projects} /></WorkspaceLayout>

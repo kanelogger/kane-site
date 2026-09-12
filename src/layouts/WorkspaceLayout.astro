@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import ThemeControl from '../components/ThemeControl.astro';
+import { site } from '../data/site';
+import '../styles/workspace.css';
+
+interface Props { title: string; description: string; active: 'dashboard' | 'writing' | 'work' | 'about'; }
+const { title, description, active } = Astro.props;
+const [projects, articles] = await Promise.all([getCollection('projects'), getCollection('blog')]);
+const links = [
+  { id: 'dashboard', href: '/dashboard', label: '全部内容', count: projects.length + articles.length },
+  { id: 'work', href: '/work', label: '作品', count: projects.length },
+  { id: 'writing', href: '/writing', label: '文章', count: articles.length },
+  { id: 'about', href: '/about', label: '关于 Kane' },
+];
+---
+<BaseLayout title={title} description={description} layout="workspace">
+  <div class="workspace-shell">
+    <aside class="workspace-sidebar">
+      <div class="workspace-brand"><a href="/" aria-label="Kane 品牌首页">Kane<span aria-hidden="true">_</span></a><p>CONTENT INDEX</p></div>
+      <nav class="workspace-nav" aria-label="内容导航">
+        {links.map((link) => <a href={link.href} aria-current={active === link.id ? 'page' : undefined}><span>{link.label}</span>{link.count !== undefined && <span class="workspace-nav-count">{String(link.count).padStart(2, '0')}</span>}</a>)}
+      </nav>
+      <div class="workspace-sidebar-bottom">
+        <ThemeControl />
+        <a class="workspace-home-link" href="/">↖ 返回品牌首页</a>
+        <div class="workspace-contacts">{site.contacts.map((contact) => <a href={contact.href}>{contact.name}<span aria-hidden="true">↗</span></a>)}</div>
+      </div>
+    </aside>
+    <section class="workspace-content" id="workspace-content" tabindex="-1" data-workspace-scroll>
+      <div class="workspace-content-inner"><slot /><footer class="workspace-footer"><span>KANE / 工程实践与工具设计</span><a href="/rss.xml">RSS ↗</a></footer></div>
+    </section>
+  </div>
+</BaseLayout>

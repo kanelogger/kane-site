@@ -1,0 +1,16 @@
+<script is:inline>
+  (() => {
+    let preference = window.__kaneTheme?.preference;
+    if (!preference) {
+      try { preference = localStorage.getItem('kane-theme'); } catch {}
+    }
+    if (!['light', 'dark', 'system'].includes(preference)) preference = 'system';
+    const theme = preference === 'system'
+      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : preference;
+    window.__kaneTheme = { preference, theme };
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#101917' : '#f3f6f0');
+  })();
+</script>
