@@ -8,8 +8,9 @@ tags: ["Developer Tools"]
 cover: "/assets/projects/my-project/cover.webp"
 featured: false
 order: 4
-github: "https://github.com/OWNER/REPOSITORY"
-# 有真实地址时才填写以下可选字段，不要保留空字符串。
+# 以下链接均可选；仅填写公开可访问的真实地址，不要保留空字符串。
+# 私有项目可以省略 github，页面会自动隐藏 GitHub 按钮。
+# github: "https://github.com/OWNER/REPOSITORY"
 # release: "https://github.com/OWNER/REPOSITORY/releases"
 # designDoc: "https://github.com/OWNER/REPOSITORY/blob/main/README.md"
 ---

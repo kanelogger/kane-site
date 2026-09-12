@@ -36,7 +36,7 @@ const projects = defineCollection({
     cover: asset,
     featured: z.boolean().default(false),
     order: z.number().int().positive(),
-    github: z.url(),
+    github: z.url().optional(),
     release: z.url().optional(),
     designDoc: z.url().optional(),
   }),
