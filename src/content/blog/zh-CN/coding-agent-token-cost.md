@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "coding-agent-token-cost"
+slug: "coding-agent-token-cost"
+translationStatus: "source"
+categoryId: "ai-programming"
+tagIds: ["coding-agent", "token-cost", "context-engineering", "model-routing"]
+
 title: "一篇搞懂 AI Coding Agent 的 Token 成本控制"
 description: "从成本结构、使用习惯和模型路由，到压缩工具、代码图谱与多 Agent 协作的完整方法。"
 publishedAt: "2026-08-07"

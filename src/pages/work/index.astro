@@ -2,6 +2,6 @@
 import { getCollection } from 'astro:content';
 import WorkspaceLayout from '../../layouts/WorkspaceLayout.astro';
 import ContentBrowser from '../../components/ContentBrowser.astro';
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).filter(({ data }) => data.locale === 'zh-CN').sort((a, b) => a.data.order - b.data.order);
 ---
 <WorkspaceLayout title="作品" description="Kane 的作品与工具：AI 编程工作流、开发者工具和日记型 Agent 的设计与实践。" active="work"><ContentBrowser title="作品" description="从反复遇到的问题出发，把方法做成能用的工具。" projects={projects} /></WorkspaceLayout>

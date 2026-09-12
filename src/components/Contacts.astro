@@ -1,6 +1,10 @@
 ---
-import { site } from '../data/site';
+import { siteByLocale } from '../data/site';
+import { getLocaleFromPath, normalizeLocale, type Locale } from '../lib/i18n';
+interface Props { detailed?: boolean; locale?: Locale; }
 const { detailed = false } = Astro.props;
+const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
+const site = siteByLocale[locale];
 ---
 <ul class:list={['contacts', { detailed }]}>
   {site.contacts.map((contact) => <li><a href={contact.href}><span>{contact.name}</span>{detailed && <span class="contact-label">{contact.label}</span>}<span aria-hidden="true">↗</span></a></li>)}

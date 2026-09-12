@@ -2,34 +2,42 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import ThemeControl from '../components/ThemeControl.astro';
-import { site } from '../data/site';
+import { siteByLocale } from '../data/site';
+import { getAlternateLocale, getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
 import '../styles/workspace.css';
 
-interface Props { title: string; description: string; active: 'dashboard' | 'writing' | 'work' | 'about'; }
+interface Props { title: string; description: string; active: 'dashboard' | 'writing' | 'work' | 'about'; locale?: Locale; }
 const { title, description, active } = Astro.props;
-const [projects, articles] = await Promise.all([getCollection('projects'), getCollection('blog')]);
+const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
+const copy = getDictionary(locale);
+const site = siteByLocale[locale];
+const alternateLocale = getAlternateLocale(locale);
+const [allProjects, allArticles] = await Promise.all([getCollection('projects'), getCollection('blog')]);
+const projects = allProjects.filter((entry) => normalizeLocale((entry.data as { locale?: string }).locale) === locale);
+const articles = allArticles.filter((entry) => normalizeLocale((entry.data as { locale?: string }).locale) === locale);
 const links = [
-  { id: 'dashboard', href: '/dashboard', label: '全部内容', count: projects.length + articles.length },
-  { id: 'work', href: '/work', label: '作品', count: projects.length },
-  { id: 'writing', href: '/writing', label: '文章', count: articles.length },
-  { id: 'about', href: '/about', label: '关于 Kane' },
+  { id: 'dashboard', href: '/dashboard', label: copy.content.all, count: projects.length + articles.length },
+  { id: 'work', href: '/work', label: copy.content.projects, count: projects.length },
+  { id: 'writing', href: '/writing', label: copy.content.articles, count: articles.length },
+  { id: 'about', href: '/about', label: copy.nav.about },
 ];
 ---
-<BaseLayout title={title} description={description} layout="workspace">
+<BaseLayout title={title} description={description} layout="workspace" locale={locale}>
   <div class="workspace-shell">
     <aside class="workspace-sidebar">
-      <div class="workspace-brand"><a href="/" aria-label="Kane 品牌首页">Kane<span aria-hidden="true">_</span></a><p>CONTENT INDEX</p></div>
-      <nav class="workspace-nav" aria-label="内容导航">
-        {links.map((link) => <a href={link.href} aria-current={active === link.id ? 'page' : undefined}><span>{link.label}</span>{link.count !== undefined && <span class="workspace-nav-count">{String(link.count).padStart(2, '0')}</span>}</a>)}
+      <div class="workspace-brand"><a href={getLocalePath(locale, '/')} aria-label="Kane">Kane<span aria-hidden="true">_</span></a><p>CONTENT INDEX</p></div>
+      <nav class="workspace-nav" aria-label={copy.nav.contentNav}>
+        {links.map((link) => <a href={getLocalePath(locale, link.href)} aria-current={active === link.id ? 'page' : undefined}><span>{link.label}</span>{link.count !== undefined && <span class="workspace-nav-count">{String(link.count).padStart(2, '0')}</span>}</a>)}
       </nav>
       <div class="workspace-sidebar-bottom">
-        <ThemeControl />
-        <a class="workspace-home-link" href="/">↖ 返回品牌首页</a>
+        <ThemeControl locale={locale} />
+        <a class="workspace-home-link" href={getLocalePath(locale, '/')}>↖ {copy.nav.backToHome}</a>
+        <a class="workspace-language-link" href={getLocalePath(alternateLocale, Astro.url.pathname)}>{copy.nav.language}</a>
         <div class="workspace-contacts">{site.contacts.map((contact) => <a href={contact.href}>{contact.name}<span aria-hidden="true">↗</span></a>)}</div>
       </div>
     </aside>
     <section class="workspace-content" id="workspace-content" tabindex="-1" data-workspace-scroll>
-      <div class="workspace-content-inner"><slot /><footer class="workspace-footer"><span>KANE / 工程实践与工具设计</span><a href="/rss.xml">RSS ↗</a></footer></div>
+      <div class="workspace-content-inner"><slot /><footer class="workspace-footer"><span>{copy.footer.signature}</span><a href={getLocalePath(locale, '/rss.xml')}>{copy.common.rss} ↗</a></footer></div>
     </section>
   </div>
 </BaseLayout>

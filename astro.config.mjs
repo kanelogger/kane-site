@@ -8,7 +8,17 @@ import sceneManifest from './scripts/scene-manifest.mjs';
 export default defineConfig({
   site: 'https://kanelogger.com',
   trailingSlash: 'never',
-  integrations: [sitemap()],
+  i18n: {
+    locales: ['zh-CN', 'en'],
+    defaultLocale: 'zh-CN',
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: false,
+    },
+  },
+  integrations: [sitemap({
+    filter: (page) => !['/en/404', '/404'].includes(new URL(page).pathname),
+  })],
   vite: { plugins: [tailwindcss(), sceneManifest()] },
   markdown: {
     processor: satteri({ hastPlugins: [markdownMedia()] }),

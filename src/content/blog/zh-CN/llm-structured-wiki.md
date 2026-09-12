@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "llm-structured-wiki"
+slug: "llm-structured-wiki"
+translationStatus: "source"
+categoryId: "knowledge-management"
+tagIds: ["ai", "knowledge-management", "obsidian", "llm", "wiki"]
+
 title: "从传统笔记到LLM驱动的结构化Wiki"
 description: "把传统 Obsidian 笔记迁入由 LLM 维护的结构化 Wiki，通过原始资料、知识网络和操作规范，形成录入、查询与持续维护的知识工作流。"
 publishedAt: "2026-04-07"

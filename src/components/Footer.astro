@@ -1,9 +1,13 @@
 ---
 import Contacts from './Contacts.astro';
+import { getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
+interface Props { locale?: Locale; }
+const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
+const copy = getDictionary(locale);
 ---
 <footer class="site-footer">
   <div class="shell">
-    <div class="footer-top"><p>保持好奇，持续构建。</p><Contacts /></div>
-    <div class="footer-bottom"><span>© {new Date().getFullYear()} KANE</span><a href="/rss.xml">RSS 订阅</a><a href="#top">回到顶部 ↑</a></div>
+    <div class="footer-top"><p>{copy.footer.tagline}</p><Contacts locale={locale} /></div>
+    <div class="footer-bottom"><span>© {new Date().getFullYear()} KANE</span><a href={getLocalePath(locale, '/rss.xml')}>{copy.footer.rss}</a><a href="#top">{copy.footer.backToTop}</a></div>
   </div>
 </footer>

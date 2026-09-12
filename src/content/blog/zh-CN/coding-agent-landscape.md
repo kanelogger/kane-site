@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "coding-agent-landscape"
+slug: "coding-agent-landscape"
+translationStatus: "source"
+categoryId: "ai-technology"
+tagIds: ["ai-programming", "agent", "tool-selection", "harness", "enterprise"]
+
 title: "AI Coding Agent 深度研究报告：从工具选型到架构哲学"
 description: "对 8 款 AI 编程 Agent 的架构、工程能力、企业门槛和 FDE 场景进行分层比较与决策分析。"
 publishedAt: "2026-06-04"

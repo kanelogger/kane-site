@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "agent-hard-gates"
+slug: "agent-hard-gates"
+translationStatus: "source"
+categoryId: "ai-engineering"
+tagIds: ["coding-agent", "gates", "testing"]
+
 title: "Agent 越快，越需要硬门禁"
 description: "用可观察验收条件、风险测试、硬门禁和独立 Review 控制 Coding Agent 的高速推进。"
 publishedAt: "2026-08-30"

@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "role-agent-pipeline"
+slug: "role-agent-pipeline"
+translationStatus: "source"
+categoryId: "ai-architecture"
+tagIds: ["ai", "agent", "architecture", "multi-agent", "context-engineering"]
+
 title: "三省六部 Agent 这条路不通"
 description: "从角色边界、文档交接与缓存连续性分析多 Agent 流水线的成本，整理主 Agent、独立子任务和外部状态文件的维护型项目工作流。"
 publishedAt: "2026-04-29"

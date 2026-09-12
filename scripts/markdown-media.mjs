@@ -22,7 +22,9 @@ export default function markdownMedia() {
           if (node.properties?.tabindex === undefined && node.properties?.tabIndex === undefined) {
             context.setProperty(node, 'tabIndex', 0);
           }
-          context.setProperty(node, 'aria-label', node.tagName === 'pre' ? '代码，可横向滚动' : '表格，可横向滚动');
+          context.setProperty(node, 'aria-label', node.tagName === 'pre'
+            ? 'Scrollable code block / 代码，可横向滚动'
+            : 'Scrollable table / 表格，可横向滚动');
         }
       },
     },

@@ -14,3 +14,25 @@ export const site = {
     { name: 'Email', label: 'huakanelogger@gmail.com', href: 'mailto:huakanelogger@gmail.com' },
   ],
 };
+
+export const siteByLocale = {
+  'zh-CN': site,
+  en: {
+    tagline: 'Software Engineer · AI Coding Agent / Harness / Developer Tools',
+    description: 'Kane’s personal site about AI Coding Agents, Agent Harnesses, developer tools, and AI-native software engineering.',
+    intro: 'I study and practice AI-native development: how Coding Agents recover project context, move reliably through hard gates and feedback loops, and turn repeated work into reusable developer tools.',
+    about: [
+      'I’m Kane, a Software Engineer focused on AI-native development.',
+      'My work centers on AI Coding Agents, Agent Harnesses, and Developer Tools. I care about how Agents recover context in real projects, respect boundaries, accept verification, and return failures to the right layer.',
+      'I turn these methods into practical tools: Skill Port manages local Agent Skills, QuotaBar brings AI coding service quota status to the macOS menu bar, and Kane Skills packages reusable Agent workflows.',
+      'This site records reusable engineering methods, tool design, and results from practice. For collaboration, technical exchange, or article feedback, reach me through Email, GitHub, or X.',
+    ],
+    contacts: site.contacts,
+  },
+} as const;
+
+export type SiteCopy = (typeof siteByLocale)[keyof typeof siteByLocale];
+
+export function getSiteCopy(locale: 'zh-CN' | 'en' = 'zh-CN'): SiteCopy {
+  return siteByLocale[locale];
+}

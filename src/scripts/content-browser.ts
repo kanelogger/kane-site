@@ -14,6 +14,12 @@ let navigationType = 'initial';
 let composing = false;
 let filterFocus: string | undefined;
 
+const unlocalizedPath = (pathname: string) => pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+
+const copy = () => document.documentElement.lang === 'en'
+  ? { entries: 'entries', backToResults: '← Back to results' }
+  : { entries: '项内容', backToResults: '← 返回结果' };
+
 const pageURL = () => location.pathname + location.search;
 const state = (): ContentState => history.state?.[stateKey] ?? {};
 const browser = () => document.querySelector<HTMLElement>('[data-content-browser]');
@@ -26,7 +32,7 @@ function validList(value: unknown): value is ListLocation {
   if (typeof record.url !== 'string' || !record.scroll) return false;
   try {
     const url = new URL(record.url, location.origin);
-    return url.origin === location.origin && listPaths.has(url.pathname.replace(/\/$/, ''))
+    return url.origin === location.origin && listPaths.has(unlocalizedPath(url.pathname).replace(/\/$/, ''))
       && (record.scroll.mode === 'workspace' || record.scroll.mode === 'document')
       && Number.isFinite(record.scroll.x) && Number.isFinite(record.scroll.y)
       && record.scroll.x >= 0 && record.scroll.y >= 0;
@@ -80,7 +86,7 @@ function applyFilters() {
     count += groupCount;
   });
   const countLabel = root.querySelector('[data-result-count]');
-  if (countLabel) countLabel.textContent = `${count} 项内容`;
+  if (countLabel) countLabel.textContent = `${count} ${copy().entries}`;
   const empty = root.querySelector<HTMLElement>('[data-content-empty]');
   if (empty) empty.hidden = count > 0;
   const clear = root.querySelector<HTMLElement>('.content-search-line [data-clear-filters]');
@@ -108,7 +114,7 @@ function mount() {
   if (validList(origin)) {
     document.querySelectorAll<HTMLAnchorElement>('[data-return-results]').forEach((back) => {
       back.href = origin.url;
-      back.textContent = '← 返回结果';
+      back.textContent = copy().backToResults;
     });
   }
   if (filterFocus && root) {

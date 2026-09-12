@@ -1,7 +1,10 @@
 ---
 import type { MarkdownHeading } from 'astro';
-interface Props { headings: MarkdownHeading[]; }
+import { getDictionary, getLocaleFromPath, normalizeLocale, type Locale } from '../lib/i18n';
+interface Props { headings: MarkdownHeading[]; locale?: Locale; }
 const { headings } = Astro.props;
+const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
+const copy = getDictionary(locale);
 const items = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 ---
-{items.length > 0 && <aside class="toc"><details open><summary>本页目录 <span aria-hidden="true">↙</span></summary><nav aria-label="文章目录"><ol>{items.map((heading) => <li class:list={{ 'toc-sub': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav></details></aside>}
+{items.length > 0 && <aside class="toc"><details open><summary>{copy.article.toc} <span aria-hidden="true">↙</span></summary><nav aria-label={copy.article.toc}><ol>{items.map((heading) => <li class:list={{ 'toc-sub': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav></details></aside>}

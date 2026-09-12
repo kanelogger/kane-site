@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "memories-are-diamonds"
+slug: "memories-are-diamonds"
+translationStatus: "source"
+categoryId: "project"
+tagIds: ["agent", "journal", "typescript", "markdown"]
+
 title: "回忆是钻石"
 description: "一个日记型 Agent：用 Markdown 与 TypeScript CLI 保存真实生活，让 AI 辅助整理、追问和复盘，由人保留最终判断。"
 cardDescription: "人记录真实体验，AI 帮助找回遗漏的细节。用日记、周期复盘和成长目标，把经历积累成回忆。"

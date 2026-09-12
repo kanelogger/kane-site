@@ -1,0 +1,7 @@
+---
+import { getCollection } from 'astro:content';
+import WorkspaceLayout from '../../../layouts/WorkspaceLayout.astro';
+import ContentBrowser from '../../../components/ContentBrowser.astro';
+const projects = (await getCollection('projects', ({ data }) => data.locale === 'en')).sort((a, b) => a.data.order - b.data.order);
+---
+<WorkspaceLayout title="Work" description="Kane’s tools and projects: AI coding workflows, developer tools, and diary-style agents." active="work" locale="en"><ContentBrowser title="Work" description="Turn recurring problems into usable tools." projects={projects} locale="en" /></WorkspaceLayout>

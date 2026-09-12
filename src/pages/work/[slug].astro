@@ -3,16 +3,22 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { readFileSync } from 'node:fs';
 import { imageSize } from 'image-size';
-export async function getStaticPaths() { return (await getCollection('projects')).map((project) => ({ params: { slug: project.id }, props: { project } })); }
+import { getMediaVariant } from '../../data/media';
+export async function getStaticPaths() { return (await getCollection('projects', ({ data }) => data.locale === 'zh-CN')).map((project) => ({ params: { slug: project.data.slug }, props: { project } })); }
 interface Props { project: CollectionEntry<'projects'>; }
 const { project } = Astro.props;
 const { data } = project;
-const coverSize = imageSize(readFileSync(`public${data.cover}`));
+const media = getMediaVariant(data.cover, 'zh-CN');
+const coverSrc = media?.src ?? data.cover;
+const coverSize = imageSize(readFileSync(`public${coverSrc}`));
 const { Content, headings } = await render(project);
+const alternatePath = (await getCollection('projects', ({ data: candidate }) => candidate.locale === 'en' && candidate.translationKey === data.translationKey && candidate.translationStatus === 'reviewed')).length > 0
+  ? `/en/work/${data.slug}`
+  : null;
 ---
-<ArticleLayout title={data.title} description={data.description} headings={headings}>
+<ArticleLayout title={data.title} description={data.description} headings={headings} locale="zh-CN" alternatePath={alternatePath}>
   <header slot="header" class="detail-header project-detail-header"><p class="eyebrow">PROJECT / {data.year}</p><h1>{data.title}</h1><p class="detail-description">{data.description}</p><dl class="project-facts"><div><dt>角色 / ROLE</dt><dd>{data.role}</dd></div><div><dt>领域 / FOCUS</dt><dd>{data.tags.join(' / ')}</dd></div></dl>{(data.github || data.release || data.designDoc) && <div class="project-actions">{data.github && <a class="button" href={data.github}>GitHub ↗</a>}{data.release && <a class="text-link" href={data.release}>查看 Releases ↗</a>}{data.designDoc && <a class="text-link" href={data.designDoc}>阅读文档 ↗</a>}</div>}</header>
-  <figure slot="cover" class:list={['project-detail-cover', { 'skills-cover': project.id === 'kane-skills' }]}>{project.id === 'kane-skills' && <div class="skills-cover-label"><strong>KANE<br/>SKILLS</strong><span>28 REUSABLE AGENT SKILLS</span></div>}<img src={data.cover} alt={`${data.title} 项目封面`} width={coverSize.width} height={coverSize.height} fetchpriority="high" /></figure>
+  <figure slot="cover" class:list={['project-detail-cover', { 'skills-cover': data.slug === 'kane-skills' }]}>{data.slug === 'kane-skills' && <div class="skills-cover-label"><strong>KANE<br/>SKILLS</strong><span>28 REUSABLE AGENT SKILLS</span></div>}<img src={coverSrc} alt={media?.alt ?? `${data.title} 项目封面`} width={coverSize.width} height={coverSize.height} fetchpriority="high" /></figure>
   <Content />
   <div slot="after" class="detail-end"><span>继续探索。</span><a class="text-link" href="/work">查看全部作品 ↗</a></div>
 </ArticleLayout>

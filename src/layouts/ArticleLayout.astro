@@ -2,10 +2,11 @@
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
-interface Props { title: string; description: string; headings: MarkdownHeading[]; article?: { publishedAt: Date; updatedAt?: Date; author: string }; }
-const { title, description, headings, article } = Astro.props;
+import type { Locale } from '../lib/i18n';
+interface Props { title: string; description: string; headings: MarkdownHeading[]; article?: { publishedAt: Date; updatedAt?: Date; author: string }; locale?: Locale; noindex?: boolean; alternatePath?: string | null; }
+const { title, description, headings, article, locale, noindex = false, alternatePath } = Astro.props;
 ---
-<BaseLayout title={title} description={description} article={article}>
+<BaseLayout title={title} description={description} article={article} locale={locale} noindex={noindex} alternatePath={alternatePath}>
   <div class="shell detail-page">
     <slot name="header" />
     <slot name="cover" />

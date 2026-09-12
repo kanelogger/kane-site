@@ -1,24 +1,28 @@
 ---
 import '../styles/sculpture.css';
+import { getDictionary, getLocaleFromPath, normalizeLocale, type Locale } from '../lib/i18n';
+interface Props { locale?: Locale; }
+const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
+const copy = getDictionary(locale).sculpture;
 ---
-<figure class="sculpture" data-sculpture data-scene-status="poster" aria-label="由三块几何结构组成的 K 品牌雕塑">
+<figure class="sculpture" data-sculpture data-scene-status="poster" aria-label={copy.label}>
   <div class="sculpture-topline" aria-hidden="true"><span>K / STRUCTURE STUDY</span><span>XYZ ↗</span></div>
   <div class="sculpture-stage" data-sculpture-stage>
     <picture class="sculpture-poster sculpture-poster-light">
-      <img src="/assets/brand/k-light.webp" width="1200" height="1200" alt="绿色线框 K 雕塑，置于技术制图网格上" loading="eager" fetchpriority="high" />
+      <img src="/assets/brand/k-light.webp" width="1200" height="1200" alt={copy.imageAlt} loading="eager" fetchpriority="high" />
     </picture>
     <picture class="sculpture-poster sculpture-poster-dark">
-      <img src="/assets/brand/k-dark.webp" width="1200" height="1200" alt="绿色线框 K 雕塑，置于技术制图网格上" loading="eager" />
+      <img src="/assets/brand/k-dark.webp" width="1200" height="1200" alt={copy.imageAlt} loading="eager" />
     </picture>
     <span class="sculpture-axis sculpture-axis-y" aria-hidden="true">Y +</span>
     <span class="sculpture-axis sculpture-axis-x" aria-hidden="true">X +</span>
   </div>
   <figcaption class="sculpture-caption">
-    <span class="sculpture-caption-label">KANE · 数字实验室</span>
-    <div class="sculpture-controls" data-sculpture-controls hidden role="group" aria-label="操作 K 雕塑">
-      <button type="button" data-sculpture-action="explode" aria-pressed="false">拆解 K</button>
-      <button type="button" data-sculpture-action="rotate">转动 <span aria-hidden="true">↻</span></button>
-      <button type="button" data-sculpture-action="solid" aria-pressed="false">显示实体</button>
+    <span class="sculpture-caption-label">{copy.caption}</span>
+    <div class="sculpture-controls" data-sculpture-controls hidden role="group" aria-label={copy.controls}>
+      <button type="button" data-sculpture-action="explode" aria-pressed="false">{copy.explode}</button>
+      <button type="button" data-sculpture-action="rotate">{copy.rotate} <span aria-hidden="true">↻</span></button>
+      <button type="button" data-sculpture-action="solid" aria-pressed="false">{copy.solid}</button>
     </div>
   </figcaption>
 </figure>

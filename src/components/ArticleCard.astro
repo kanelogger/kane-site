@@ -1,11 +1,15 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { formatDate, readingMinutes } from '../lib/content';
-interface Props { article: CollectionEntry<'blog'>; }
+import { getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
+interface Props { article: CollectionEntry<'blog'>; locale?: Locale; }
 const { article } = Astro.props;
+const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
+const copy = getDictionary(locale);
+const slug = (article.data as { slug?: string }).slug ?? article.id.split('/').pop() ?? article.id;
 ---
 <article class="article-row" data-reveal>
   <div class="article-date meta"><time datetime={article.data.publishedAt.toISOString()}>{formatDate(article.data.publishedAt)}</time><span>{article.data.category}</span></div>
-  <div class="article-summary"><h3><a href={`/writing/${article.id}`}>{article.data.title}</a></h3><p>{article.data.description}</p><span class="meta">{article.data.tags.slice(0, 2).join(' / ')} · 约 {readingMinutes(article.body)} 分钟</span></div>
+  <div class="article-summary"><h3><a href={getLocalePath(locale, `/writing/${slug}`)}>{article.data.title}</a></h3><p>{article.data.description}</p><span class="meta">{article.data.tags.slice(0, 2).join(' / ')} · {copy.content.minutes(readingMinutes(article.body))}</span></div>
   <span class="article-arrow" aria-hidden="true">↗</span>
 </article>

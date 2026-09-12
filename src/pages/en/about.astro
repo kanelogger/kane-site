@@ -1,0 +1,10 @@
+---
+import WorkspaceLayout from '../../layouts/WorkspaceLayout.astro';
+import Contacts from '../../components/Contacts.astro';
+import { siteByLocale } from '../../data/site';
+const site = siteByLocale.en;
+---
+<WorkspaceLayout title="About Kane" description={site.description} active="about" locale="en">
+  <header class="workspace-heading"><div><h1>About Kane<span aria-hidden="true">_</span></h1><p>Software Engineer · AI Builder</p></div></header>
+  <div class="workspace-about"><h2>Stay curious.<br />Keep building.</h2><div class="workspace-about-copy">{site.about.map((paragraph) => <p>{paragraph}</p>)}<section class="workspace-about-contact" aria-labelledby="contact-heading"><h2 id="contact-heading">Start with a conversation.</h2><Contacts detailed locale="en" /></section></div></div>
+</WorkspaceLayout>

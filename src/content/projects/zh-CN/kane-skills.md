@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "kane-skills"
+slug: "kane-skills"
+translationStatus: "source"
+categoryId: "project"
+tagIds: ["agent-skills", "typescript", "ai-workflow", "developer-tools"]
+
 title: "Kane Skills"
 description: "一个公开、自包含的 Agent Skills 库，将内容生产、工程治理、技能演进、视觉创作与发布流程封装为 28 个可复用技能。"
 cardDescription: "把反复出现的 Agent 工作流封装成 28 个独立技能，覆盖分析写作、技术核验、工程治理、视觉创作与发布交付。"

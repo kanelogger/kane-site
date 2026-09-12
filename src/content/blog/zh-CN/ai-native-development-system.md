@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "ai-native-development-system"
+slug: "ai-native-development-system"
+translationStatus: "source"
+categoryId: "ai-programming"
+tagIds: ["ai-native-development", "coding-agent", "software-engineering", "feedback-loops"]
+
 title: "AI 原生开发系统"
 description: "以仓库承载事实、过程、状态和经验，用可运行小版本、硬门禁与反馈回路控制 Agent 风险。"
 publishedAt: "2026-08-02"

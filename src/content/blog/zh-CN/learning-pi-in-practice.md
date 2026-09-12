@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "learning-pi-in-practice"
+slug: "learning-pi-in-practice"
+translationStatus: "source"
+categoryId: "ai-programming"
+tagIds: ["pi", "coding-agent", "harness", "context-engineering"]
+
 title: "学 Pi 不是难，是顺序搞反了"
 description: "按实践优先的顺序学习 Pi，并以三层 Harness 和分页搜索控制上下文成本。"
 publishedAt: "2026-08-31"

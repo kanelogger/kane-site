@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "agent-project-recovery"
+slug: "agent-project-recovery"
+translationStatus: "source"
+categoryId: "ai-engineering"
+tagIds: ["coding-agent", "agents-md", "agent-harness", "context-engineering"]
+
 title: "没有历史对话，Agent 如何恢复项目？"
 description: "把代码仓库升级为 Agent 工作环境，使新会话仅靠仓库即可恢复项目事实、状态和正确流程。"
 publishedAt: "2026-08-30"

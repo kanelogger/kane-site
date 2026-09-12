@@ -31,13 +31,16 @@ for (const [file, { html }] of pages) {
   assert.equal(meta['og:description'], meta.description);
   assert.equal(meta['og:image'], 'https://kanelogger.com/og.png');
   assert.equal(meta['twitter:card'], 'summary_large_image');
-  if (file === join(root, '404.html')) {
+  const relativeFile = file.slice(root.length + 1);
+  const route = relativeFile === '404.html' ? '/404' : '/' + relativeFile.replace(/index\.html$/, '').replace(/\/$/, '');
+  const is404 = route === '/404' || route === '/en/404';
+  if (is404) {
     assert.equal(meta.robots, 'noindex, follow');
-    assert.match(html, /href="\/">返回首页/);
+    assert.match(html, route.startsWith('/en') ? /href="\/en">Back home/ : /href="\/">返回首页/);
+  } else if (meta.robots?.includes('noindex')) {
+    assert(route.startsWith('/en/'), `${file}: only English summary pages may be noindex`);
   } else {
-    assert(!meta.robots?.includes('noindex'), `${file}: public page blocked`);
     const canonical = attributes(html.match(/<link rel="canonical"[^>]*>/)?.[0] ?? '').href;
-    const route = '/' + file.slice(root.length + 1).replace(/index\.html$/, '').replace(/\/$/, '');
     assert.equal(canonical, 'https://kanelogger.com' + route, `${file}: wrong canonical`);
     assert.equal(meta['og:url'], canonical);
     assert(!canonicalUrls.has(canonical), `${file}: duplicate canonical`);
@@ -61,6 +64,7 @@ for (const [file, { html }] of pages) {
     if (url.origin !== 'https://kanelogger.com') continue;
     let target = resolve(root, '.' + decodeURIComponent(url.pathname));
     assert(target.startsWith(root), `${file}: invalid local path ${href}`);
+    if (url.pathname === '/404') target = join(root, '404.html');
     if (existsSync(target) && statSync(target).isDirectory()) target = join(target, 'index.html');
     assert(existsSync(target), `${file}: missing ${href}`);
     if (url.hash && pages.has(target)) assert(pages.get(target).ids.has(decodeURIComponent(url.hash.slice(1))), `${file}: missing anchor ${href}`);
@@ -103,6 +107,23 @@ for (const item of items) {
   assert(position > previousPosition, 'RSS order must match Writing');
   previousPosition = position;
 }
+const englishArticlePages = new Map([...pages].filter(([file]) => file.includes('/en/writing/')).map(([file, { html }]) => {
+  const route = '/' + file.slice(root.length + 1).replace(/index\.html$/, '').replace(/\/$/, '');
+  const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => { const attrs = attributes(tag); return [attrs.property ?? attrs.name, attrs.content]; }));
+  return [new URL(route, 'https://kanelogger.com').href, { title: decode(html.match(/<title>([^<]+)<\/title>/)?.[1] ?? '').replace(/ — KANE$/, ''), date: Date.parse(meta['article:published_time']) }];
+}));
+const englishRssPath = join(root, 'en/rss.xml');
+assert(existsSync(englishRssPath), 'English RSS must be generated');
+const englishRss = readFileSync(englishRssPath, 'utf8');
+assert.match(englishRss, /<language>en<\/language>/);
+const englishItems = [...englishRss.matchAll(/<item>([\s\S]*?)<\/item>/g)].map((match) => match[1]);
+for (const item of englishItems) {
+  const link = xmlText(item, 'link');
+  const expected = englishArticlePages.get(link);
+  assert(expected, `English RSS: unknown article ${link}`);
+  assert.equal(xmlText(item, 'title'), expected.title);
+  assert.equal(Date.parse(xmlText(item, 'pubDate')), expected.date);
+}
 const og = imageSize(readFileSync(join(root, 'og.png')));
 assert.deepEqual([og.type, og.width, og.height], ['png', 1200, 630]);
 assert.match(readFileSync(join(root, 'favicon.svg'), 'utf8'), /<svg/);
@@ -110,12 +131,23 @@ assert.match(readFileSync(join(root, 'favicon.svg'), 'utf8'), /<svg/);
 const dashboard = pages.get(join(root, 'dashboard/index.html'));
 assert(dashboard, 'The content dashboard must have a statically built route');
 for (const [collection, route] of [['blog', 'writing'], ['projects', 'work']]) {
-  const index = pages.get(join(root, route, 'index.html')).html;
-  for (const file of readdirSync(`src/content/${collection}`).filter((name) => name.endsWith('.md'))) {
-    const slug = file.slice(0, -3);
-    assert(pages.has(join(root, route, slug, 'index.html')), `${file}: missing detail page`);
-    assert(index.includes(`href="/${route}/${slug}"`), `${file}: missing from list`);
-    assert(dashboard.html.includes(`href="/${route}/${slug}"`), `${file}: missing from dashboard`);
+  for (const file of readdirSync(`src/content/${collection}`, { recursive: true }).filter((name) => String(name).endsWith('.md'))) {
+    const parts = String(file).split('/');
+    const locale = parts[0];
+    const slug = parts.at(-1).slice(0, -3);
+    const source = readFileSync(join('src/content', collection, String(file)), 'utf8');
+    const status = source.match(/^translationStatus:\s*["']?([^"'\n]+)["']?/m)?.[1]?.trim();
+    const publishedPrefix = locale === 'en' && status === 'reviewed' ? '/en' : '';
+    const prefix = locale === 'en' ? '/en' : '';
+    const page = pages.get(join(root, publishedPrefix.slice(1), route, slug, 'index.html')) ?? pages.get(join(root, route, slug, 'index.html'));
+    assert(page, `${file}: missing detail page`);
+    const indexFile = join(root, prefix.slice(1), route, 'index.html');
+    const dashboardFile = locale === 'en' ? join(root, 'en/dashboard/index.html') : join(root, 'dashboard/index.html');
+    const index = pages.get(indexFile)?.html;
+    const board = pages.get(dashboardFile)?.html;
+    assert(index && board, `${file}: missing locale index/dashboard`);
+    assert(index.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from list`);
+    assert(board.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from dashboard`);
   }
 }
 console.log(`Verified ${pages.size} pages, ${links} local references, ${images} images, theme controls, and every Markdown route in its list and dashboard.`);

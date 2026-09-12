@@ -1,0 +1,24 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import { readFileSync } from 'node:fs';
+import { imageSize } from 'image-size';
+import { getMediaVariant } from '../../../data/media';
+export async function getStaticPaths() {
+  return (await getCollection('projects', ({ data }) => data.locale === 'en' && data.translationStatus === 'reviewed')).map((project) => ({ params: { slug: project.data.slug }, props: { project } }));
+}
+interface Props { project: CollectionEntry<'projects'>; }
+const { project } = Astro.props;
+const { data } = project;
+const media = getMediaVariant(data.cover, 'en');
+const coverSrc = media?.src ?? data.cover;
+const coverSize = imageSize(readFileSync(`public${coverSrc}`));
+const { Content, headings } = await render(project);
+const alternatePath = `/work/${data.slug}`;
+---
+<ArticleLayout title={data.title} description={data.description} headings={headings} locale="en" alternatePath={alternatePath}>
+  <header slot="header" class="detail-header project-detail-header"><p class="eyebrow">PROJECT / {data.year}</p><h1>{data.title}</h1><p class="detail-description">{data.description}</p><dl class="project-facts"><div><dt>ROLE</dt><dd>{data.role}</dd></div><div><dt>FOCUS</dt><dd>{data.tags.join(' / ')}</dd></div></dl>{(data.github || data.release || data.designDoc) && <div class="project-actions">{data.github && <a class="button" href={data.github}>GitHub ↗</a>}{data.release && <a class="text-link" href={data.release}>View Releases ↗</a>}{data.designDoc && <a class="text-link" href={data.designDoc}>Read docs ↗</a>}</div>}</header>
+  <figure slot="cover" class:list={['project-detail-cover', { 'skills-cover': project.id.endsWith('kane-skills') }]}><img src={coverSrc} alt={media?.alt ?? `${data.title} project cover`} width={coverSize.width} height={coverSize.height} fetchpriority="high" /></figure>
+  <Content />
+  <div slot="after" class="detail-end"><span>Keep exploring.</span><a class="text-link" href="/en/work">View all work ↗</a></div>
+</ArticleLayout>

@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "skill-port"
+slug: "skill-port"
+translationStatus: "source"
+categoryId: "project"
+tagIds: ["agent-skills", "cli", "electron", "sqlite", "developer-tools"]
+
 title: "Skill Port"
 description: "用一个本地 Hub 集中管理 Agent Skills，并通过 CLI 与 Desktop 将同一份 Skill 按项目或全局启用。"
 cardDescription: "一份 Skill，只保存一次。Skill Port 用本地 Hub、显式 enablement 和来源记录管理技能，再通过 CLI 与 Desktop 服务不同项目和 Agent。"

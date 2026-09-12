@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "ai-native-from-design-to-running"
+slug: "ai-native-from-design-to-running"
+translationStatus: "source"
+categoryId: "ai-programming"
+tagIds: ["ai-native-development", "coding-agent", "software-engineering", "quality-control"]
+
 title: "AI 原生开发实战：从设计稿到可运行版本"
 description: "以可执行原型、可运行小版本、阶段门禁和可观察反馈约束高速 Coding Agent。"
 publishedAt: "2026-07-31"

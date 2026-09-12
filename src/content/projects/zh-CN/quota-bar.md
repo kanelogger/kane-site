@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "quota-bar"
+slug: "quota-bar"
+translationStatus: "source"
+categoryId: "project"
+tagIds: ["swift", "macos", "swiftui", "appkit", "developer-tools"]
+
 title: "QuotaBar"
 description: "一个 macOS 原生菜单栏工具，集中展示 Codex、Kimi Code、DeepSeek 与 OpenCode Go 的额度或账户状态。"
 cardDescription: "把多个 AI 编程服务的额度状态收进一个 macOS 菜单栏。自动显示最紧张指标，单个平台失败不会阻断其他平台。"

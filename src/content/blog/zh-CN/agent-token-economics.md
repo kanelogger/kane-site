@@ -1,4 +1,11 @@
 ---
+locale: "zh-CN"
+translationKey: "agent-token-economics"
+slug: "agent-token-economics"
+translationStatus: "source"
+categoryId: "ai-engineering"
+tagIds: ["coding-agent", "token-cost", "multi-agent", "model-routing"]
+
 title: "并行不省 Token：Agent 成本怎么算"
 description: "拆解 Agent 全链路成本，区分并行的时间收益与 Token 账单，并给出工具和多 Agent 协作的选择方法。"
 publishedAt: "2026-08-30"

@@ -1,12 +1,19 @@
 ---
 import ThemeControl from './ThemeControl.astro';
-const links = [['内容', '/dashboard'], ['作品', '/work'], ['文章', '/writing']];
-const reading = /^\/(writing|work)\/.+/.test(Astro.url.pathname);
-const backPath = Astro.url.pathname.startsWith('/writing/') ? '/writing' : '/work';
+import { getAlternateLocale, getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
+interface Props { locale?: Locale; alternateHref?: string; }
+const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
+const copy = getDictionary(locale);
+const links = [[copy.nav.content, '/dashboard'], [copy.nav.work, '/work'], [copy.nav.writing, '/writing']];
+const route = locale === 'en' && Astro.url.pathname.startsWith('/en') ? Astro.url.pathname.slice(3) || '/' : Astro.url.pathname;
+const reading = /^\/(writing|work)\/.+/.test(route);
+const backPath = route.startsWith('/writing/') ? '/writing' : '/work';
+const alternateLocale = getAlternateLocale(locale);
+const alternateHref = Astro.props.alternateHref ?? getLocalePath(alternateLocale, route);
 ---
 <header class="site-header">
   <div class="shell header-inner">
-    <a href="/" class="wordmark" aria-label="KANE 首页">Kane<span aria-hidden="true">_</span></a>
-    <div class="header-tools"><nav aria-label="主导航">{reading ? <a href={backPath} data-return-results>← {backPath === '/writing' ? '全部文章' : '全部作品'}</a> : links.map(([label, href]) => <a href={href} aria-current={Astro.url.pathname.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav><ThemeControl /></div>
+    <a href={getLocalePath(locale, '/')} class="wordmark" aria-label="KANE">Kane<span aria-hidden="true">_</span></a>
+    <div class="header-tools"><nav aria-label={copy.nav.primary}>{reading ? <a href={getLocalePath(locale, backPath)} data-return-results>← {backPath === '/writing' ? copy.nav.backToWriting : copy.nav.backToWork}</a> : links.map(([label, href]) => <a href={getLocalePath(locale, href)} aria-current={route.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav><a class="language-switch" href={alternateHref}>{copy.nav.language}</a><ThemeControl locale={locale} /></div>
   </div>
 </header>
