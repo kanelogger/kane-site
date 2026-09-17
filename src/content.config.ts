@@ -56,6 +56,7 @@ const projects = defineCollection({
     cover: asset,
     featured: z.boolean().default(false),
     order: z.number().int().positive(),
+    website: z.url().optional(),
     github: z.url().optional(),
     release: z.url().optional(),
     designDoc: z.url().optional(),

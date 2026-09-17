@@ -11,6 +11,7 @@
 - [**Skill Port**](https://kanelogger.com/work/skill-port)：用本地 Hub 集中管理 Agent Skills，通过 CLI 和桌面端将同一份技能按项目或全局启用。[GitHub](https://github.com/kanelogger/SkillPort)
 - [**QuotaBar**](https://kanelogger.com/work/quota-bar)：macOS 菜单栏工具，集中查看多个 AI 编程服务的额度或账户状态。[GitHub](https://github.com/kanelogger/QuotaBar)
 - [**Kane Skills**](https://kanelogger.com/work/kane-skills)：将分析写作、技术核验、工程治理与视觉创作等工作流整理为可独立使用的 Agent Skills。[GitHub](https://github.com/kanelogger/kane-skills)
+- [**报告馆**](https://kanelogger.com/work/my-reports)：自动汇总独立 HTML 报告和子站入口的个人研究归档。[GitHub](https://github.com/kanelogger/my-reports)
 
 ## 在这里阅读
 
