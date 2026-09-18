@@ -1,4 +1,10 @@
 ---
+locale: "zh-CN"
+translationKey: "my-article"
+slug: "my-article"
+translationStatus: "source"
+categoryId: "ai-engineering"
+tagIds: ["coding-agent"]
 title: "文章标题"
 description: "用一两句话说明文章解决的问题。"
 publishedAt: 2026-09-11
@@ -13,7 +19,7 @@ author: "Kane"
 # cover: "/assets/blog/my-article/cover.webp"
 ---
 
-在这里写导语。文件名就是网址，例如 `my-article.md` 对应 `/writing/my-article`。
+在这里写导语。放入 `src/content/blog/zh-CN/my-article.md`，文件名与 slug 保持一致，对应 `/writing/my-article`。翻译版本使用相同 translationKey，并正确填写 locale 与 translationStatus。
 
 ## 要解决的问题
 

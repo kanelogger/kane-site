@@ -12,6 +12,11 @@
     "verify:scene": "node scripts/verify-scene-budget.mjs",
     "test:deployment": "node scripts/test-deployment-verification.mjs",
     "test:scene": "node scripts/test-scene-budget.mjs",
+    "test:build": "node scripts/test-build-verification.mjs",
+    "agent:doctor": "node scripts/agent-doctor.mjs",
+    "verify:agent": "node scripts/verify-agent-environment.mjs",
+    "test:agent": "node --test scripts/test-agent-environment.mjs",
+    "verify": "pnpm check && pnpm build && pnpm verify:build && pnpm verify:scene && pnpm test:deployment && pnpm test:scene && pnpm test:build && pnpm test:agent && pnpm verify:agent",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -19,6 +24,9 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": "24.18.0"
+  },
   "type": "module",
   "dependencies": {
     "@astrojs/markdown-satteri": "^0.4.1",

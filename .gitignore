@@ -149,4 +149,5 @@ output/
 design-previews/
 .DS_Store
 DESIGN.md
-AGENTS.md
+# Agent evidence can contain local paths; only sanitized task summaries are shared.
+.agent-local/

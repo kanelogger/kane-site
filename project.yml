@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project": "kane-site",
+  "owner": "repository-maintainer",
+  "runtime": { "node_file": ".node-version", "package_manager_file": "package.json" },
+  "commands": {
+    "install": { "argv": ["pnpm", "install", "--frozen-lockfile"], "network": "registry", "effects": ["node_modules", "package-cache"] },
+    "doctor": { "script": "agent:doctor", "network": "loopback", "effects": ["temporary-port"] },
+    "develop": { "script": "dev", "network": "loopback", "effects": [".astro", "server"] },
+    "preview": { "script": "preview", "network": "loopback", "effects": ["server"] },
+    "verify": { "script": "verify", "network": "loopback", "effects": [".astro", "dist", "temporary-fixtures"] },
+    "environment_check": { "script": "verify:agent", "network": "none", "effects": [] },
+    "deployment_check": { "script": "verify:deployment", "args": ["URL"], "network": "target-url", "effects": [] }
+  },
+  "required_files": [
+    "AGENTS.md", "AI_ENVIRONMENT.md", "project.yml", ".node-version", "package.json",
+    "pnpm-lock.yaml", "pnpm-workspace.yaml", ".github/workflows/verify.yml",
+    "docs/agent-environment/commands.md", "docs/agent-environment/services.md",
+    "docs/agent-environment/capabilities.md", "docs/agent-environment/network-filesystem.md",
+    "docs/agent-environment/ci-parity.md", "docs/content-import.md",
+    "tasks/README.md", "templates/task.md", "templates/blog.md", "templates/project.md",
+    "scripts/agent-doctor.mjs", "scripts/verify-agent-environment.mjs", "scripts/test-agent-environment.mjs"
+  ],
+  "capabilities": {
+    "content_import": { "optional_skill": ".agents/skills/kane-site-content-import/SKILL.md", "fallback": "docs/content-import.md" },
+    "browser": { "required_for": ["ui-acceptance"], "provider": "session-dependent" },
+    "production": { "required_for": ["release"], "status": "unknown" }
+  },
+  "workflow": { "tasks": "tasks/README.md", "template": "templates/task.md", "local_evidence": ".agent-local/" },
+  "permissions": {
+    "local_reversible_edits": "within-user-task",
+    "external_writes": "explicit-user-authorization",
+    "release": "explicit-user-authorization",
+    "destructive_actions": "explicit-user-authorization"
+  },
+  "freshness": { "source": "current-checkout-and-live-probes", "refresh_when": ["new-session", "runtime-change", "dependency-change", "permission-change", "ci-change"] }
+}

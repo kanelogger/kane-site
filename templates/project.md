@@ -1,4 +1,10 @@
 ---
+locale: "zh-CN"
+translationKey: "my-project"
+slug: "my-project"
+translationStatus: "source"
+categoryId: "project"
+tagIds: ["developer-tools"]
 title: "项目名称"
 description: "项目解决什么问题，用什么方式实现。"
 cardDescription: "作品列表中展示的简短介绍。"
