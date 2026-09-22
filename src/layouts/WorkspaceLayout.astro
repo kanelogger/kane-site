@@ -6,7 +6,7 @@ import { siteByLocale } from '../data/site';
 import { getAlternateLocale, getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
 import '../styles/workspace.css';
 
-interface Props { title: string; description: string; active: 'dashboard' | 'writing' | 'work' | 'about'; locale?: Locale; }
+interface Props { title: string; description: string; active: 'dashboard' | 'writing' | 'work' | 'apps' | 'about'; locale?: Locale; }
 const { title, description, active } = Astro.props;
 const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
 const copy = getDictionary(locale);
@@ -19,6 +19,7 @@ const links = [
   { id: 'dashboard', href: '/dashboard', label: copy.content.all, count: projects.length + articles.length },
   { id: 'work', href: '/work', label: copy.content.projects, count: projects.length },
   { id: 'writing', href: '/writing', label: copy.content.articles, count: articles.length },
+  { id: 'apps', href: '/apps', label: copy.nav.apps },
   { id: 'about', href: '/about', label: copy.nav.about },
 ];
 ---

@@ -1,0 +1,9 @@
+---
+import AppNavigation from '../components/AppNavigation.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getDictionary } from '../lib/i18n';
+const copy = getDictionary('zh-CN').apps;
+---
+<BaseLayout title={copy.pageTitle} description={copy.description} layout="workspace" locale="zh-CN" alternatePath="/en/apps">
+  <AppNavigation locale="zh-CN" />
+</BaseLayout>

@@ -17,6 +17,8 @@
 
 [工程文章](https://kanelogger.com/writing)围绕 Coding Agent、上下文恢复、工程门禁和 Token 成本展开，也记录 AI 原生开发的具体实践。可以在[内容工作台](https://kanelogger.com/dashboard)搜索作品与文章，或通过 [RSS](https://kanelogger.com/rss.xml) 订阅更新。
 
+[常用应用导航](https://kanelogger.com/apps)使用 IndexedDB 在浏览器本地保存个人应用索引，支持分类、收藏置顶和 JSON 数据迁移，不依赖后端服务。
+
 首页是一间以交互线框 K 为主视觉的数字实验室；内容区专注搜索与长文阅读。全站支持浅色、深色和跟随系统的主题选择。
 
 ## 找到我

@@ -1,0 +1,9 @@
+---
+import AppNavigation from '../../components/AppNavigation.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDictionary } from '../../lib/i18n';
+const copy = getDictionary('en').apps;
+---
+<BaseLayout title={copy.pageTitle} description={copy.description} layout="workspace" locale="en" alternatePath="/apps">
+  <AppNavigation locale="en" />
+</BaseLayout>

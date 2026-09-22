@@ -14,11 +14,12 @@
     "test:deployment": "node scripts/test-deployment-verification.mjs",
     "test:scene": "node scripts/test-scene-budget.mjs",
     "test:build": "node scripts/test-build-verification.mjs",
+    "test:apps": "node --test scripts/test-app-navigation.mjs",
     "test:content": "node --test scripts/test-content-verification.mjs",
     "agent:doctor": "node scripts/agent-doctor.mjs",
     "verify:agent": "node scripts/verify-agent-environment.mjs",
     "test:agent": "node --test scripts/test-agent-environment.mjs",
-    "verify": "pnpm verify:content && pnpm check && pnpm build && pnpm verify:build && pnpm verify:scene && pnpm test:content && pnpm test:deployment && pnpm test:scene && pnpm test:build && pnpm test:agent && pnpm verify:agent",
+    "verify": "pnpm verify:content && pnpm check && pnpm build && pnpm verify:build && pnpm verify:scene && pnpm test:apps && pnpm test:content && pnpm test:deployment && pnpm test:scene && pnpm test:build && pnpm test:agent && pnpm verify:agent",
     "preview": "astro preview",
     "astro": "astro"
   },

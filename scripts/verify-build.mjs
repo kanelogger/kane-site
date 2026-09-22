@@ -130,6 +130,13 @@ assert.match(readFileSync(join(root, 'favicon.svg'), 'utf8'), /<svg/);
 // A new Markdown file must be linked from its index and get its own route.
 const dashboard = pages.get(join(root, 'dashboard/index.html'));
 assert(dashboard, 'The content dashboard must have a statically built route');
+for (const route of ['apps/index.html', 'en/apps/index.html']) {
+  const appPage = pages.get(join(root, route));
+  assert(appPage, `${route}: app directory route must be built`);
+  assert.match(appPage.html, /\bdata-app-navigation(?:\s|=|>)/, `${route}: missing app directory root`);
+  assert.match(appPage.html, /<noscript>/, `${route}: missing no-JavaScript explanation`);
+  assert.match(appPage.html, /\bdata-theme-control(?:\s|=|>)/, `${route}: missing theme control`);
+}
 for (const [collection, route] of [['blog', 'writing'], ['projects', 'work']]) {
   for (const file of readdirSync(`src/content/${collection}`, { recursive: true }).filter((name) => String(name).endsWith('.md'))) {
     const parts = String(file).split('/');

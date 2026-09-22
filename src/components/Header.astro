@@ -4,7 +4,7 @@ import { getAlternateLocale, getDictionary, getLocaleFromPath, getLocalePath, no
 interface Props { locale?: Locale; alternateHref?: string; }
 const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
 const copy = getDictionary(locale);
-const links = [[copy.nav.content, '/dashboard'], [copy.nav.work, '/work'], [copy.nav.writing, '/writing']];
+const links = [[copy.nav.content, '/dashboard'], [copy.nav.work, '/work'], [copy.nav.writing, '/writing'], [copy.nav.apps, '/apps']];
 const route = locale === 'en' && Astro.url.pathname.startsWith('/en') ? Astro.url.pathname.slice(3) || '/' : Astro.url.pathname;
 const reading = /^\/(writing|work)\/.+/.test(route);
 const backPath = route.startsWith('/writing/') ? '/writing' : '/work';

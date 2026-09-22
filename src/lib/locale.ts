@@ -11,7 +11,7 @@ export { defaultLocale, getLocaleFromPath, getLocalePath, normalizeLocale, strip
 export type { Locale };
 
 export type ContentRoute = 'writing' | 'work';
-export type SiteRoute = ContentRoute | 'dashboard' | 'about' | 'rss' | 'home';
+export type SiteRoute = ContentRoute | 'dashboard' | 'apps' | 'about' | 'rss' | 'home';
 
 /** Build a stable URL for a localized site route. */
 export function getLocalizedUrl(

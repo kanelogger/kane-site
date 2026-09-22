@@ -23,7 +23,7 @@
 | 动效 | 上述检查，加 `prefers-reduced-motion` 和禁用 JavaScript；确认正文仍可读 |
 | 部署 | 对应源码的本地构建，加 `pnpm verify:deployment URL`；参见 [发布差异](ci-parity.md) |
 
-`pnpm verify` 的顺序以 `package.json#scripts.verify` 为准：`verify:content` → `check` → `build` → `verify:build` → `verify:scene` → `test:content` → `test:deployment` → `test:scene` → `test:build` → `test:agent` → `verify:agent`。每一步失败即停止。`verify:content` 全库检查内容路径、slug、翻译关系、排序与本地图片；`verify:build` 和 `verify:scene` 读取本次构建的 `dist/`，不能直接用旧产物证明新源码。回归测试在临时目录注入错误，不能修改真实内容或 `dist/`。
+`pnpm verify` 的顺序以 `package.json#scripts.verify` 为准：`verify:content` → `check` → `build` → `verify:build` → `verify:scene` → `test:apps` → `test:content` → `test:deployment` → `test:scene` → `test:build` → `test:agent` → `verify:agent`。每一步失败即停止。`verify:content` 全库检查内容路径、slug、翻译关系、排序与本地图片；`verify:build` 和 `verify:scene` 读取本次构建的 `dist/`，不能直接用旧产物证明新源码。回归测试在临时目录注入错误，不能修改真实内容或 `dist/`。
 
 部署回归测试在系统临时目录创建 fixture、绑定 `127.0.0.1` 临时端口，并在 finally 中清理。端口受限属于执行环境阻塞，不能算测试通过。允许后在具备对应权限的环境重跑。
 
