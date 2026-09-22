@@ -8,6 +8,7 @@
     "doctor": { "script": "agent:doctor", "network": "loopback", "effects": ["temporary-port"] },
     "develop": { "script": "dev", "network": "loopback", "effects": [".astro", "server"] },
     "preview": { "script": "preview", "network": "loopback", "effects": ["server"] },
+    "content_check": { "script": "verify:content", "network": "none", "effects": [] },
     "verify": { "script": "verify", "network": "loopback", "effects": [".astro", "dist", "temporary-fixtures"] },
     "environment_check": { "script": "verify:agent", "network": "none", "effects": [] },
     "deployment_check": { "script": "verify:deployment", "args": ["URL"], "network": "target-url", "effects": [] }
@@ -19,7 +20,8 @@
     "docs/agent-environment/capabilities.md", "docs/agent-environment/network-filesystem.md",
     "docs/agent-environment/ci-parity.md", "docs/content-import.md",
     "tasks/README.md", "templates/task.md", "templates/blog.md", "templates/project.md",
-    "scripts/agent-doctor.mjs", "scripts/verify-agent-environment.mjs", "scripts/test-agent-environment.mjs"
+    "scripts/agent-doctor.mjs", "scripts/verify-agent-environment.mjs", "scripts/test-agent-environment.mjs",
+    "scripts/verify-content.mjs", "scripts/test-content-verification.mjs"
   ],
   "capabilities": {
     "content_import": { "optional_skill": ".agents/skills/kane-site-content-import/SKILL.md", "fallback": "docs/content-import.md" },

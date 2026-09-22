@@ -49,7 +49,7 @@ export function inspectEnvironment(directory = process.cwd()) {
   }
   const commands = manifest.commands ?? {};
   require(JSON.stringify(commands.install?.argv) === JSON.stringify(['pnpm', 'install', '--frozen-lockfile']), 'Install must use pnpm install --frozen-lockfile.');
-  for (const [id, script] of Object.entries({ doctor: 'agent:doctor', develop: 'dev', preview: 'preview', verify: 'verify', environment_check: 'verify:agent', deployment_check: 'verify:deployment' })) {
+  for (const [id, script] of Object.entries({ doctor: 'agent:doctor', develop: 'dev', preview: 'preview', content_check: 'verify:content', verify: 'verify', environment_check: 'verify:agent', deployment_check: 'verify:deployment' })) {
     require(commands[id]?.script === script, `Command ${id} must reference package script ${script}.`);
   }
   for (const [id, command] of Object.entries(commands)) {
@@ -57,7 +57,7 @@ export function inspectEnvironment(directory = process.cwd()) {
     require(['none', 'registry', 'loopback', 'target-url'].includes(command.network), `Command ${id} must declare its network requirement.`);
     require(Array.isArray(command.effects), `Command ${id} must declare its effects.`);
   }
-  const steps = ['check', 'build', 'verify:build', 'verify:scene', 'test:deployment', 'test:scene', 'test:build', 'test:agent', 'verify:agent'];
+  const steps = ['verify:content', 'check', 'build', 'verify:build', 'verify:scene', 'test:content', 'test:deployment', 'test:scene', 'test:build', 'test:agent', 'verify:agent'];
   require(pkg.scripts?.verify === steps.map((step) => `pnpm ${step}`).join(' && '), 'verify must run the documented checks in order and stop on failure.');
   for (const step of steps) require(typeof pkg.scripts?.[step] === 'string', `Missing verification script: ${step}`);
   for (const command of Object.values(pkg.scripts ?? {})) {

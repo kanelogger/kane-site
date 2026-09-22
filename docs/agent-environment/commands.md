@@ -17,12 +17,13 @@
 | 改动或动作 | 验收 |
 | --- | --- |
 | 纯文档 | `pnpm verify:agent`，再核对文档命令、链接与事实 |
+| 内容源文件与资源 | `pnpm verify:content` 做快速规则检查，交付前仍运行 `pnpm verify` |
 | 页面、内容、配置、脚本 | `pnpm verify` |
 | UI 或交互 | 上述检查，加受影响页面的桌面/移动布局、键盘、页面往返、目录跳转；有搜索时验证搜索 |
 | 动效 | 上述检查，加 `prefers-reduced-motion` 和禁用 JavaScript；确认正文仍可读 |
 | 部署 | 对应源码的本地构建，加 `pnpm verify:deployment URL`；参见 [发布差异](ci-parity.md) |
 
-`pnpm verify` 的顺序以 `package.json#scripts.verify` 为准：`check` → `build` → `verify:build` → `verify:scene` → `test:deployment` → `test:scene` → `test:build` → `test:agent` → `verify:agent`。每一步失败即停止。`verify:build` 和 `verify:scene` 读取本次构建的 `dist/`，不能直接用旧产物证明新源码。`test:build` 将当前构建复制到临时目录，注入断链与缺图，确认验证器会拒绝它们，不修改真实 `dist/`。
+`pnpm verify` 的顺序以 `package.json#scripts.verify` 为准：`verify:content` → `check` → `build` → `verify:build` → `verify:scene` → `test:content` → `test:deployment` → `test:scene` → `test:build` → `test:agent` → `verify:agent`。每一步失败即停止。`verify:content` 全库检查内容路径、slug、翻译关系、排序与本地图片；`verify:build` 和 `verify:scene` 读取本次构建的 `dist/`，不能直接用旧产物证明新源码。回归测试在临时目录注入错误，不能修改真实内容或 `dist/`。
 
 部署回归测试在系统临时目录创建 fixture、绑定 `127.0.0.1` 临时端口，并在 finally 中清理。端口受限属于执行环境阻塞，不能算测试通过。允许后在具备对应权限的环境重跑。
 

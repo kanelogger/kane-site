@@ -7,16 +7,18 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
+    "verify:content": "node scripts/verify-content.mjs",
     "verify:build": "node scripts/verify-build.mjs",
     "verify:deployment": "node scripts/verify-deployment.mjs",
     "verify:scene": "node scripts/verify-scene-budget.mjs",
     "test:deployment": "node scripts/test-deployment-verification.mjs",
     "test:scene": "node scripts/test-scene-budget.mjs",
     "test:build": "node scripts/test-build-verification.mjs",
+    "test:content": "node --test scripts/test-content-verification.mjs",
     "agent:doctor": "node scripts/agent-doctor.mjs",
     "verify:agent": "node scripts/verify-agent-environment.mjs",
     "test:agent": "node --test scripts/test-agent-environment.mjs",
-    "verify": "pnpm check && pnpm build && pnpm verify:build && pnpm verify:scene && pnpm test:deployment && pnpm test:scene && pnpm test:build && pnpm test:agent && pnpm verify:agent",
+    "verify": "pnpm verify:content && pnpm check && pnpm build && pnpm verify:build && pnpm verify:scene && pnpm test:content && pnpm test:deployment && pnpm test:scene && pnpm test:build && pnpm test:agent && pnpm verify:agent",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -44,6 +46,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@types/three": "0.185.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "yaml": "^2.9.0"
   }
 }

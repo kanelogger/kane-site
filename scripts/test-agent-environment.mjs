@@ -59,11 +59,13 @@ test('runtime drift, missing commands and weakened verification fail', (t) => {
   const pkg = json(root, 'package.json');
   pkg.engines.node = '20.0.0';
   delete pkg.scripts['verify:deployment'];
+  delete pkg.scripts['verify:content'];
   pkg.scripts.verify = 'pnpm build';
   put(root, 'package.json', JSON.stringify(pkg));
   const issues = inspectEnvironment(root).issues.join('\n');
   assert.match(issues, /engines.node must match/);
   assert.match(issues, /missing package script: verify:deployment/);
+  assert.match(issues, /missing package script: verify:content/);
   assert.match(issues, /stop on failure/);
 });
 

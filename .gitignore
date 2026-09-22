@@ -151,3 +151,4 @@ design-previews/
 DESIGN.md
 # Agent evidence can contain local paths; only sanitized task summaries are shared.
 .agent-local/
+private-*/
