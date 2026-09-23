@@ -69,7 +69,7 @@ const bootstrap = JSON.stringify({ copy, starterApps, starterCategories: default
     <section class="apps-command-bar" aria-labelledby="apps-hero-title">
       <div class="apps-command-copy">
         <span class="apps-eyebrow">{copy.eyebrow}</span>
-        <h1 id="apps-hero-title">{copy.pageTitle}</h1>
+        <h1 id="apps-hero-title" class="sr-only">{copy.title}</h1>
         <div class="apps-meta-line" data-app-enhancement><span><strong data-total-apps>0</strong> {copy.appCount}</span><span><strong data-total-categories>0</strong> {copy.categories}</span><span>{copy.localOnly}</span></div>
       </div>
       <div class="apps-command-tools" data-app-enhancement>

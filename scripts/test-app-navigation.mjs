@@ -74,8 +74,9 @@ test('sorts favorites first and then uses explicit directory order', () => {
 test('ships the curated default atlas with explicit categories', () => {
   const payload = JSON.parse(readFileSync(new URL('../src/data/app-navigation-defaults.json', import.meta.url), 'utf8'));
   const apps = parseAppImport(payload, 1000);
-  assert.equal(apps.length, 72);
-  assert.deepEqual(payload.categories, ['开始工作', '开发交付', '研究输入', '创作表达', '办事查询', '兴趣与偶发']);
+  assert.equal(apps.length, 71);
+  assert.deepEqual(payload.categories, ['开始工作', '兴趣与偶发', '开发交付', '研究输入', '创作表达', '办事查询']);
   assert.equal(new Set(apps.map((app) => app.category)).size, 6);
+  assert.equal(apps.filter((app) => app.favorite).length, 7);
   assert.equal(apps.some((app) => !app.category), false);
 });

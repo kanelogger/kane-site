@@ -181,8 +181,8 @@
 .apps-quick { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 22px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--atlas-border); }
 .apps-quick-label h2 { margin: 0; font-size: 13px; }
 .apps-quick-label span { display: block; margin-top: 4px; color: var(--atlas-text-tertiary); font: 9px var(--atlas-font-mono); letter-spacing: .08em; }
-.apps-quick-list { display: flex; align-items: center; gap: 8px; min-width: 0; overflow-x: auto; scrollbar-width: thin; }
-.apps-orbit-item { display: grid; grid-template-columns: 32px minmax(0, 1fr) 16px; gap: 9px; align-items: center; flex: 0 0 190px; min-height: 48px; padding: 7px 10px; border: 1px solid var(--atlas-border); border-radius: 10px; color: var(--atlas-text); background: var(--atlas-surface-raised); text-decoration: none; }
+.apps-quick-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr)); gap: 8px; min-width: 0; }
+.apps-orbit-item { display: grid; grid-template-columns: 32px minmax(0, 1fr) 16px; gap: 9px; align-items: center; min-width: 0; min-height: 48px; padding: 7px 10px; border: 1px solid var(--atlas-border); border-radius: 10px; color: var(--atlas-text); background: var(--atlas-surface-raised); text-decoration: none; }
 .apps-orbit-item:hover { border-color: var(--atlas-border-strong); background: var(--atlas-surface-hover); text-decoration: none; }
 .apps-orbit-avatar, .apps-avatar { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; color: var(--atlas-text); background: color-mix(in srgb, var(--zone-color) 36%, var(--atlas-surface)); font: 650 10px/1 var(--atlas-font-mono); }
 .apps-orbit-copy { min-width: 0; }
@@ -190,7 +190,7 @@
 .apps-orbit-copy span { font-size: 12px; font-weight: 650; }
 .apps-orbit-copy small { margin-top: 3px; color: var(--atlas-text-tertiary); font: 8px var(--atlas-font-mono); }
 .apps-orbit-item > svg { width: 15px; height: 15px; color: var(--atlas-text-tertiary); }
-.apps-orbit-empty { color: var(--atlas-text-tertiary); font-size: 12px; }
+.apps-orbit-empty { grid-column: 1 / -1; color: var(--atlas-text-tertiary); font-size: 12px; }
 .apps-orbit-empty strong { color: var(--atlas-text); }
 .apps-orbit-empty p { margin: 2px 0 0; }
 .apps-directory { display: grid; grid-template-columns: 226px minmax(0, 1fr); min-height: 620px; }
@@ -244,6 +244,9 @@
 .apps-fallback-group a { color: var(--atlas-text); }
 .apps-fallback-group p { margin: 3px 0; color: var(--atlas-text-tertiary); font-size: 11px; }
 .apps-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   width: min(680px, calc(100% - 32px));
   max-height: calc(100dvh - 32px);
   padding: 0;
@@ -351,7 +354,7 @@
   .apps-search kbd { display: none; }
   .apps-sort { max-width: 104px; font-size: 11px; }
   .apps-quick { padding-block: 14px; }
-  .apps-orbit-item { flex-basis: 168px; }
+  .apps-quick-list { grid-template-columns: repeat(auto-fill, minmax(min(168px, 100%), 1fr)); }
   .apps-directory-main { padding-top: 18px; }
   .apps-directory-head { align-items: flex-start; flex-direction: column; gap: 10px; }
   .apps-grid { grid-template-columns: 1fr; }
