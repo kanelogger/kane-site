@@ -34,6 +34,19 @@ for (const [file, { html }] of pages) {
   const relativeFile = file.slice(root.length + 1);
   const route = relativeFile === '404.html' ? '/404' : '/' + relativeFile.replace(/index\.html$/, '').replace(/\/$/, '');
   const is404 = route === '/404' || route === '/en/404';
+  if (/^\/(?:en\/)?writing\/[^/]+$/.test(route)) {
+    const jsonLd = html.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)?.[1];
+    assert(jsonLd, `${file}: missing article structured data`);
+    const posting = JSON.parse(jsonLd);
+    assert.equal(posting['@context'], 'https://schema.org');
+    assert.equal(posting['@type'], 'BlogPosting');
+    assert.equal(posting.mainEntityOfPage, 'https://kanelogger.com' + route);
+    assert.equal(posting.headline, title.replace(/ — KANE$/, ''));
+    assert.equal(posting.description, meta.description);
+    assert.equal(posting.inLanguage, route.startsWith('/en/') ? 'en' : 'zh-CN');
+    assert.equal(posting.datePublished, meta['article:published_time']);
+    assert.equal(posting.author?.name, meta.author);
+  }
   if (is404) {
     assert.equal(meta.robots, 'noindex, follow');
     assert.match(html, route.startsWith('/en') ? /href="\/en">Back home/ : /href="\/">返回首页/);

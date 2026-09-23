@@ -7,7 +7,7 @@ import { getLocaleFromPath, getLocalePath, type Locale, getDictionary } from '..
 import '@fontsource-variable/manrope';
 import '../styles/global.css';
 import { ClientRouter, fade } from 'astro:transitions';
-interface Props { title?: string; description?: string; article?: { publishedAt: Date; updatedAt?: Date; author: string }; noindex?: boolean; layout?: 'site' | 'workspace'; locale?: Locale; alternatePath?: string | null; }
+interface Props { title?: string; description?: string; article?: { publishedAt: Date; updatedAt?: Date; author: string; cover?: string }; noindex?: boolean; layout?: 'site' | 'workspace'; locale?: Locale; alternatePath?: string | null; }
 const { title, description, article, noindex = false, layout = 'site', locale: propLocale, alternatePath: propAlternatePath } = Astro.props;
 const locale = propLocale ?? getLocaleFromPath(Astro.url.pathname);
 const dictionary = getDictionary(locale);
@@ -15,6 +15,18 @@ const resolvedDescription = description ?? (locale === 'en' ? 'Kane’s personal
 const pageTitle = title ? `${title} — KANE` : 'KANE — Software Engineer & AI Builder';
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site!);
 const shareImage = new URL('/og.png', Astro.site!);
+const articleStructuredData = article && title ? JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  mainEntityOfPage: canonical.href,
+  headline: title,
+  description: resolvedDescription,
+  inLanguage: locale,
+  datePublished: article.publishedAt.toISOString(),
+  ...(article.updatedAt ? { dateModified: article.updatedAt.toISOString() } : {}),
+  author: { '@type': 'Person', name: article.author },
+  ...(article.cover ? { image: new URL(article.cover, Astro.site!).href } : {}),
+}).replace(/</g, '\\u003c') : null;
 const alternateLocale = locale === 'en' ? 'zh-CN' : 'en';
 const alternatePath = propAlternatePath === undefined ? getLocalePath(alternateLocale, Astro.url.pathname) : propAlternatePath;
 ---
@@ -48,6 +60,7 @@ const alternatePath = propAlternatePath === undefined ? getLocalePath(alternateL
       {article.updatedAt && <meta property="article:modified_time" content={article.updatedAt.toISOString()} />}
       <meta name="author" content={article.author} />
     </>}
+    {articleStructuredData && <script is:inline type="application/ld+json" set:html={articleStructuredData} />}
     {alternatePath && <><link rel="alternate" hreflang={locale} href={canonical} />
     <link rel="alternate" hreflang={alternateLocale} href={new URL(alternatePath, Astro.site!)} />
     <link rel="alternate" hreflang="x-default" href={new URL(getLocalePath('zh-CN', Astro.url.pathname), Astro.site!)} /></>}

@@ -29,6 +29,14 @@ try {
     assert(result.stderr.includes(expected), result.stderr);
     console.log(`PASS: ${label} is rejected by the build verifier`);
   }
+  await writeFile(index, html);
+  const articlePath = join(fixture, 'dist/writing/agent-hard-gates/index.html');
+  const articleHtml = await readFile(articlePath, 'utf8');
+  await writeFile(articlePath, articleHtml.replace(/<script type="application\/ld\+json">[^<]+<\/script>/, ''));
+  result = run();
+  assert.equal(result.status, 1, `missing article data must fail; ${result.stderr}`);
+  assert(result.stderr.includes('missing article structured data'), result.stderr);
+  console.log('PASS: missing article structured data is rejected by the build verifier');
 } finally {
   await rm(fixture, { recursive: true, force: true });
 }
