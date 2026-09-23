@@ -37,8 +37,6 @@ const bootstrap = JSON.stringify({ copy, starterApps, starterCategories: default
   <symbol id="apps-icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></symbol>
   <symbol id="apps-icon-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4"></path></symbol>
   <symbol id="apps-icon-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"></path></symbol>
-  <symbol id="apps-icon-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path></symbol>
-  <symbol id="apps-icon-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"></circle><ellipse cx="12" cy="12" rx="9" ry="4.5" transform="rotate(32 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="4.5" transform="rotate(-32 12 12)"></ellipse></symbol>
 </svg>
 
 <div class="apps-shell" data-app-navigation data-ready="false" aria-busy="true">
@@ -68,60 +66,45 @@ const bootstrap = JSON.stringify({ copy, starterApps, starterCategories: default
   </header>
 
   <div class="apps-atlas" id="workspace-content" tabindex="-1">
-    <section class="apps-hero" aria-labelledby="apps-hero-title">
-      <div class="apps-hero-grid">
-        <div class="apps-hero-copy">
-          <span class="apps-eyebrow apps-reveal">{copy.eyebrow}</span>
-          <h1 id="apps-hero-title">
-            <span class="apps-title-token" style="--token-index: 0">{copy.heroLead}</span>
-            <span class="apps-title-token" style="--token-index: 1"><em>{copy.heroAccent}</em>{copy.heroTrail}</span>
-          </h1>
-          <p class="apps-hero-intro apps-reveal">{copy.intro}</p>
-          <label class="apps-search apps-reveal" data-app-enhancement>
-            <svg aria-hidden="true"><use href="#apps-icon-search"></use></svg>
-            <span class="sr-only">{copy.searchLabel}</span>
-            <input type="search" data-search-input placeholder={copy.searchPlaceholder} autocomplete="off" />
-            <kbd>⌘ K</kbd>
-          </label>
+    <section class="apps-command-bar" aria-labelledby="apps-hero-title">
+      <div class="apps-command-copy">
+        <span class="apps-eyebrow">{copy.eyebrow}</span>
+        <h1 id="apps-hero-title">{copy.pageTitle}</h1>
+        <div class="apps-meta-line" data-app-enhancement><span><strong data-total-apps>0</strong> {copy.appCount}</span><span><strong data-total-categories>0</strong> {copy.categories}</span><span>{copy.localOnly}</span></div>
+      </div>
+      <div class="apps-command-tools" data-app-enhancement>
+        <label class="apps-search">
+          <svg aria-hidden="true"><use href="#apps-icon-search"></use></svg>
+          <span class="sr-only">{copy.searchLabel}</span>
+          <input type="search" data-search-input placeholder={copy.searchPlaceholder} autocomplete="off" />
+          <kbd>⌘ K</kbd>
+        </label>
+        <select class="apps-sort" data-sort-select aria-label={copy.sortLabel}>
+          <option value="default">{copy.sortDefault}</option>
+          <option value="name">{copy.sortName}</option>
+          <option value="category">{copy.sortCategory}</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="apps-quick" data-app-enhancement aria-labelledby="apps-quick-title">
+      <div class="apps-quick-label"><h2 id="apps-quick-title">{copy.quickTitle}</h2><span data-favorite-count>00 / PINNED</span></div>
+      <div class="apps-quick-list" data-favorite-orbit></div>
+    </section>
+
+    <section class="apps-directory" data-app-enhancement aria-label={copy.directoryLabel}>
+      <aside class="apps-category-panel">
+        <header><h2>{copy.categoryIndex}</h2><span>COUNT</span></header>
+        <nav class="apps-category-list" data-category-atlas aria-label={copy.filterByCategory}></nav>
+      </aside>
+      <div class="apps-directory-main">
+        <header class="apps-directory-head">
+          <div><h2 data-explore-title>{copy.exploreAll}</h2><p data-result-count role="status" aria-live="polite" aria-atomic="true">0 {copy.appCount}</p></div>
+          <div class="apps-directory-tools"><span>{copy.compactView}</span><button class="apps-action apps-action-secondary" type="button" data-reset-filter hidden>{copy.backToAtlas}</button></div>
+        </header>
+        <div class="apps-grid" data-app-list>
+          <section class="apps-empty"><h2>{copy.emptyTitle}</h2><p>{copy.emptyHint}</p></section>
         </div>
-
-        <div class="apps-radar apps-reveal" aria-label={copy.atlasSummary}>
-          <span class="apps-radar-sweep" aria-hidden="true"></span>
-          <div class="apps-radar-rings" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="apps-radar-center"><svg aria-hidden="true"><use href="#apps-icon-compass"></use></svg><span>{copy.localOnly}</span></div>
-          <div class="apps-radar-nodes" data-radar-nodes aria-hidden="true"></div>
-        </div>
-      </div>
-      <div class="apps-metrics apps-reveal" data-app-enhancement>
-        <div><strong data-total-apps>0</strong><span>{copy.savedApps}</span></div>
-        <div><strong data-total-categories>0</strong><span>{copy.categoryZones}</span></div>
-        <div class="apps-local-status"><strong><span aria-hidden="true"></span>{copy.localStatus}</strong><span>{copy.storageMeta}</span></div>
-      </div>
-    </section>
-
-    <section class="apps-orbit apps-reveal" data-app-enhancement aria-labelledby="apps-orbit-title">
-      <div class="apps-section-heading">
-        <div><span class="apps-section-index">01 / ORBIT</span><h2 id="apps-orbit-title">{copy.launchOrbit}</h2></div>
-        <p>{copy.orbitIntro}</p>
-      </div>
-      <div class="apps-orbit-track" data-favorite-orbit></div>
-    </section>
-
-    <section class="apps-map apps-reveal" data-app-enhancement aria-labelledby="apps-map-title">
-      <div class="apps-section-heading">
-        <div><span class="apps-section-index">02 / ATLAS</span><h2 id="apps-map-title">{copy.atlasTitle}</h2></div>
-        <p>{copy.atlasIntro}</p>
-      </div>
-      <div class="apps-category-atlas" data-category-atlas></div>
-    </section>
-
-    <section class="apps-explore apps-reveal" data-app-enhancement aria-labelledby="apps-explore-title">
-      <div class="apps-explore-heading">
-        <div><span class="apps-section-index">03 / EXPLORE</span><h2 id="apps-explore-title" data-explore-title>{copy.exploreAll}</h2></div>
-        <div class="apps-result-summary" role="status" aria-live="polite" aria-atomic="true"><span data-result-count>0 {copy.appCount}</span><button type="button" data-reset-filter hidden>{copy.backToAtlas}</button></div>
-      </div>
-      <div class="apps-grid" data-app-list>
-        <section class="apps-empty"><span class="apps-empty-index">…</span><h2>{copy.emptyTitle}</h2><p>{copy.emptyHint}</p></section>
       </div>
     </section>
 

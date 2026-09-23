@@ -70,12 +70,10 @@ class AppNavigationController {
   private apps: AppEntry[] = [];
   private category = '';
   private query = '';
+  private sort = 'default';
   private confirmAction?: () => Promise<void>;
   private destroyed = false;
   private composing = false;
-  private revealObserver?: IntersectionObserver;
-  private radarObserver?: IntersectionObserver;
-  private spotlightFrame = 0;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -117,7 +115,6 @@ class AppNavigationController {
       this.render();
       this.root.dataset.ready = 'true';
       this.root.setAttribute('aria-busy', 'false');
-      this.initMotion();
     } catch (error) {
       console.error(error);
       this.showToast(this.text('databaseFailed'), true);
@@ -128,9 +125,6 @@ class AppNavigationController {
   destroy() {
     this.destroyed = true;
     this.abort.abort();
-    this.revealObserver?.disconnect();
-    this.radarObserver?.disconnect();
-    cancelAnimationFrame(this.spotlightFrame);
     this.database?.close();
     this.root.querySelectorAll<HTMLDialogElement>('dialog[open]').forEach((dialog) => dialog.close());
   }
@@ -193,18 +187,20 @@ class AppNavigationController {
 
   private visibleApps() {
     const query = this.query.trim().toLocaleLowerCase();
-    return sortApps(this.apps).filter((app) => {
+    const apps = this.apps.filter((app) => {
       const matchesCategory = !this.category || app.category === this.category;
       const haystack = `${app.name} ${app.url} ${app.category} ${app.description}`.toLocaleLowerCase();
       return matchesCategory && (!query || haystack.includes(query));
     });
+    if (this.sort === 'name') return apps.sort((a, b) => a.name.localeCompare(b.name, document.documentElement.lang));
+    if (this.sort === 'category') return apps.sort((a, b) => a.category.localeCompare(b.category, document.documentElement.lang) || a.name.localeCompare(b.name, document.documentElement.lang));
+    return sortApps(apps);
   }
 
   private render() {
     this.renderMetrics();
     this.renderOrbit();
     this.renderCategories();
-    this.renderRadar();
     this.renderList();
   }
 
@@ -229,36 +225,22 @@ class AppNavigationController {
 
   private renderMetrics() {
     const categories = this.categoryCounts().size;
-    this.element<HTMLElement>('[data-total-apps]').textContent = String(this.apps.length).padStart(3, '0');
-    this.element<HTMLElement>('[data-total-categories]').textContent = String(categories).padStart(2, '0');
-  }
-
-  private renderRadar() {
-    const counts = this.categoryCounts();
-    const nodes = this.orderedCategories(counts).slice(0, 6).map((category, index) => {
-      const node = document.createElement('span');
-      node.className = `apps-radar-node apps-tone-${index % 6}`;
-      node.textContent = category;
-      return node;
-    });
-    this.element<HTMLElement>('[data-radar-nodes]').replaceChildren(...nodes);
+    this.element<HTMLElement>('[data-total-apps]').textContent = String(this.apps.length);
+    this.element<HTMLElement>('[data-total-categories]').textContent = String(categories);
   }
 
   private renderOrbit() {
     const favorites = sortApps(this.apps).filter((app) => app.favorite);
     const orbit = this.element<HTMLElement>('[data-favorite-orbit]');
+    this.element<HTMLElement>('[data-favorite-count]').textContent = `${String(favorites.length).padStart(2, '0')} / PINNED`;
     if (!favorites.length) {
       const empty = document.createElement('div');
       empty.className = 'apps-orbit-empty';
-      const icon = document.createElement('span');
-      icon.append(this.icon('orbit'));
-      const copy = document.createElement('div');
       const heading = document.createElement('strong');
       heading.textContent = this.text('orbitEmptyTitle');
       const hint = document.createElement('p');
       hint.textContent = this.text('orbitEmptyHint');
-      copy.append(heading, hint);
-      empty.append(icon, copy);
+      empty.append(heading, hint);
       orbit.replaceChildren(empty);
       return;
     }
@@ -266,23 +248,23 @@ class AppNavigationController {
   }
 
   private createOrbitItem(app: AppEntry): HTMLElement {
-    const item = document.createElement('article');
+    const item = document.createElement('a');
     item.className = `apps-orbit-item ${this.categoryTone(app.category)}`;
-    item.dataset.id = app.id;
+    item.href = app.url;
+    item.target = '_blank';
+    item.rel = 'noreferrer';
     const avatar = document.createElement('span');
     avatar.className = 'apps-orbit-avatar';
     avatar.textContent = app.shortcode || appInitials(app.name);
     avatar.setAttribute('aria-hidden', 'true');
-    const link = document.createElement('a');
-    link.href = app.url;
-    link.target = '_blank';
-    link.rel = 'noreferrer';
+    const copy = document.createElement('span');
+    copy.className = 'apps-orbit-copy';
     const label = document.createElement('span');
     label.textContent = app.name;
     const domain = document.createElement('small');
     domain.textContent = new URL(app.url).hostname.replace(/^www\./, '');
-    link.append(label, domain);
-    item.append(avatar, link, this.actionButton('unfavoriteAction', 'star', 'favorite', app, 'is-favorite'));
+    copy.append(label, domain);
+    item.append(avatar, copy, this.icon('arrow'));
     return item;
   }
 
@@ -291,32 +273,23 @@ class AppNavigationController {
     const categories = this.orderedCategories(counts);
     if (this.category && !counts.has(this.category)) this.category = '';
     const atlas = this.element<HTMLElement>('[data-category-atlas]');
-    atlas.replaceChildren(...categories.map((category, index) => {
-      const count = counts.get(category) ?? 0;
+    const createButton = (category: string, count: number) => {
       const button = document.createElement('button');
       button.type = 'button';
-      const density = count >= 16 ? 'xl' : count >= 9 ? 'lg' : count >= 4 ? 'md' : 'sm';
-      button.className = `apps-zone apps-tone-${index % 6}`;
+      button.className = 'apps-category-button';
       button.dataset.appCategoryFilter = category;
-      button.dataset.density = density;
       button.setAttribute('aria-pressed', String(this.category === category));
-      button.setAttribute('aria-label', this.text('openCategory', { name: category, count }));
-      const coordinate = document.createElement('span');
-      coordinate.className = 'apps-zone-coordinate';
-      coordinate.textContent = `${String(index + 1).padStart(2, '0')} / ${String(count).padStart(2, '0')}`;
+      button.setAttribute('aria-label', category ? this.text('openCategory', { name: category, count }) : this.text('exploreAll'));
       const label = document.createElement('span');
-      label.className = 'apps-zone-title';
-      label.textContent = category;
-      const appNames = document.createElement('span');
-      appNames.className = 'apps-zone-apps';
-      appNames.textContent = sortApps(this.apps.filter((app) => app.category === category)).slice(0, 3).map((app) => app.name).join(' · ');
-      const footer = document.createElement('span');
-      footer.className = 'apps-zone-footer';
-      const featured = document.createElement('span');
-      featured.textContent = this.text('featuredApps');
-      footer.append(featured, this.icon('arrow'));
-      button.append(coordinate, label, appNames, footer);
+      label.textContent = category || this.text('exploreAll');
+      const amount = document.createElement('span');
+      amount.textContent = String(count).padStart(2, '0');
+      button.append(label, amount);
       return button;
+    };
+    atlas.replaceChildren(createButton('', this.apps.length), ...categories.map((category) => {
+      const count = counts.get(category) ?? 0;
+      return createButton(category, count);
     }));
     this.element<HTMLDataListElement>('[data-category-options]').replaceChildren(...categories.map((category) => {
       const option = document.createElement('option');
@@ -365,32 +338,22 @@ class AppNavigationController {
     const card = document.createElement('article');
     card.className = `apps-card ${this.categoryTone(app.category)}${app.favorite ? ' is-favorite' : ''}`;
     card.dataset.id = app.id;
-    const header = document.createElement('div');
-    header.className = 'apps-card-header';
     const avatar = document.createElement('div');
     avatar.className = 'apps-avatar';
     avatar.setAttribute('aria-hidden', 'true');
     avatar.textContent = app.shortcode || appInitials(app.name);
-    const category = document.createElement('button');
-    category.type = 'button';
-    category.className = 'apps-category-chip';
-    category.dataset.appCategoryFilter = app.category;
-    category.textContent = app.category;
-    header.append(avatar, category);
+    const copy = document.createElement('div');
+    copy.className = 'apps-card-copy';
     const link = document.createElement('a');
     link.className = 'apps-card-link';
     link.href = app.url;
     link.target = '_blank';
     link.rel = 'noreferrer';
-    const name = document.createElement('span');
-    name.textContent = app.name;
-    link.append(name, this.icon('arrow'));
+    link.textContent = app.name;
     const domain = document.createElement('small');
     domain.className = 'apps-domain';
-    domain.textContent = new URL(app.url).hostname.replace(/^www\./, '');
-    const description = document.createElement('p');
-    description.className = `apps-card-description${app.description ? '' : ' is-fallback'}`;
-    description.textContent = app.description || `${app.category} · ${domain.textContent}`;
+    domain.textContent = `${app.category} · ${new URL(app.url).hostname.replace(/^www\./, '')}`;
+    copy.append(link, domain);
     const actions = document.createElement('div');
     actions.className = 'apps-card-actions';
     actions.append(
@@ -398,10 +361,7 @@ class AppNavigationController {
       this.actionButton('editAction', 'edit', 'edit', app),
       this.actionButton('deleteAction', 'trash', 'delete', app, 'is-danger'),
     );
-    const footer = document.createElement('div');
-    footer.className = 'apps-card-footer';
-    footer.append(domain, actions);
-    card.append(header, link, description, footer);
+    card.append(avatar, copy, actions);
     return card;
   }
 
@@ -414,54 +374,6 @@ class AppNavigationController {
     button.title = this.text(labelKey);
     button.append(this.icon(icon));
     return button;
-  }
-
-  private initMotion() {
-    const signal = this.abort.signal;
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const reveals = this.root.querySelectorAll<HTMLElement>('.apps-reveal');
-    if (reduced || !('IntersectionObserver' in window)) {
-      reveals.forEach((item) => item.classList.add('is-visible'));
-    } else {
-      this.revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
-          this.revealObserver?.unobserve(entry.target);
-        });
-      }, { threshold: 0.01, rootMargin: '0px 0px -8% 0px' });
-      reveals.forEach((item) => this.revealObserver?.observe(item));
-
-      const radar = this.element<HTMLElement>('.apps-radar');
-      this.radarObserver = new IntersectionObserver(([entry]) => {
-        radar.classList.toggle('is-active', entry.isIntersecting);
-      }, { threshold: 0.1 });
-      this.radarObserver.observe(radar);
-    }
-
-    const topbar = this.element<HTMLElement>('.apps-topbar');
-    const updateTopbar = () => topbar.classList.toggle('is-scrolled', window.scrollY > 24);
-    window.addEventListener('scroll', updateTopbar, { passive: true, signal });
-    updateTopbar();
-
-    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      this.root.addEventListener('pointermove', (event) => {
-        if (!(event.target instanceof Element)) return;
-        const zone = event.target.closest<HTMLElement>('.apps-zone');
-        if (!zone || this.spotlightFrame) return;
-        this.spotlightFrame = requestAnimationFrame(() => {
-          const rect = zone.getBoundingClientRect();
-          zone.style.setProperty('--spot-x', `${event.clientX - rect.left}px`);
-          zone.style.setProperty('--spot-y', `${event.clientY - rect.top}px`);
-          this.spotlightFrame = 0;
-        });
-      }, { signal });
-    }
-  }
-
-  private scrollToExplore() {
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.element<HTMLElement>('.apps-explore').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
   }
 
   private openEditor(app?: AppEntry) {
@@ -647,6 +559,10 @@ class AppNavigationController {
       this.renderCategories();
       this.renderList();
     }, { signal });
+    this.element<HTMLSelectElement>('[data-sort-select]').addEventListener('change', (event) => {
+      this.sort = (event.currentTarget as HTMLSelectElement).value;
+      this.renderList();
+    }, { signal });
     this.root.addEventListener('click', (event) => { void this.handleClick(event); }, { signal });
     document.addEventListener('click', (event) => {
       if (!(event.target instanceof Element) || !event.target.closest('.apps-data-control')) this.toggleDataMenu(false);
@@ -697,10 +613,9 @@ class AppNavigationController {
       this.query = '';
       this.element<HTMLInputElement>('[data-search-input]').value = '';
       this.render();
-      this.scrollToExplore();
       return;
     }
-    const row = event.target.closest<HTMLElement>('.apps-card, .apps-orbit-item');
+    const row = event.target.closest<HTMLElement>('.apps-card');
     const action = event.target.closest<HTMLButtonElement>('[data-action]');
     if (!row || !action) return;
     const app = this.apps.find((entry) => entry.id === row.dataset.id);
@@ -709,10 +624,6 @@ class AppNavigationController {
       await this.putApp({ ...app, favorite: !app.favorite, updatedAt: Date.now() });
       this.apps = await this.readAll();
       this.render();
-      if (!app.favorite) {
-        const arrival = this.root.querySelector<HTMLElement>(`.apps-orbit-item[data-id="${CSS.escape(app.id)}"]`);
-        arrival?.classList.add('is-arriving');
-      }
       this.showToast(this.text(app.favorite ? 'unfavorited' : 'favorited'));
     } else if (action.dataset.action === 'edit') {
       this.openEditor(app);

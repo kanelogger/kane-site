@@ -75,7 +75,7 @@ test('ships the curated default atlas with explicit categories', () => {
   const payload = JSON.parse(readFileSync(new URL('../src/data/app-navigation-defaults.json', import.meta.url), 'utf8'));
   const apps = parseAppImport(payload, 1000);
   assert.equal(apps.length, 72);
-  assert.deepEqual(payload.categories, ['AI 工作台', '开发与构建', '技术与资讯', '影像与飞行', '研究与学习', '政务与法律', '设计与灵感', '实用与偶发']);
-  assert.equal(new Set(apps.map((app) => app.category)).size, 8);
+  assert.deepEqual(payload.categories, ['开始工作', '开发交付', '研究输入', '创作表达', '办事查询', '兴趣与偶发']);
+  assert.equal(new Set(apps.map((app) => app.category)).size, 6);
   assert.equal(apps.some((app) => !app.category), false);
 });
