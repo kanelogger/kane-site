@@ -106,16 +106,23 @@ class AppNavigationController {
   async init() {
     this.bindEvents();
     try {
-      this.database = await openDatabase();
-      if (this.destroyed) return;
+      const database = await openDatabase();
+      if (this.destroyed) {
+        database.close();
+        return;
+      }
+      this.database = database;
       await this.seedFirstVisit();
+      if (this.destroyed) return;
       await this.syncStarterCatalog();
+      if (this.destroyed) return;
       this.apps = await this.readAll();
       if (this.destroyed) return;
       this.render();
       this.root.dataset.ready = 'true';
       this.root.setAttribute('aria-busy', 'false');
     } catch (error) {
+      if (this.destroyed) return;
       console.error(error);
       this.showToast(this.text('databaseFailed'), true);
       this.root.setAttribute('aria-busy', 'false');
@@ -127,6 +134,10 @@ class AppNavigationController {
     this.abort.abort();
     this.database?.close();
     this.root.querySelectorAll<HTMLDialogElement>('dialog[open]').forEach((dialog) => dialog.close());
+  }
+
+  isActiveOn(root: HTMLElement) {
+    return !this.destroyed && this.root === root;
   }
 
   private async seedFirstVisit() {
@@ -641,10 +652,14 @@ class AppNavigationController {
 let controller: AppNavigationController | undefined;
 
 function mount() {
-  controller?.destroy();
-  controller = undefined;
   const root = document.querySelector<HTMLElement>('[data-app-navigation]');
-  if (!root) return;
+  if (!root) {
+    controller?.destroy();
+    controller = undefined;
+    return;
+  }
+  if (controller?.isActiveOn(root)) return;
+  controller?.destroy();
   controller = new AppNavigationController(root);
   void controller.init();
 }
