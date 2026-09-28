@@ -921,6 +921,18 @@
       "favorite": false,
       "createdAt": 1790598636938,
       "updatedAt": 1790598636938
+    },
+    {
+      "id": "083a5241-a3e8-4833-9433-2cfc28e02a12",
+      "name": "Farnam Street 心智模型",
+      "url": "https://fs.blog/mental-models/",
+      "category": "研究输入",
+      "sortOrder": 83,
+      "shortcode": "FS",
+      "description": "Farnam Street 整理的心智模型指南，约 100 个模型辅助决策",
+      "favorite": false,
+      "createdAt": 1790600643064,
+      "updatedAt": 1790600643064
     }
   ]
 }
