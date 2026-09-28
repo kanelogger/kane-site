@@ -909,6 +909,18 @@
       "favorite": false,
       "createdAt": 1790133902752,
       "updatedAt": 1790133902752
+    },
+    {
+      "id": "87fc9967-39c2-435d-9de9-b799ca359073",
+      "name": "高性价比人生指南",
+      "url": "https://eternity4719.github.io/HowToLiveBetter/",
+      "category": "兴趣与偶发",
+      "sortOrder": 82,
+      "shortcode": "高性",
+      "description": "按性价比排序的人生指南，615 条建议覆盖健康、省钱、防骗与法律",
+      "favorite": false,
+      "createdAt": 1790598636938,
+      "updatedAt": 1790598636938
     }
   ]
 }
