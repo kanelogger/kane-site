@@ -7,7 +7,8 @@
     "开发交付",
     "研究输入",
     "创作表达",
-    "办事查询"
+    "办事查询",
+    "Anthropic"
   ],
   "apps": [
     {
@@ -933,6 +934,114 @@
       "favorite": false,
       "createdAt": 1790600643064,
       "updatedAt": 1790600643064
+    },
+    {
+      "id": "da36b9c3-4c29-4158-8f0a-732bb2145952",
+      "name": "Anthropic 课程合集",
+      "url": "https://anthropic.skilljar.com/",
+      "category": "Anthropic",
+      "sortOrder": 84,
+      "shortcode": "SJ",
+      "description": "Anthropic 官方课程合集，Claude Code 101 也在其中",
+      "favorite": false,
+      "createdAt": 1791011251285,
+      "updatedAt": 1791011251285
+    },
+    {
+      "id": "75e365e4-57f9-4c8e-897b-f977f71e0639",
+      "name": "Claude 教程",
+      "url": "https://claude.com/resources/tutorials",
+      "category": "Anthropic",
+      "sortOrder": 85,
+      "shortcode": "TU",
+      "description": "官方短小教程合集",
+      "favorite": false,
+      "createdAt": 1791011251286,
+      "updatedAt": 1791011251286
+    },
+    {
+      "id": "64ea7e3a-0916-461c-a47b-40b7aba68596",
+      "name": "Claude 支持",
+      "url": "https://support.claude.com/",
+      "category": "Anthropic",
+      "sortOrder": 86,
+      "shortcode": "SU",
+      "description": "产品 FAQ 与最佳实践，遇到问题先查这里",
+      "favorite": false,
+      "createdAt": 1791011251287,
+      "updatedAt": 1791011251287
+    },
+    {
+      "id": "3d233c33-df40-4105-a87f-6b513d1c3718",
+      "name": "Claude Code 文档",
+      "url": "https://code.claude.com/docs",
+      "category": "Anthropic",
+      "sortOrder": 87,
+      "shortcode": "CC",
+      "description": "Claude Code 功能、模块与更新，资料最全的官方文档",
+      "favorite": false,
+      "createdAt": 1791011251288,
+      "updatedAt": 1791011251288
+    },
+    {
+      "id": "0916f99d-754b-428d-a2a0-4c49159d9322",
+      "name": "Claude 文档",
+      "url": "https://claude.com/docs",
+      "category": "Anthropic",
+      "sortOrder": 88,
+      "shortcode": "CD",
+      "description": "Claude.ai、Cowork、Claude for M365 产品文档",
+      "favorite": false,
+      "createdAt": 1791011251289,
+      "updatedAt": 1791011251289
+    },
+    {
+      "id": "04c55f19-4aa2-4c63-a2dd-1d9588cbd7a6",
+      "name": "Claude 博客",
+      "url": "https://claude.com/blog",
+      "category": "Anthropic",
+      "sortOrder": 89,
+      "shortcode": "CB",
+      "description": "产品新闻与最佳实践，部分文章不在推特公告",
+      "favorite": false,
+      "createdAt": 1791011251290,
+      "updatedAt": 1791011251290
+    },
+    {
+      "id": "7813c06e-bd15-4210-a078-5539b509362c",
+      "name": "Anthropic 工程博客",
+      "url": "https://www.anthropic.com/engineering",
+      "category": "Anthropic",
+      "sortOrder": 90,
+      "shortcode": "EN",
+      "description": "Anthropic 官方工程实践博客，更新不频繁",
+      "favorite": false,
+      "createdAt": 1791011251291,
+      "updatedAt": 1791011251291
+    },
+    {
+      "id": "c06e386e-7d3b-4971-999a-bfc0233d3f16",
+      "name": "Anthropic 研究博客",
+      "url": "https://www.anthropic.com/research",
+      "category": "Anthropic",
+      "sortOrder": 91,
+      "shortcode": "RE",
+      "description": "Anthropic 官方研究博客",
+      "favorite": false,
+      "createdAt": 1791011251292,
+      "updatedAt": 1791011251292
+    },
+    {
+      "id": "663a7d73-bfe8-41da-9d34-42eaeec2275f",
+      "name": "claude.dev",
+      "url": "https://claude.dev/",
+      "category": "Anthropic",
+      "sortOrder": 92,
+      "shortcode": "DV",
+      "description": "Anthropic 开发者分享的 tips、技巧与观点",
+      "favorite": false,
+      "createdAt": 1791011251293,
+      "updatedAt": 1791011251293
     }
   ]
 }
