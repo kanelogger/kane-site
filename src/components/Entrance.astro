@@ -1,0 +1,66 @@
+---
+import type { Locale } from '../lib/i18n';
+import '../styles/entrance.css';
+interface Props { locale?: Locale }
+const { locale = 'zh-CN' } = Astro.props;
+const en = locale === 'en';
+---
+<dialog class="entrance" data-entrance aria-labelledby="entrance-title" aria-describedby="entrance-description">
+  <div class="entrance-frame">
+    <header class="entrance-header">
+      <p class="entrance-identity"><span class="entrance-asterisk" aria-hidden="true">✳</span><span>KANE<span class="entrance-identity-sub">INDEPENDENT MIND. OPEN POSSIBILITIES.</span></span></p>
+      <button class="entrance-skip" type="button" data-entrance-enter data-entrance-skip>{en ? 'Skip intro' : '跳过序幕'} <span aria-hidden="true">↗</span></button>
+    </header>
+
+    <div class="entrance-composition">
+      <div class="entrance-wordmark" aria-hidden="true"><span>K</span><span>A</span><span>N</span><span>E</span></div>
+      <div class="entrance-art" aria-hidden="true">
+        <img class="entrance-poster" src="/assets/brand/entrance-filaments.svg" width="1000" height="1000" alt="" role="presentation" decoding="async" />
+        <canvas data-entrance-canvas width="1000" height="1000"></canvas>
+      </div>
+      <div class="entrance-art-note" aria-hidden="true"><span class="entrance-cross">+</span><span>FIG. 001<br />A FIELD OF<br />POSSIBILITIES</span></div>
+      <p class="entrance-side-note" aria-hidden="true">THOUGHT → FORM</p>
+    </div>
+
+    <div class="entrance-bottom">
+      <div class="entrance-copy">
+        <p class="entrance-eyebrow">SOFTWARE ENGINEER & AI BUILDER</p>
+        <h2 id="entrance-title">{en ? 'From what if.' : '让想象，'}<br /><span>{en ? 'To what’s next.' : '有迹可循。'}</span></h2>
+        <p id="entrance-description">{en ? 'Curiosity, expressed in code.' : '以代码，回应好奇心。'}</p>
+      </div>
+      <button class="entrance-enter" data-entrance-enter type="button" autofocus>
+        <span class="entrance-enter-copy"><span>{en ? 'Step inside' : '进入我的世界'}</span><span class="entrance-enter-sub">LET’S MAKE SOMETHING REAL</span></span>
+        <span class="entrance-enter-icon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M10 30 30 10M10 10h20v20" stroke="currentColor" stroke-width="1.5" /></svg></span>
+      </button>
+    </div>
+
+    <footer class="entrance-footer">
+      <span class="entrance-edition">AN EXPLORATION, ALWAYS.</span>
+      <span class="entrance-interaction-hint">{en ? 'Move your cursor. Shift the perspective.' : '移动指针，换一个角度。'}</span>
+      <button class="entrance-motion" type="button" data-entrance-motion aria-pressed="false" data-pause-label={en ? 'Pause motion' : '暂停动态'} data-play-label={en ? 'Resume motion' : '继续动态'} hidden><span class="entrance-motion-symbol" aria-hidden="true">Ⅱ</span><span data-entrance-motion-label>{en ? 'Pause motion' : '暂停动态'}</span></button>
+    </footer>
+  </div>
+</dialog>
+<script is:inline>
+  (() => {
+    const dialog = document.querySelector('[data-entrance]');
+    if (!(dialog instanceof HTMLDialogElement)) return;
+    // This small bootstrap keeps entry usable even if the enhanced module fails.
+    dialog.addEventListener('click', (event) => {
+      if (dialog.dataset.enhanced || !event.target.closest('[data-entrance-enter]')) return;
+      dialog.close();
+      document.getElementById('hero-title')?.focus({ preventScroll: true });
+    });
+    let seen = document.documentElement.dataset.entranceSeen === 'true';
+    try { seen ||= sessionStorage.getItem('kane:entrance-seen') === '1'; } catch {}
+    const historyVisit = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+    if (!seen && !location.hash && !historyVisit && document.readyState === 'loading') {
+      document.documentElement.dataset.entranceSeen = 'true';
+      try { sessionStorage.setItem('kane:entrance-seen', '1'); } catch {}
+      dialog.showModal();
+    }
+  })();
+</script>
+<script>
+  import '../scripts/entrance';
+</script>

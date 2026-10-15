@@ -37,7 +37,7 @@ async function mount() {
   const host = document.querySelector<HTMLElement>('[data-sculpture]');
   if (!host) return;
   host.dataset.sceneStatus = 'poster';
-  if (reducedMotion.matches) return;
+  if (reducedMotion.matches || document.querySelector('[data-entrance][open]')) return;
 
   const ownGeneration = generation;
   const record: MountRecord = { generation: ownGeneration, status: 'loading', created: 0, destroyed: 0 };
@@ -70,6 +70,11 @@ async function mount() {
 
 document.addEventListener('astro:before-swap', invalidate);
 document.addEventListener('astro:page-load', mount);
+// Keep the home WebGL scene asleep while the prologue owns the viewport.
+document.addEventListener('kane:entrance-change', () => {
+  if (document.querySelector('[data-entrance][open]')) invalidate();
+  else if (!current && !currentRecord) void mount();
+});
 reducedMotion.addEventListener('change', mount);
 
 if (testing) {

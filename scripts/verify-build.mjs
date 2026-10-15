@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { imageSize } from 'image-size';
+import { gzipSync } from 'node:zlib';
 
 const root = resolve('dist');
 const files = readdirSync(root, { recursive: true }).filter((file) => file.endsWith('.html'));
@@ -70,7 +71,7 @@ for (const [file, { html }] of pages) {
     if (!href) continue;
     if (tag.startsWith('<img')) {
       images++;
-      assert(attrs.alt && Number(attrs.width) > 0 && Number(attrs.height) > 0, `${file}: image needs alt and dimensions`);
+      assert((attrs.alt || (attrs.alt === '' && attrs.role === 'presentation')) && Number(attrs.width) > 0 && Number(attrs.height) > 0, `${file}: image needs alt and dimensions`);
       assert(href.startsWith('/assets/'), `${file}: image must be hosted locally`);
     }
     const url = new URL(href, 'https://kanelogger.com/' + files.find((entry) => join(root, entry) === file));
@@ -120,6 +121,18 @@ for (const item of items) {
   assert(position > previousPosition, 'RSS order must match Writing');
   previousPosition = position;
 }
+// The prologue must never cover content in the server-rendered/no-JS page.
+for (const route of ['index.html', 'en/index.html']) {
+  const html = pages.get(join(root, route)).html;
+  const dialog = html.match(/<dialog\b[^>]*data-entrance[^>]*>/)?.[0];
+  assert(dialog, `${route}: missing entrance dialog`);
+  assert(!/\sopen(?:[\s=>])/.test(dialog), `${route}: entrance must be closed without JavaScript`);
+  assert.match(html, /<button\b[^>]*data-entrance-replay[^>]*\bhidden(?:[\s=>])/, `${route}: replay must be hidden without JavaScript`);
+  assert.match(html, /id="hero-title"[^>]*tabindex="-1"/, `${route}: missing entrance focus destination`);
+}
+const entrancePoster = readFileSync(join(root, 'assets/brand/entrance-filaments.svg'));
+assert(gzipSync(entrancePoster).length <= 40 * 1024, 'Entrance poster exceeds its 40 KiB gzip budget');
+console.log('Verified entrance no-JavaScript defaults, focus destination and static poster budget.');
 const englishArticlePages = new Map([...pages].filter(([file]) => file.includes('/en/writing/')).map(([file, { html }]) => {
   const route = '/' + file.slice(root.length + 1).replace(/index\.html$/, '').replace(/\/$/, '');
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => { const attrs = attributes(tag); return [attrs.property ?? attrs.name, attrs.content]; }));

@@ -21,6 +21,7 @@ try {
 
   for (const [label, injection, expected] of [
     ['broken link', '<a href="/agent-test-missing-route">fixture</a>', 'missing /agent-test-missing-route'],
+    ['missing alt', '<img src="/assets/brand/entrance-filaments.svg" width="1000" height="1000">', 'image needs alt and dimensions'],
     ['missing image', '<img src="/assets/agent-test-missing.webp" alt="fixture" width="1" height="1">', 'missing /assets/agent-test-missing.webp'],
   ]) {
     await writeFile(index, html.replace('</body>', `${injection}</body>`));
@@ -29,6 +30,12 @@ try {
     assert(result.stderr.includes(expected), result.stderr);
     console.log(`PASS: ${label} is rejected by the build verifier`);
   }
+  await writeFile(index, html);
+  await writeFile(index, html.replace('<dialog ', '<dialog open '));
+  result = run();
+  assert.equal(result.status, 1, `server-open entrance must fail; ${result.stderr}`);
+  assert(result.stderr.includes('entrance must be closed without JavaScript'), result.stderr);
+  console.log('PASS: server-open entrance is rejected to protect no-JavaScript access');
   await writeFile(index, html);
   const articlePath = join(fixture, 'dist/writing/agent-hard-gates/index.html');
   const articleHtml = await readFile(articlePath, 'utf8');
