@@ -1,0 +1,98 @@
+---
+// Production adaptation of the workshop design; use full-page navigation
+// so the two home designs keep their styles and event lifecycles independent.
+import '../styles/workshop.css';
+const title = 'Kane 的工作台 — KANE';
+const description = 'Kane 的工作台：AI Coding Agent、Agent Harness 与开发者工具。';
+const canonical = new URL('/workshop', Astro.site!);
+const shareImage = new URL('/og.png', Astro.site!);
+---
+<!doctype html>
+
+<html lang="zh-CN" data-palette="garden">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dfe5d5">
+  <meta name="description" content={description}>
+  <title>{title}</title>
+  <link rel="canonical" href={canonical}>
+  <meta property="og:site_name" content="KANE">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={shareImage}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={shareImage}>
+  <link rel="alternate" type="application/rss+xml" title="KANE 的文章" href="/rss.xml">
+  <link rel="sitemap" href="/sitemap-index.xml">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script>import '../scripts/workshop.js';</script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+  <header class="site-header" data-tone="hero">
+    <div class="nav-wrap">
+      <a class="wordmark" href="#top" aria-label="Kane，回到顶部"><span class="brand-symbol" aria-hidden="true">k.</span><span>KANE<span class="wordmark-caption">一个持续搭建的工作台</span></span></a>
+      <nav aria-label="主导航"><a href="#work">作品</a><a href="#notes">手记</a><a href="#about">关于</a></nav>
+      <a class="design-switch" href="/" data-astro-reload>切换原版首页 <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="hero" id="top" data-section-tone="hero" aria-labelledby="hero-title" data-screen-label="工作台首屏">
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> KANE’S DIGITAL WORKSHOP</p>
+          <h1 id="hero-title">让想法落地，<br>让工具<span class="title-accent">长出来。</span></h1>
+          <p class="intro">我是 Kane，软件工程师。<br>研究 AI 原生开发，把反复验证的方法，<br class="desktop-break">做成能在真实项目里派上用场的工具。</p>
+          <a class="button" href="#work">逛逛我的作品 <span aria-hidden="true">↗</span></a>
+          <div class="hero-topics"><span>AI Coding Agent</span><span>Harness</span><span>Developer Tools</span></div>
+        </div>
+        <figure class="workshop-scene">
+          <img src="/assets/workshop/workshop.png" width="1536" height="1024" alt="微缩造物工作台：瓦顶小屋里的电脑、黑板与工具柜，由铜管和小径相连。" fetchpriority="high">
+          <figcaption><span class="figure-index">FIG. 01</span><span>从一个想法，到一件趁手的工具。</span><span aria-hidden="true">↙</span></figcaption>
+        </figure>
+      </div>
+      <div class="hero-bottom shell"><span>小工具，长实践。</span><span class="mono">THINK → BUILD → VERIFY → REPEAT</span><a href="#work" aria-label="向下查看作品">往下逛 <span aria-hidden="true">↓</span></a></div>
+    </section>
+
+    <section class="work section-space" id="work" data-section-tone="paper" aria-labelledby="work-title" data-screen-label="作品架">
+      <div class="shell">
+        <div class="section-heading"><div><p class="eyebrow">01 / THE TOOL SHED</p><h2 id="work-title">工作台上，<br>已经做出来的东西。</h2></div><p class="section-aside">从一个具体问题开始，<br>让重复工作有更顺手的解法。</p></div>
+        <article class="featured-project">
+          <a class="project-visual" href="https://github.com/kanelogger/SkillPort" aria-label="在 GitHub 查看 Skill Port"><img src="/assets/projects/skill-port/cover.webp" width="1536" height="1024" loading="lazy" alt="Skill Port 项目封面：Agent Skills 的本地管理工具"></a>
+          <div class="project-copy"><div class="project-meta"><span>01 — SKILL MANAGEMENT</span><span>CLI + Desktop</span></div><h3>Skill Port<span class="little-star" aria-hidden="true">✳</span></h3><p class="project-lead">一份 Skill，<br>只保存一次。</p><p>用一个本地 Hub 集中管理 Agent Skills，再通过 CLI 和 Desktop，把同一份技能启用到不同项目与 Agent。</p><a class="text-link" href="https://github.com/kanelogger/SkillPort">打开项目 <span aria-hidden="true">↗</span></a></div>
+        </article>
+        <div class="project-pair">
+          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/QuotaBar" aria-label="在 GitHub 查看 QuotaBar"><img src="/assets/projects/quota-bar/cover.webp" width="1536" height="1024" loading="lazy" alt="QuotaBar 项目封面：macOS 菜单栏额度工具"></a><div class="project-meta"><span>02 — AT A GLANCE</span><span>macOS</span></div><h3><a href="https://github.com/kanelogger/QuotaBar">QuotaBar <span aria-hidden="true">↗</span></a></h3><p>把多个 AI 编程服务的额度状态，收进一个 macOS 菜单栏。少切几个窗口，多留一点注意力。</p></article>
+          <article class="small-project"><a class="small-visual skills-visual" href="https://github.com/kanelogger/kane-skills" aria-label="在 GitHub 查看 Kane Skills"><img src="/assets/projects/kane-skills/cover.webp" width="1536" height="1024" loading="lazy" alt="Kane Skills 项目封面：可独立使用的 Agent 工作流"></a><div class="project-meta"><span>03 — REUSABLE PRACTICE</span><span>Agent Skills</span></div><h3><a href="https://github.com/kanelogger/kane-skills">Kane Skills <span aria-hidden="true">↗</span></a></h3><p>把反复出现的 Agent 工作流整理成独立技能。让写作、核验与工程实践，可以被复用，也可以被检视。</p></article>
+        </div>
+        <a class="all-work text-link" href="https://github.com/kanelogger?tab=repositories">去 GitHub 看更多作品 <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="notes section-space" id="notes" data-section-tone="forest" aria-labelledby="notes-title" data-screen-label="工程手记">
+      <div class="shell notes-layout">
+        <div class="notes-intro"><p class="eyebrow">02 / FIELD NOTES</p><h2 id="notes-title">动手之后，<br>留下些笔记。</h2><p>记录 Agent 的上下文、验证与反馈，<br>也记录那些需要回头再想一遍的问题。</p><span class="margin-note">在实践里找答案。<span aria-hidden="true">↘</span></span></div>
+        <div class="note-list">
+          <a class="note" href="/writing/agent-project-recovery"><span class="note-category">CONTEXT / 项目上下文</span><h3>没有历史对话，<br>Agent 如何恢复项目？</h3><span class="note-bottom">把代码仓库变成可恢复的工作环境<span aria-hidden="true">↗</span></span></a>
+          <a class="note" href="/writing/agent-hard-gates"><span class="note-category">VERIFICATION / 验证与边界</span><h3>Agent 越快，<br>越需要硬门禁。</h3><span class="note-bottom">用验收条件和反馈回路控制风险<span aria-hidden="true">↗</span></span></a>
+          <a class="note" href="/writing/learning-pi-in-practice"><span class="note-category">PRACTICE / 实践与工具</span><h3>学 Pi 不是难，<br>是顺序搞反了。</h3><span class="note-bottom">从动手实践开始理解 Harness<span aria-hidden="true">↗</span></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about section-space" id="about" data-section-tone="paper" aria-labelledby="about-title" data-screen-label="关于 Kane">
+      <div class="shell about-layout"><div><p class="eyebrow">03 / THE MAKER</p><h2 id="about-title">你好，我是 Kane。</h2><p class="about-english" lang="en">Always a work in progress.</p></div><div class="about-copy"><p>一名专注 AI 原生开发的软件工程师。<br>我关心 Agent 如何在真实项目里恢复上下文、遵守边界、接受验证，并在失败时找到正确的反馈环节。</p><p>这个小站，收录我的工具、工程实践与长期研究。如果你也在探索这些问题，欢迎来聊聊。</p><a class="text-link" href="mailto:huakanelogger@gmail.com">写封邮件给我 <span aria-hidden="true">↗</span></a></div></div>
+    </section>
+  </main>
+  <footer><div class="shell footer-top"><a class="footer-brand" href="#top">kane<span>.</span></a><p>好工具，值得慢慢打磨。</p><div class="footer-links"><a href="https://github.com/kanelogger">GitHub ↗</a><a href="https://x.com/kanelogger">X ↗</a><a href="mailto:huakanelogger@gmail.com">Email ↗</a></div></div><div class="shell footer-bottom"><span>© 2026 Kane</span><span>THE WORKSHOP</span><a href="#top">回到顶部 ↑</a></div></footer>
+
+  <details class="palette-panel" data-theme-control hidden><summary><span aria-hidden="true">◐</span> 调色台</summary><div class="palette-body"><p>换一种工作台的气氛</p><div class="swatches" role="group" aria-label="页面配色"><button type="button" data-theme="garden" aria-pressed="true"><span class="swatch garden"></span>鼠尾草</button><button type="button" data-theme="blue" aria-pressed="false"><span class="swatch blue"></span>晴空蓝</button><button type="button" data-theme="paper" aria-pressed="false"><span class="swatch paper"></span>暖纸白</button></div><p class="palette-caption">插图保留原色，比较页面配色。</p><button class="palette-reset" type="button">恢复默认</button><p class="palette-status" role="status" aria-live="polite">当前：鼠尾草</p></div></details>
+  <noscript><p class="noscript-note">当前为鼠尾草配色。所有正文和链接均可直接浏览。</p></noscript>
+</body>
+</html>

@@ -37,6 +37,20 @@ try {
   assert(result.stderr.includes('entrance must be closed without JavaScript'), result.stderr);
   console.log('PASS: server-open entrance is rejected to protect no-JavaScript access');
   await writeFile(index, html);
+  const workshopPath = join(fixture, 'dist/workshop/index.html');
+  const workshopHtml = await readFile(workshopPath, 'utf8');
+  for (const [label, path, source, from, expected] of [
+    ['workshop switch', index, html, 'href="/workshop"', 'Home must link to the workshop design'],
+    ['original home switch', workshopPath, workshopHtml, 'class="design-switch" href="/"', 'Workshop must link back to the original home'],
+  ]) {
+    assert(source.includes(from), `${label}: fixture must contain the real link`);
+    await writeFile(path, source.replace(from, from.replace(/href="[^"]+"/, 'href="/about"')));
+    result = run();
+    assert.equal(result.status, 1, `${label} must fail; ${result.stderr}`);
+    assert(result.stderr.includes(expected), result.stderr);
+    await writeFile(path, source);
+    console.log(`PASS: missing ${label} is rejected`);
+  }
   const articlePath = join(fixture, 'dist/writing/agent-hard-gates/index.html');
   const articleHtml = await readFile(articlePath, 'utf8');
   await writeFile(articlePath, articleHtml.replace(/<script type="application\/ld\+json">[^<]+<\/script>/, ''));

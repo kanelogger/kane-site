@@ -133,6 +133,13 @@ for (const route of ['index.html', 'en/index.html']) {
 const entrancePoster = readFileSync(join(root, 'assets/brand/entrance-filaments.svg'));
 assert(gzipSync(entrancePoster).length <= 40 * 1024, 'Entrance poster exceeds its 40 KiB gzip budget');
 console.log('Verified entrance no-JavaScript defaults, focus destination and static poster budget.');
+// Both designs must ship with real links, including in the no-JavaScript build.
+const originalHome = pages.get(join(root, 'index.html')).html;
+const workshopHome = pages.get(join(root, 'workshop/index.html'));
+assert(workshopHome, 'Workshop home route must be built');
+assert.match(originalHome, /<a\b[^>]*href="\/workshop"[^>]*data-astro-reload[^>]*>切换工作台设计/, 'Home must link to the workshop design');
+assert.match(workshopHome.html, /<a\b[^>]*class="design-switch"[^>]*href="\/"[^>]*data-astro-reload[^>]*>切换原版首页/, 'Workshop must link back to the original home');
+console.log('Verified both home designs and their no-JavaScript switch links.');
 const englishArticlePages = new Map([...pages].filter(([file]) => file.includes('/en/writing/')).map(([file, { html }]) => {
   const route = '/' + file.slice(root.length + 1).replace(/index\.html$/, '').replace(/\/$/, '');
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => { const attrs = attributes(tag); return [attrs.property ?? attrs.name, attrs.content]; }));
