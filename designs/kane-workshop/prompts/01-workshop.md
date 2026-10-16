@@ -1,0 +1,9 @@
+Use case: stylized-concept
+Asset type: wide website hero illustration, an original miniature maker's landscape for Kane's personal software engineering site.
+Primary request: A beautifully art-directed tiny open-air software workshop built as a physical architectural diorama. A small ivory pavilion with a terracotta roof at the center, a green chalkboard and a chunky retro computer on its workbench, little orderly stacks of modular wooden blocks and green tool cabinets, a sculptural looping brass conduit that connects the modules, a small rust-orange desk lamp, tiny trees and tactile paper shrubs. A small staircase and cream paths connect all parts. No people. It should feel thoughtful, playful, crafted, and quietly ingenious, like a designer's desk model, never a science fiction scene.
+Style/medium: physically rendered miniature, matte clay, painted wood and thick folded paper, finely textured edges, soft ambient occlusion, precise architectural details. Restrained warm editorial art direction.
+Composition: wide 3:2 landscape. Entire diorama in the lower two thirds; the broad, gentle sage green ground plane fills the whole image edge to edge and continues into an empty soft sage backdrop. Camera at a low isometric angle. Strong focal point, not many disconnected objects. Leave margins around the scene. No frame or rounded rectangle.
+Lighting: soft late afternoon studio sunlight from upper left, delicate shadows.
+Color palette: sage backdrop #dfe8d5, dark forest green, warm ivory, faded terracotta #b95032, golden brass; sophisticated desaturated colors.
+Text: no text, no letters, no numbers, no logos, no watermark.
+Constraints: original visual metaphor of assembling reliable developer tools, no roller coaster, no amusement park, no robots, no neon, no purple, no gradients as graphic effects, no stock 3D icon clusters. This is an illustration, not a screenshot of a website.
