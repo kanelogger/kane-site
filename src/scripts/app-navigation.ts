@@ -8,6 +8,7 @@ import {
   type AppDataErrorCode,
   type AppEntry,
 } from '../lib/app-navigation-data';
+import { registerAppNavigationTools, type AppNavigationToolHost, type AppSort } from '../lib/app-navigation-tools';
 
 const DB_NAME = 'kane-app-navigation';
 const DB_VERSION = 1;
@@ -121,6 +122,7 @@ class AppNavigationController {
       this.render();
       this.root.dataset.ready = 'true';
       this.root.setAttribute('aria-busy', 'false');
+      if (!this.destroyed) void registerAppNavigationTools(this.modelTools(), this.abort.signal);
     } catch (error) {
       if (this.destroyed) return;
       console.error(error);
@@ -518,15 +520,7 @@ class AppNavigationController {
         this.text('confirmImportTitle'),
         this.text('importMessage', { count: apps.length }),
         this.text('confirmImport'),
-        async () => {
-          await this.replaceAll(apps);
-          this.apps = await this.readAll();
-          this.category = '';
-          this.query = '';
-          this.element<HTMLInputElement>('[data-search-input]').value = '';
-          this.render();
-          this.showToast(this.text('imported', { count: apps.length }));
-        },
+        () => this.commitImport(apps),
       );
     } catch (error) {
       const reason = error instanceof Error && !(error instanceof AppDataError) ? error.message : this.importError(error);
@@ -534,6 +528,89 @@ class AppNavigationController {
     } finally {
       this.element<HTMLInputElement>('[data-import-input]').value = '';
     }
+  }
+
+  private async commitDelete(id: string) {
+    await this.deleteApp(id);
+    if (this.destroyed) return;
+    this.apps = await this.readAll();
+    this.render();
+    this.showToast(this.text('deleted'));
+  }
+
+  private async commitImport(apps: readonly AppEntry[]) {
+    await this.replaceAll(apps);
+    if (this.destroyed) return;
+    this.apps = await this.readAll();
+    this.category = '';
+    this.query = '';
+    this.element<HTMLInputElement>('[data-search-input]').value = '';
+    this.render();
+    this.showToast(this.text('imported', { count: apps.length }));
+  }
+
+  private async commitClear() {
+    await this.replaceAll([]);
+    if (this.destroyed) return;
+    this.apps = [];
+    this.category = '';
+    this.query = '';
+    this.element<HTMLInputElement>('[data-search-input]').value = '';
+    this.render();
+    this.showToast(this.text('cleared'));
+  }
+
+  private currentSort(): AppSort {
+    return this.sort === 'name' || this.sort === 'category' ? this.sort : 'default';
+  }
+
+  private dialogOpen(): boolean {
+    return this.element<HTMLDialogElement>('[data-confirm-dialog]').open || this.element<HTMLDialogElement>('[data-app-dialog]').open;
+  }
+
+  private modelTools(): AppNavigationToolHost {
+    return {
+      apps: () => this.apps,
+      view: () => ({ query: this.query, category: this.category, sort: this.currentSort() }),
+      applyView: (state) => {
+        if (this.destroyed) return 0;
+        this.query = state.query;
+        this.category = state.category;
+        this.sort = state.sort;
+        this.composing = false;
+        this.element<HTMLInputElement>('[data-search-input]').value = state.query;
+        this.element<HTMLSelectElement>('[data-sort-select]').value = state.sort;
+        this.render();
+        return this.visibleApps().length;
+      },
+      persist: async (app, notice) => {
+        if (this.destroyed || !this.database) return false;
+        try {
+          await this.putApp(app);
+          if (this.destroyed) return false;
+          this.apps = await this.readAll();
+          this.render();
+          this.showToast(this.text(notice));
+          return true;
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
+      },
+      requestConfirmation: (request) => {
+        if (this.destroyed || this.dialogOpen()) return false;
+        if (request.action === 'delete') {
+          const app = request.app;
+          this.openConfirm(this.text('confirmDeleteTitle', { name: app.name }), this.text('confirmDeleteMessage'), this.text('confirmDelete'), () => this.commitDelete(app.id));
+        } else if (request.action === 'import') {
+          const apps = request.apps;
+          this.openConfirm(this.text('confirmImportTitle'), this.text('importMessage', { count: apps.length }), this.text('confirmImport'), () => this.commitImport(apps));
+        } else {
+          this.openConfirm(this.text('confirmClearTitle'), this.text('confirmClearMessage'), this.text('confirmClear'), () => this.commitClear());
+        }
+        return true;
+      },
+    };
   }
 
   private showToast(message: string, error = false) {
@@ -600,15 +677,7 @@ class AppNavigationController {
     if (event.target.closest('[data-export-button]')) { this.exportData(); return; }
     if (event.target.closest('[data-clear-button]')) {
       this.toggleDataMenu(false);
-      this.openConfirm(this.text('confirmClearTitle'), this.text('confirmClearMessage'), this.text('confirmClear'), async () => {
-        await this.replaceAll([]);
-        this.apps = [];
-        this.category = '';
-        this.query = '';
-        this.element<HTMLInputElement>('[data-search-input]').value = '';
-        this.render();
-        this.showToast(this.text('cleared'));
-      });
+      this.openConfirm(this.text('confirmClearTitle'), this.text('confirmClearMessage'), this.text('confirmClear'), () => this.commitClear());
       return;
     }
     if (event.target.closest('[data-reset-filter]')) {
@@ -639,12 +708,7 @@ class AppNavigationController {
     } else if (action.dataset.action === 'edit') {
       this.openEditor(app);
     } else if (action.dataset.action === 'delete') {
-      this.openConfirm(this.text('confirmDeleteTitle', { name: app.name }), this.text('confirmDeleteMessage'), this.text('confirmDelete'), async () => {
-        await this.deleteApp(app.id);
-        this.apps = await this.readAll();
-        this.render();
-        this.showToast(this.text('deleted'));
-      });
+      this.openConfirm(this.text('confirmDeleteTitle', { name: app.name }), this.text('confirmDeleteMessage'), this.text('confirmDelete'), () => this.commitDelete(app.id));
     }
   }
 }
