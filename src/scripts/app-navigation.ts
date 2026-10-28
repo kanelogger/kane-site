@@ -14,7 +14,10 @@ const DB_NAME = 'kane-app-navigation';
 const DB_VERSION = 1;
 const APP_STORE = 'apps';
 const META_STORE = 'meta';
+const KNOWN_STARTERS_KEY = 'knownStarterIds';
 const MAX_IMPORT_SIZE = 2 * 1024 * 1024;
+// One-time bridge for directories saved before knownStarterIds existed, so deleted defaults stay deleted. Later additions are filled from that record.
+const INTRODUCED_STARTER_IDS = new Set(['default-111', 'default-112', 'default-113', 'default-114']);
 
 type Copy = Record<string, string>;
 type StarterApp = Omit<AppEntry, 'createdAt' | 'updatedAt'>;
@@ -164,14 +167,28 @@ class AppNavigationController {
   private async syncStarterCatalog() {
     if (!this.database) return;
     const catalog = new Map(this.starterApps.map((app) => [app.id, app]));
-    const transaction = this.database.transaction(APP_STORE, 'readwrite');
+    const transaction = this.database.transaction([APP_STORE, META_STORE], 'readwrite');
     const store = transaction.objectStore(APP_STORE);
+    const meta = transaction.objectStore(META_STORE);
     const existing = await requestResult(store.getAll()) as AppEntry[];
+    const seen = new Set(existing.map((app) => app.id));
     existing.forEach((app) => {
       const starter = catalog.get(app.id);
       if (!starter || (app.category === starter.category && app.sortOrder === starter.sortOrder)) return;
       store.put({ ...app, category: starter.category, sortOrder: starter.sortOrder });
     });
+    const record = await requestResult(meta.get(KNOWN_STARTERS_KEY)) as { value?: unknown } | undefined;
+    const known = new Set(Array.isArray(record?.value) ? record.value.filter((id): id is string => typeof id === 'string') : []);
+    const firstSync = known.size === 0;
+    if (existing.length > 0) {
+      const now = Date.now();
+      this.starterApps.forEach((starter, index) => {
+        if (seen.has(starter.id)) return;
+        if (firstSync ? !INTRODUCED_STARTER_IDS.has(starter.id) : known.has(starter.id)) return;
+        store.put({ ...starter, createdAt: now + index, updatedAt: now + index });
+      });
+    }
+    meta.put({ key: KNOWN_STARTERS_KEY, value: this.starterApps.map((app) => app.id) });
     await transactionDone(transaction);
   }
 

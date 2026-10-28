@@ -6,6 +6,7 @@
     "兴趣与偶发",
     "开发交付",
     "研究输入",
+    "模型评测",
     "创作表达",
     "办事查询",
     "Anthropic"
@@ -1042,6 +1043,54 @@
       "favorite": false,
       "createdAt": 1791011251293,
       "updatedAt": 1791011251293
+    },
+    {
+      "id": "default-111",
+      "name": "LLM Learner",
+      "url": "https://llmlearner.com/",
+      "category": "模型评测",
+      "sortOrder": 93,
+      "shortcode": "LL",
+      "description": "对比两个大模型的跑分、规格和价格，看差异落在哪些评测，以及各自适合的任务。",
+      "favorite": false,
+      "createdAt": 1793145600001,
+      "updatedAt": 1793145600001
+    },
+    {
+      "id": "default-112",
+      "name": "Artificial Analysis",
+      "url": "https://artificialanalysis.ai/leaderboards/models",
+      "category": "模型评测",
+      "sortOrder": 94,
+      "shortcode": "AA",
+      "description": "按智能、价格、速度和上下文窗口排列模型的公开榜单。",
+      "favorite": false,
+      "createdAt": 1793145600002,
+      "updatedAt": 1793145600002
+    },
+    {
+      "id": "default-113",
+      "name": "OpenRouter Rankings",
+      "url": "https://openrouter.ai/rankings",
+      "category": "模型评测",
+      "sortOrder": 95,
+      "shortcode": "OR",
+      "description": "按 OpenRouter 实际处理的 token 量排列模型，反映用量，不代表能力高低。",
+      "favorite": false,
+      "createdAt": 1793145600003,
+      "updatedAt": 1793145600003
+    },
+    {
+      "id": "default-114",
+      "name": "Arena 文本榜",
+      "url": "https://arena.ai/leaderboard/chat/text",
+      "category": "模型评测",
+      "sortOrder": 96,
+      "shortcode": "AT",
+      "description": "文本对话的人类偏好榜，覆盖数学、编程、创意写作等开放任务。",
+      "favorite": false,
+      "createdAt": 1793145600004,
+      "updatedAt": 1793145600004
     }
   ]
 }
