@@ -13,6 +13,7 @@ year: 2026
 role: "Product design, architecture, CLI, and Desktop development"
 tags: ["Agent Skills", "CLI", "Electron", "SQLite", "Developer Tools"]
 cover: "/assets/projects/skill-port/cover.webp"
+coverAlt: "One skill enabled from a local hub to project, terminal, and desktop destinations"
 featured: true
 order: 1
 github: "https://github.com/kanelogger/SkillPort"

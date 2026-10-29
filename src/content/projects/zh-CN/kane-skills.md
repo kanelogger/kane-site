@@ -13,6 +13,7 @@ year: 2026
 role: "技能设计、工作流抽象、仓库架构、文档与公开校验"
 tags: ["Agent Skills", "TypeScript", "AI Workflow", "Developer Tools"]
 cover: "/assets/projects/kane-skills/cover.webp"
+coverAlt: "装有写作、核验、工程、视觉与交付模块的可复用技能库"
 featured: true
 order: 3
 github: "https://github.com/kanelogger/kane-skills"

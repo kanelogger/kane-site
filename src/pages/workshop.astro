@@ -2,6 +2,8 @@
 // Production adaptation of the workshop design; use full-page navigation
 // so the two home designs keep their styles and event lifecycles independent.
 import '../styles/workshop.css';
+import { getCollection } from 'astro:content';
+const projectCovers = new Map((await getCollection('projects', ({ data }) => data.locale === 'zh-CN')).map(({ data }) => [data.slug, data]));
 const title = 'Kane 的工作台 — KANE';
 const description = 'Kane 的工作台：AI Coding Agent、Agent Harness 与开发者工具。';
 const canonical = new URL('/workshop', Astro.site!);
@@ -64,12 +66,12 @@ const shareImage = new URL('/og.png', Astro.site!);
       <div class="shell">
         <div class="section-heading"><div><p class="eyebrow">01 / THE TOOL SHED</p><h2 id="work-title">工作台上，<br>已经做出来的东西。</h2></div><p class="section-aside">从一个具体问题开始，<br>让重复工作有更顺手的解法。</p></div>
         <article class="featured-project">
-          <a class="project-visual" href="https://github.com/kanelogger/SkillPort" aria-label="在 GitHub 查看 Skill Port"><img src="/assets/projects/skill-port/cover.webp" width="1536" height="1024" loading="lazy" alt="Skill Port 项目封面：Agent Skills 的本地管理工具"></a>
+          <a class="project-visual" href="https://github.com/kanelogger/SkillPort" aria-label="在 GitHub 查看 Skill Port"><img src={projectCovers.get('skill-port')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={projectCovers.get('skill-port')!.coverAlt}></a>
           <div class="project-copy"><div class="project-meta"><span>01 — SKILL MANAGEMENT</span><span>CLI + Desktop</span></div><h3>Skill Port<span class="little-star" aria-hidden="true">✳</span></h3><p class="project-lead">一份 Skill，<br>只保存一次。</p><p>用一个本地 Hub 集中管理 Agent Skills，再通过 CLI 和 Desktop，把同一份技能启用到不同项目与 Agent。</p><a class="text-link" href="https://github.com/kanelogger/SkillPort">打开项目 <span aria-hidden="true">↗</span></a></div>
         </article>
         <div class="project-pair">
-          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/QuotaBar" aria-label="在 GitHub 查看 QuotaBar"><img src="/assets/projects/quota-bar/cover.webp" width="1536" height="1024" loading="lazy" alt="QuotaBar 项目封面：macOS 菜单栏额度工具"></a><div class="project-meta"><span>02 — AT A GLANCE</span><span>macOS</span></div><h3><a href="https://github.com/kanelogger/QuotaBar">QuotaBar <span aria-hidden="true">↗</span></a></h3><p>把多个 AI 编程服务的额度状态，收进一个 macOS 菜单栏。少切几个窗口，多留一点注意力。</p></article>
-          <article class="small-project"><a class="small-visual skills-visual" href="https://github.com/kanelogger/kane-skills" aria-label="在 GitHub 查看 Kane Skills"><img src="/assets/projects/kane-skills/cover.webp" width="1536" height="1024" loading="lazy" alt="Kane Skills 项目封面：可独立使用的 Agent 工作流"></a><div class="project-meta"><span>03 — REUSABLE PRACTICE</span><span>Agent Skills</span></div><h3><a href="https://github.com/kanelogger/kane-skills">Kane Skills <span aria-hidden="true">↗</span></a></h3><p>把反复出现的 Agent 工作流整理成独立技能。让写作、核验与工程实践，可以被复用，也可以被检视。</p></article>
+          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/QuotaBar" aria-label="在 GitHub 查看 QuotaBar"><img src={projectCovers.get('quota-bar')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={projectCovers.get('quota-bar')!.coverAlt}></a><div class="project-meta"><span>02 — AT A GLANCE</span><span>macOS</span></div><h3><a href="https://github.com/kanelogger/QuotaBar">QuotaBar <span aria-hidden="true">↗</span></a></h3><p>把多个 AI 编程服务的额度状态，收进一个 macOS 菜单栏。少切几个窗口，多留一点注意力。</p></article>
+          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/kane-skills" aria-label="在 GitHub 查看 Kane Skills"><img src={projectCovers.get('kane-skills')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={projectCovers.get('kane-skills')!.coverAlt}></a><div class="project-meta"><span>03 — REUSABLE PRACTICE</span><span>Agent Skills</span></div><h3><a href="https://github.com/kanelogger/kane-skills">Kane Skills <span aria-hidden="true">↗</span></a></h3><p>把反复出现的 Agent 工作流整理成独立技能。让写作、核验与工程实践，可以被复用，也可以被检视。</p></article>
         </div>
         <a class="all-work text-link" href="https://github.com/kanelogger?tab=repositories">去 GitHub 看更多作品 <span aria-hidden="true">↗</span></a>
       </div>

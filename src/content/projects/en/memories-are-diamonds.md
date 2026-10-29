@@ -12,6 +12,7 @@ year: 2026
 role: "Product design and TypeScript CLI development"
 tags: ['agent', 'journal', 'typescript', 'markdown']
 cover: "/assets/projects/memories-are-diamonds/cover.webp"
+coverAlt: "Real experiences recorded in a journal become lasting memories through reflection"
 featured: false
 order: 4
 ---

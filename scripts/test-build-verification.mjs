@@ -51,6 +51,20 @@ try {
     await writeFile(path, source);
     console.log(`PASS: missing ${label} is rejected`);
   }
+  const projectPath = join(fixture, 'dist/work/kane-skills/index.html');
+  const projectHtml = await readFile(projectPath, 'utf8');
+  for (const [label, from, to, expected] of [
+    ['project share fallback', /(<meta property="og:image" content=")[^"]+/, '$1https://kanelogger.com/og.png', 'Twitter and OG images must match'],
+    ['missing project cover', /<figure[^>]+class="project-detail-cover"[^>]*>[\s\S]*?<\/figure>/, '', 'project must display its cover exactly once'],
+  ]) {
+    assert.notEqual(projectHtml.replace(from, to), projectHtml, `${label}: mutation must change fixture`);
+    await writeFile(projectPath, projectHtml.replace(from, to));
+    result = run();
+    assert.equal(result.status, 1, `${label} must fail; ${result.stderr}`);
+    assert(result.stderr.includes(expected), result.stderr);
+    await writeFile(projectPath, projectHtml);
+    console.log(`PASS: ${label} is rejected`);
+  }
   const articlePath = join(fixture, 'dist/writing/agent-hard-gates/index.html');
   const articleHtml = await readFile(articlePath, 'utf8');
   for (const [label, from, to, expected] of [

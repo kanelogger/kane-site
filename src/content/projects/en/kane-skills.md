@@ -12,6 +12,7 @@ year: 2026
 role: "Skill design, workflow abstraction, repository architecture, documentation, and public validation"
 tags: ['agent-skills', 'typescript', 'ai-workflow', 'developer-tools']
 cover: "/assets/projects/kane-skills/cover.webp"
+coverAlt: "A reusable skill library with writing, checking, engineering, visual, and delivery modules"
 featured: true
 order: 3
 github: "https://github.com/kanelogger/kane-skills"

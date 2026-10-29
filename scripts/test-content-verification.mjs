@@ -13,8 +13,8 @@ const put = (root, file, content = '') => {
 };
 
 
-async function putCover(root, slug, width = 1200, height = 900) {
-  const target = join(root, 'public/assets/blog', slug, 'cover.webp');
+async function putCover(root, slug, width = 1200, height = 900, collection = 'blog') {
+  const target = join(root, 'public/assets', collection, slug, 'cover.webp');
   mkdirSync(dirname(target), { recursive: true });
   const buffer = await sharp({ create: { width, height, channels: 3, background: '#244b3b' } }).webp().toBuffer();
   writeFileSync(target, buffer);
@@ -35,7 +35,7 @@ function article(slug, locale = 'zh-CN', extra = {}) {
 }
 
 function project(slug, locale = 'zh-CN', order = 1, extra = {}) {
-  return { locale, translationKey: slug, slug, order, cover: `/assets/projects/${slug}/cover.webp`, ...extra };
+  return { locale, translationKey: slug, slug, order, cover: `/assets/projects/${slug}/cover.webp`, coverAlt: 'A project concept illustration', ...extra };
 }
 
 test('current repository content passes the content verifier', async () => {
@@ -47,7 +47,7 @@ test('current repository content passes the content verifier', async () => {
 test('valid content allows optional translations, repeated blog order, locale-scoped order, and shared assets', async (t) => {
   const root = fixture(t);
   await putCover(root, 'shared');
-  put(root, 'public/assets/projects/tool/cover.webp');
+  await putCover(root, 'tool', 1200, 900, 'projects');
   put(root, 'src/content/blog/zh-CN/shared.md', markdown(article('shared', 'zh-CN', { featured: true, featuredOrder: 1, cover: '/assets/blog/shared/cover.webp' }), '![中文封面](/assets/blog/shared/cover.webp)'));
   put(root, 'src/content/blog/en/shared.md', markdown(article('shared', 'en', { featured: true, featuredOrder: 1, cover: '/assets/blog/shared/cover.webp' }), '![English cover](/assets/blog/shared/cover.webp)'));
   await putCover(root, 'source-only');
@@ -127,6 +127,29 @@ test('article covers require descriptions, decodable WebP pixels and exact 4:3 d
   const valid = await putCover(root, 'truncated');
   put(root, 'public/assets/blog/truncated/cover.webp', valid.subarray(0, 40));
   put(root, 'public/assets/blog/png/cover.webp', await sharp({ create: { width: 1200, height: 900, channels: 3, background: '#244b3b' } }).png().toBuffer());
+  const issues = (await verifyContent(root)).issues;
+  for (const [slug, , expected] of cases) assert(issues.some((issue) => issue.includes(`${slug}.md:`) && issue.includes(expected)), `${slug}: ${issues.join('\n')}`);
+});
+
+test('project covers require descriptions, decodable WebP pixels and exact 4:3 dimensions', async (t) => {
+  const root = fixture(t);
+  const cases = [
+    ['missing', { cover: undefined }, 'project cover is required'],
+    ['description', { coverAlt: ' ' }, 'coverAlt must be non-empty'],
+    ['corrupt', {}, 'project cover cannot be decoded'],
+    ['truncated', {}, 'project cover cannot be decoded'],
+    ['wide', {}, 'project cover must have a 4:3 aspect ratio'],
+    ['small', {}, 'project cover must be 1200×900'],
+    ['png', {}, 'project cover must be WebP'],
+  ];
+  for (const [slug, extra] of cases) {
+    await putCover(root, slug, slug === 'small' ? 400 : 1200, slug === 'wide' ? 630 : slug === 'small' ? 300 : 900, 'projects');
+    put(root, `src/content/projects/zh-CN/${slug}.md`, markdown(project(slug, 'zh-CN', 1, extra)));
+  }
+  put(root, 'public/assets/projects/corrupt/cover.webp', 'not an image');
+  const valid = await putCover(root, 'truncated', 1200, 900, 'projects');
+  put(root, 'public/assets/projects/truncated/cover.webp', valid.subarray(0, 40));
+  put(root, 'public/assets/projects/png/cover.webp', await sharp({ create: { width: 1200, height: 900, channels: 3, background: '#244b3b' } }).png().toBuffer());
   const issues = (await verifyContent(root)).issues;
   for (const [slug, , expected] of cases) assert(issues.some((issue) => issue.includes(`${slug}.md:`) && issue.includes(expected)), `${slug}: ${issues.join('\n')}`);
 });

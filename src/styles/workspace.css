@@ -41,7 +41,6 @@
 .content-project-row { display: grid; grid-template-columns: 136px minmax(0, 1fr) 38px; gap: 24px; align-items: center; }
 .content-project-image { display: block; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
 .content-project-image img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; }
-.content-skills-image img { object-fit: contain; }
 .content-row-copy { min-width: 0; }
 .content-row-copy h3 { margin: 0; font-size: 18px; line-height: 1.55; font-weight: 500; overflow-wrap: anywhere; }
 .content-row-copy h3 a { display: inline; }
@@ -103,7 +102,6 @@
   .content-result-count { font-size: 12px; }
   .content-project-row { grid-template-columns: 82px minmax(0, 1fr); gap: 16px; align-items: start; }
   .content-project-image { margin-top: 4px; }
-  .content-project-image img { aspect-ratio: 1 / 1; }
   .content-project-row h3 { font-size: 20px; }
   .content-row-tags { gap: 4px 12px; }
   .content-row { padding: 22px 0; }

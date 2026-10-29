@@ -133,25 +133,24 @@ export async function verifyContent(directory = process.cwd()) {
 
       const entry = { collection, file, locale, slug, translationKey, data };
       entries.push(entry);
-      if (collection === 'blog') {
-        if (typeof data.coverAlt !== 'string' || !data.coverAlt.trim()) issues.push(`${file}: coverAlt must be non-empty`);
-        if (typeof data.cover !== 'string' || !data.cover.trim()) issues.push(`${file}: article cover is required`);
-      }
+      const coverLabel = collection === 'blog' ? 'article cover' : 'project cover';
+      if (typeof data.coverAlt !== 'string' || !data.coverAlt.trim()) issues.push(`${file}: coverAlt must be non-empty`);
+      if (typeof data.cover !== 'string' || !data.cover.trim()) issues.push(`${file}: ${coverLabel} is required`);
       if (data.cover !== undefined) {
         const before = issues.length;
         checkAsset({ root, file, collection, slug, path: data.cover, label: 'cover', issues });
-        if (collection === 'blog' && issues.length === before) {
+        if (issues.length === before) {
           const target = resolve(root, 'public', `.${decodeURIComponent(data.cover)}`);
           if (!coverChecks.has(target)) coverChecks.set(target, (async () => {
             try {
               // Decode pixels, not just the header: truncated files can still expose valid dimensions.
               const { info } = await sharp(target, { failOn: 'warning' }).raw().toBuffer({ resolveWithObject: true });
-              if (info.width * 3 !== info.height * 4) return 'article cover must have a 4:3 aspect ratio';
-              if (info.width !== 1200 || info.height !== 900) return 'article cover must be 1200×900';
+              if (info.width * 3 !== info.height * 4) return `${coverLabel} must have a 4:3 aspect ratio`;
+              if (info.width !== 1200 || info.height !== 900) return `${coverLabel} must be 1200×900`;
               const metadata = await sharp(target).metadata();
-              if (metadata.format !== 'webp') return 'article cover must be WebP';
+              if (metadata.format !== 'webp') return `${coverLabel} must be WebP`;
             } catch {
-              return 'article cover cannot be decoded';
+              return `${coverLabel} cannot be decoded`;
             }
           })());
           const error = await coverChecks.get(target);

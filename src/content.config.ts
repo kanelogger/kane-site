@@ -55,6 +55,7 @@ const projects = defineCollection({
     role: text,
     tags: z.array(text).min(1),
     cover: asset,
+    coverAlt: text,
     featured: z.boolean().default(false),
     order: z.number().int().positive(),
     website: z.url().optional(),

@@ -12,6 +12,8 @@ year: 2026
 role: "填写你实际负责的工作"
 tags: ["Developer Tools"]
 cover: "/assets/projects/my-project/cover.webp"
+coverAlt: "描述封面表达的作品核心用途"
+# 封面使用 1200×900（4:3）WebP，页面自动展示，不在正文重复插入。
 featured: false
 order: 4
 # 以下链接均可选；仅填写公开可访问的真实地址，不要保留空字符串。

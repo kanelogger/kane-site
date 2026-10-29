@@ -13,6 +13,7 @@ year: 2026
 role: "Project design, development, and content organization"
 tags: ["Static Site", "GitHub Pages", "Node.js", "Research Archive"]
 cover: "/assets/projects/my-reports/cover.webp"
+coverAlt: "Independent research reports and interactive pages organized by a chronological archive index"
 featured: false
 order: 5
 website: "https://kanelogger.github.io/my-reports/"

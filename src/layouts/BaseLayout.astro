@@ -9,18 +9,18 @@ import { getLocaleFromPath, getLocalePath, type Locale, getDictionary } from '..
 import '@fontsource-variable/manrope';
 import '../styles/global.css';
 import { ClientRouter, fade } from 'astro:transitions';
-interface Props { title?: string; description?: string; article?: { publishedAt: Date; updatedAt?: Date; author: string; cover?: string; coverAlt?: string }; noindex?: boolean; layout?: 'site' | 'workspace'; locale?: Locale; alternatePath?: string | null; }
-const { title, description, article, noindex = false, layout = 'site', locale: propLocale, alternatePath: propAlternatePath } = Astro.props;
+interface Props { image?: { src: string; alt: string }; title?: string; description?: string; article?: { publishedAt: Date; updatedAt?: Date; author: string; cover?: string; coverAlt?: string }; noindex?: boolean; layout?: 'site' | 'workspace'; locale?: Locale; alternatePath?: string | null; }
+const { image: pageImage, title, description, article, noindex = false, layout = 'site', locale: propLocale, alternatePath: propAlternatePath } = Astro.props;
 const locale = propLocale ?? getLocaleFromPath(Astro.url.pathname);
 const dictionary = getDictionary(locale);
 const resolvedDescription = description ?? (locale === 'en' ? 'Kane’s personal site about AI Coding Agents, Agent Harnesses, developer tools, and AI-native software engineering.' : site.description);
 const pageTitle = title ? `${title} — KANE` : 'KANE — Software Engineer & AI Builder';
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site!);
-const sharePath = article?.cover ?? '/og.png';
+const sharePath = pageImage?.src ?? article?.cover ?? '/og.png';
 const shareImage = new URL(sharePath, Astro.site!);
 const shareSize = imageSize(readFileSync(`public${sharePath}`));
 const shareType = shareSize.type === 'jpg' ? 'jpeg' : shareSize.type;
-const shareAlt = article?.coverAlt ?? (locale === 'en' ? 'KANE — Software Engineer / AI Builder, AI coding workflows and developer tools' : 'KANE — Software Engineer / AI Builder，AI 编程工作流与开发者工具');
+const shareAlt = pageImage?.alt ?? article?.coverAlt ?? (locale === 'en' ? 'KANE — Software Engineer / AI Builder, AI coding workflows and developer tools' : 'KANE — Software Engineer / AI Builder，AI 编程工作流与开发者工具');
 const articleStructuredData = article && title ? JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',

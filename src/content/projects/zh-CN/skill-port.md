@@ -13,6 +13,7 @@ year: 2026
 role: "产品设计、架构设计、CLI 与 Desktop 开发"
 tags: ["Agent Skills", "CLI", "Electron", "SQLite", "Developer Tools"]
 cover: "/assets/projects/skill-port/cover.webp"
+coverAlt: "一份技能从本地 Hub 按需启用到项目、终端与桌面入口"
 featured: true
 order: 1
 github: "https://github.com/kanelogger/SkillPort"

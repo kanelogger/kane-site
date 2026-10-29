@@ -17,7 +17,7 @@ const dimensions = imageSize(readFileSync(resolve('public', imageSrc.slice(1))))
 ---
 <article class="project" data-home-reveal>
   <a class="project-image-link" href={getLocalePath(locale, `/work/${slug}`)} aria-label={copy.content.viewProject(data.title)}>
-    <img src={imageSrc} alt={media?.alt ?? (id.endsWith('kane-skills') ? (locale === 'en' ? 'Kane Q working state character' : 'Kane Q 工作状态角色') : copy.content.coverAlt(data.title))} width={dimensions.width} height={dimensions.height} loading="lazy" decoding="async" />
+    <img src={imageSrc} alt={media?.alt ?? data.coverAlt} width={dimensions.width} height={dimensions.height} loading="lazy" decoding="async" />
     <span class="image-arrow" aria-hidden="true">↗</span>
   </a>
   <div class="project-summary">

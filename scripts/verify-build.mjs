@@ -10,6 +10,25 @@ const files = readdirSync(root, { recursive: true }).filter((file) => file.endsW
 const decode = (text) => text.replace(/&#x([\da-f]+);|&#(\d+);|&(amp|quot|apos|lt|gt);/gi, (_, hex, dec, named) =>
   hex ? String.fromCodePoint(parseInt(hex, 16)) : dec ? String.fromCodePoint(Number(dec)) : ({ amp: '&', quot: '"', apos: "'", lt: '<', gt: '>' })[named]);
 const attributes = (tag) => Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map((match) => [match[1], decode(match[2])]));
+function verifyCover(file, html, meta, data, kind) {
+  const expectedCover = new URL(data.cover, 'https://kanelogger.com').href;
+  assert.equal(meta['og:image'], expectedCover, `${file}: ${kind} share image must use its cover`);
+  assert.equal(meta['og:image:type'], 'image/webp');
+  assert.equal(meta['og:image:width'], '1200');
+  assert.equal(meta['og:image:height'], '900');
+  assert.equal(meta['og:image:alt'], data.coverAlt);
+  assert.equal(meta['twitter:image:alt'], data.coverAlt);
+  const coverTags = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => attributes(tag)).filter((attrs) => attrs.src === data.cover);
+  assert.equal(coverTags.length, 1, `${file}: ${kind} must display its cover exactly once`);
+  assert.equal(coverTags[0].alt, data.coverAlt);
+  assert.equal(coverTags[0].width, '1200');
+  assert.equal(coverTags[0].height, '900');
+  assert.equal(coverTags[0].loading, 'eager');
+  const size = imageSize(readFileSync(join(root, data.cover)));
+  assert.deepEqual([size.type, size.width, size.height], ['webp', 1200, 900]);
+  return expectedCover;
+}
+
 const pages = new Map(files.map((file) => {
   const html = readFileSync(join(root, file), 'utf8');
   return [join(root, file), { html, ids: new Set([...html.matchAll(/\bid="([^"]*)"/g)].map((match) => decode(match[1]))) }];
@@ -52,22 +71,15 @@ for (const [file, { html }] of pages) {
     const slug = route.split('/').at(-1);
     const source = readFileSync(join('src/content/blog', locale, `${slug}.md`), 'utf8');
     const data = parse(source.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
-    const expectedCover = new URL(data.cover, 'https://kanelogger.com').href;
-    assert.equal(meta['og:image'], expectedCover, `${file}: article share image must use its cover`);
+    const expectedCover = verifyCover(file, html, meta, data, 'article');
     assert.equal(posting.image, expectedCover, `${file}: structured image must use the article cover`);
-    assert.equal(meta['og:image:type'], 'image/webp');
-    assert.equal(meta['og:image:width'], '1200');
-    assert.equal(meta['og:image:height'], '900');
-    assert.equal(meta['og:image:alt'], data.coverAlt);
-    assert.equal(meta['twitter:image:alt'], data.coverAlt);
-    const coverTags = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => attributes(tag)).filter((attrs) => attrs.src === data.cover);
-    assert.equal(coverTags.length, 1, `${file}: article must display its cover exactly once`);
-    assert.equal(coverTags[0].alt, data.coverAlt);
-    assert.equal(coverTags[0].width, '1200');
-    assert.equal(coverTags[0].height, '900');
-    assert.equal(coverTags[0].loading, 'eager');
-    const size = imageSize(readFileSync(join(root, data.cover)));
-    assert.deepEqual([size.type, size.width, size.height], ['webp', 1200, 900]);
+  } else if (/^\/(?:en\/)?work\/[^/]+$/.test(route)) {
+    const locale = route.startsWith('/en/') ? 'en' : 'zh-CN';
+    const slug = route.split('/').at(-1);
+    const source = readFileSync(join('src/content/projects', locale, `${slug}.md`), 'utf8');
+    const data = parse(source.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
+    verifyCover(file, html, meta, data, 'project');
+    assert.equal(meta['og:type'], 'website');
   } else {
     assert.equal(meta['og:image'], 'https://kanelogger.com/og.png');
   }
@@ -211,7 +223,7 @@ for (const [collection, route] of [['blog', 'writing'], ['projects', 'work']]) {
     assert(index && board, `${file}: missing locale index/dashboard`);
     assert(index.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from list`);
     assert(board.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from dashboard`);
-    if (collection === 'blog') {
+    {
       const data = parse(source.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
       for (const [name, html] of [['list', index], ['dashboard', board]]) {
         const cover = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => attributes(tag)).find((attrs) => attrs.src === data.cover);

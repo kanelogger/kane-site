@@ -4,10 +4,10 @@ import BaseLayout from './BaseLayout.astro';
 import ArticleCover from '../components/ArticleCover.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import type { Locale } from '../lib/i18n';
-interface Props { title: string; description: string; headings: MarkdownHeading[]; article?: { publishedAt: Date; updatedAt?: Date; author: string; cover?: string; coverAlt?: string }; locale?: Locale; noindex?: boolean; alternatePath?: string | null; }
-const { title, description, headings, article, locale, noindex = false, alternatePath } = Astro.props;
+interface Props { image?: { src: string; alt: string }; title: string; description: string; headings: MarkdownHeading[]; article?: { publishedAt: Date; updatedAt?: Date; author: string; cover?: string; coverAlt?: string }; locale?: Locale; noindex?: boolean; alternatePath?: string | null; }
+const { image, title, description, headings, article, locale, noindex = false, alternatePath } = Astro.props;
 ---
-<BaseLayout title={title} description={description} article={article} locale={locale} noindex={noindex} alternatePath={alternatePath}>
+<BaseLayout image={image} title={title} description={description} article={article} locale={locale} noindex={noindex} alternatePath={alternatePath}>
   <div class="shell detail-page">
     <slot name="header" />
     {article?.cover ? <figure class="article-detail-cover"><ArticleCover src={article.cover} alt={article.coverAlt ?? title} loading="eager" /></figure> : <slot name="cover" />}
