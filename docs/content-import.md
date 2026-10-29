@@ -14,7 +14,7 @@
 2. 文件名与 `slug` 保持一致，使用新的英文 kebab-case 短名。同一内容的语言版本共用 `translationKey` 和 slug；已发布 slug 不因重导入改变。
 3. 按 Schema 填写全部必需字段。`locale`、`slug`、`translationKey`、`translationStatus`、`categoryId`、`tagIds` 不能漏填；分类和标签的稳定 ID 参考现有内容及 [语言工具](../src/lib/i18n.ts)。
 4. 保留原始发表与更新日期。原文使用 `source`；机器翻译使用 `machine`，人工审阅通过才能用 `reviewed`。`summary` 仅兼容已有英文摘要，不用于新增机器翻译。不擅自设为精选；文章 `featured: true` 还需唯一的 `featuredOrder`，作品 `order` 在同一 locale 内必须唯一。
-5. 图片复制到 `public/assets/blog/<slug>/` 或 `public/assets/projects/<slug>/`，封面和正文图片均使用对应 slug 下的 `/assets/...` 站内地址；正文图片提供实际 alt。字体与图片不能依赖外部目录或远程热链。作品封面必需；未公开或不存在的项目链接省略字段，不留空字符串。
+5. 图片复制到 `public/assets/blog/<slug>/` 或 `public/assets/projects/<slug>/`，封面和正文图片均使用对应 slug 下的 `/assets/...` 站内地址；正文图片提供实际 alt。字体与图片不能依赖外部目录或远程热链。文章封面与 `coverAlt` 必需：使用 1200×900（4:3）WebP，中英文可共用无字封面并分别填写描述；详情页自动展示，不在正文重复插入。作品封面必需；未公开或不存在的项目链接省略字段，不留空字符串。
 6. 保留正文含义，只处理必要的重复一级标题、图片路径和导入格式问题。将 wiki 链接转换为真实存在的站内路由；不存在的目标保留可读文字。移除私有源路径、内部链接与私有元数据。
 
 内容集合没有草稿状态，进入 `src/content` 就会生成公开页面。未定稿材料放在集合之外；模板不是可直接发布的文章，需要替换示例内容。

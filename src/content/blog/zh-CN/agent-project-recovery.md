@@ -15,6 +15,8 @@ featured: true
 order: 0
 author: "Kane"
 featuredOrder: 1
+cover: "/assets/blog/agent-project-recovery/cover.webp"
+coverAlt: "从仓库中的规则、状态与任务记录恢复工作台"
 ---
 
 本篇文章想要解答什么问题？我想要记录的是一个标准的 vibe-coding 项目包含哪些东西。**最终实现的效果是让没有历史对话的新会话，仅通过仓库就能理解项目、恢复状态并执行正确流程。**

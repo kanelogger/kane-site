@@ -14,6 +14,8 @@ featured: true
 featuredOrder: 3
 order: 3
 author: "Kane"
+cover: "/assets/blog/learning-pi-in-practice/cover.webp"
+coverAlt: "Steps lead from hands-on practice to extensions and architectural understanding"
 ---
 
 ## Overview

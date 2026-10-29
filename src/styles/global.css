@@ -113,9 +113,12 @@ ul, ol { margin: 0; padding: 0; }
 .project-summary p { margin-top: 20px; font-size: 15px; line-height: 1.9; color: var(--muted); }
 .project-summary .text-link { margin-top: 16px; }
 .writing-section { border-block: 1px solid var(--line); background: var(--surface); }
+.article-thumbnail { display: block; align-self: start; overflow: hidden; border: 1px solid var(--line); background: #f5f2e9; }
+.article-cover-image { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; }
+.article-detail-cover { width: 100%; max-width: 720px; margin: 0 auto 48px; }
 .article-row { position: relative; display: grid; grid-template-columns: 156px minmax(0, 1fr) 24px; gap: 32px; padding-block: 28px; border-top: 1px solid var(--line); }
 .article-row:last-child { border-bottom: 1px solid var(--line); }
-.article-date { display: flex; flex-direction: column; gap: 8px; padding-top: 4px; color: var(--muted); font-size: 12px; }
+.article-date { margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px 16px; padding-top: 4px; color: var(--muted); font-size: 12px; }
 .article-date span { font-family: var(--font-body); }
 .article-summary h3 { font-size: 20px; line-height: 1.6; }
 .article-summary h3 a::after { content: ''; position: absolute; inset: 0; }
@@ -263,8 +266,9 @@ ul, ol { margin: 0; padding: 0; }
   .project-summary h3 { font-size: 30px; }
   .project-top { gap: 12px; font-size: 11px; }
   .project-summary .text-link { margin-top: 12px; }
-  .article-row { grid-template-columns: minmax(0, 1fr) 20px; gap: 12px; padding-block: 24px; }
-  .article-date { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; justify-content: space-between; font-size: 11px; }
+  .article-row { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; padding-block: 24px; }
+  .article-arrow { display: none; }
+  .article-date { flex-direction: row; flex-wrap: wrap; font-size: 11px; }
   .article-summary h3 { font-size: 19px; }
   .article-summary p { font-size: 14px; }
   .home-about { grid-template-columns: 1fr; gap: 28px; }

@@ -16,9 +16,8 @@ featured: false
 order: 0
 author: "Kane"
 cover: "/assets/blog/role-agent-pipeline/cover.webp"
+coverAlt: "文档经过多次流水线交接后逐步丢失信息"
 ---
-
-![三省六部 Agent 这条路不通：文章封面](/assets/blog/role-agent-pipeline/cover.webp)
 
 ## 什么是三省六部？
 

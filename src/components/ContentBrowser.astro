@@ -6,6 +6,7 @@ import { imageSize } from 'image-size';
 import { formatDate, readingMinutes } from '../lib/content';
 import { getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
 import { getMediaVariant } from '../data/media';
+import ArticleCover from './ArticleCover.astro';
 
 interface Props {
   title: string;
@@ -50,6 +51,7 @@ const entryPath = (type: 'writing' | 'work', slug: string, status: string) =>
     {articles.length > 0 && <section class="content-group" data-content-group aria-labelledby="workspace-articles">
       <header class="content-group-heading"><h2 id="workspace-articles">{copy.content.articles}</h2><span><span data-group-count>{String(articles.length).padStart(2, '0')}</span> {copy.content.articleLabel}</span></header>
       <div class="content-rows">{articles.map((article) => { const slug = (article.data as { slug?: string }).slug ?? article.id.split('/').pop() ?? article.id; return <article class="content-row content-article-row" data-content-row data-category={article.data.category} data-search={[article.data.title, article.data.description, ...article.data.tags].join(' ')}>
+        <a class="article-thumbnail" href={entryPath('writing', slug, article.data.translationStatus)} tabindex="-1" aria-hidden="true"><ArticleCover src={article.data.cover} alt={article.data.coverAlt} /></a>
         <div class="content-row-copy"><div class="content-article-meta"><time datetime={article.data.publishedAt.toISOString()}>{formatDate(article.data.publishedAt)}</time><span>{article.data.category}</span><span>{copy.content.minutes(readingMinutes(article.body))}</span></div><h3><a href={entryPath('writing', slug, article.data.translationStatus)} data-result-link>{article.data.title}{locale === 'en' && article.data.translationStatus !== 'reviewed' && <small> ({copy.content.original})</small>}<span aria-hidden="true">↗</span></a></h3><p>{article.data.description}</p><ul class="content-row-tags" aria-label={copy.content.tags}>{article.data.tags.map((tag) => <li>{tag}</li>)}</ul></div>
       </article>; })}</div>
     </section>}

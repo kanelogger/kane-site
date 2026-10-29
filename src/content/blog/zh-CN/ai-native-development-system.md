@@ -16,6 +16,7 @@ order: 5
 author: "Kane"
 featuredOrder: 4
 cover: "/assets/blog/ai-native-development-system/cover.webp"
+coverAlt: "仓库周围相互连接的上下文闭环与执行闭环"
 ---
 
 **AI 生成代码的速度已经超过了人阅读代码的速度。** 继续把“逐行看懂全部实现”当作主要质量控制手段，只会让人越来越跟不上 Agent。

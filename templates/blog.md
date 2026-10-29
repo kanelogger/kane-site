@@ -16,7 +16,9 @@ author: "Kane"
 # featured: true 时必须填写 featuredOrder；首页最多显示前 4 篇。
 # featuredOrder: 5
 # updatedAt: 2026-09-12
-# cover: "/assets/blog/my-article/cover.webp"
+cover: "/assets/blog/my-article/cover.webp"
+coverAlt: "简要描述封面所表达的文章主题"
+# 封面须为本站托管的 1200×900（4:3）WebP，详情页自动显示，不在正文重复插入。
 ---
 
 在这里写导语。放入 `src/content/blog/zh-CN/my-article.md`，文件名与 slug 保持一致，对应 `/writing/my-article`。翻译版本使用相同 translationKey，并正确填写 locale 与 translationStatus。

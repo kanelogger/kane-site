@@ -15,9 +15,8 @@ featured: false
 order: 7
 author: "Kane"
 cover: "/assets/blog/coding-agent-landscape/cover.webp"
+coverAlt: "不同工具形态围绕共同内核形成选型地图"
 ---
-
-![封面](/assets/blog/coding-agent-landscape/cover.webp)
 
 ## 0. 背景与问题：为什么现在需要一份选型报告
 

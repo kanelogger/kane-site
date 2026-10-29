@@ -15,6 +15,8 @@ featured: true
 order: 1
 author: "Kane"
 featuredOrder: 2
+cover: "/assets/blog/agent-hard-gates/cover.webp"
+coverAlt: "A fast execution path passes through evidence-based acceptance gates"
 ---
 
 > How should an agent move forward safely?

@@ -14,6 +14,8 @@ tags: ["AI 原生开发", "Coding Agent", "软件工程", "质量控制"]
 featured: false
 order: 6
 author: "Kane"
+cover: "/assets/blog/ai-native-from-design-to-running/cover.webp"
+coverAlt: "设计原型经过小步构建成为可运行产品"
 ---
 
 AI 生成代码的速度已经超过了人读代码的速度。继续把“逐行看懂全部实现”当作主要控制手段，只会让人越来越跟不上 Agent。

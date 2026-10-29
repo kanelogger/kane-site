@@ -14,11 +14,15 @@ const files = listFiles('dist');
 const publicPath = (file) => '/' + file.split(sep).map(encodeURIComponent).join('/');
 const resources = new Map();
 const titles = new Map();
+const shareImages = new Map();
 for (const file of files.filter((file) => file.endsWith('.html') && file !== '404.html' && !file.endsWith('/404/index.html'))) {
   const route = '/' + file.replace(/index\.html$/, '').replace(/\/$/, '');
   const html = readFileSync(join('dist', file), 'utf8');
   resources.set(route, file);
   titles.set(route, html.match(/<title>([^<]+)<\/title>/)[1]);
+  const shareImage = html.match(/<meta property="og:image" content="([^"]+)"/);
+  assert(shareImage, `${file}: local share image missing`);
+  shareImages.set(route, shareImage[1]);
   for (const [, path] of html.matchAll(/(?:src|href)="(\/(?:assets|_astro)\/[^"#]+)"/g)) {
     const file = decodeURIComponent(new URL(path, 'https://kanelogger.com').pathname.slice(1));
     resources.set(publicPath(file), file);
@@ -46,7 +50,7 @@ async function worker() {
       const html = body.toString();
       assert.equal(html.match(/<title>([^<]+)<\/title>/)?.[1], titles.get(path), `${url.href}: stale page title`);
       assert(html.includes(`rel="canonical" href="https://kanelogger.com${path}"`), `${url.href}: canonical missing`);
-      assert(html.includes('https://kanelogger.com/og.png'), `${url.href}: share image missing`);
+      assert.equal(html.match(/<meta property="og:image" content="([^"]+)"/)?.[1], shareImages.get(path), `${url.href}: share image differs from verified build`);
       assert(!/noindex/i.test(response.headers.get('x-robots-tag') ?? ''), `${url.href}: blocked by HTTP header`);
     }
     assert.equal(hash(body), hash(readFileSync(join('dist', file))), `${url.href}: differs from verified build`);

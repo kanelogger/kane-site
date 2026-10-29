@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
+import sharp from 'sharp';
 
 const collections = ['blog', 'projects'];
 const locales = new Set(['zh-CN', 'en']);
@@ -86,10 +87,11 @@ function duplicateIssues(entries, key, label, issues) {
   }
 }
 
-export function verifyContent(directory = process.cwd()) {
+export async function verifyContent(directory = process.cwd()) {
   const root = resolve(directory);
   const issues = [];
   const entries = [];
+  const coverChecks = new Map();
 
   for (const collection of collections) {
     const base = join(root, 'src', 'content', collection);
@@ -131,8 +133,30 @@ export function verifyContent(directory = process.cwd()) {
 
       const entry = { collection, file, locale, slug, translationKey, data };
       entries.push(entry);
+      if (collection === 'blog') {
+        if (typeof data.coverAlt !== 'string' || !data.coverAlt.trim()) issues.push(`${file}: coverAlt must be non-empty`);
+        if (typeof data.cover !== 'string' || !data.cover.trim()) issues.push(`${file}: article cover is required`);
+      }
       if (data.cover !== undefined) {
+        const before = issues.length;
         checkAsset({ root, file, collection, slug, path: data.cover, label: 'cover', issues });
+        if (collection === 'blog' && issues.length === before) {
+          const target = resolve(root, 'public', `.${decodeURIComponent(data.cover)}`);
+          if (!coverChecks.has(target)) coverChecks.set(target, (async () => {
+            try {
+              // Decode pixels, not just the header: truncated files can still expose valid dimensions.
+              const { info } = await sharp(target, { failOn: 'warning' }).raw().toBuffer({ resolveWithObject: true });
+              if (info.width * 3 !== info.height * 4) return 'article cover must have a 4:3 aspect ratio';
+              if (info.width !== 1200 || info.height !== 900) return 'article cover must be 1200×900';
+              const metadata = await sharp(target).metadata();
+              if (metadata.format !== 'webp') return 'article cover must be WebP';
+            } catch {
+              return 'article cover cannot be decoded';
+            }
+          })());
+          const error = await coverChecks.get(target);
+          if (error) issues.push(`${file}: ${error}`);
+        }
       }
       for (const image of markdownImages(body)) {
         checkAsset({ root, file, collection, slug, ...image, label: 'Markdown image', issues });
@@ -179,7 +203,7 @@ export function verifyContent(directory = process.cwd()) {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const result = verifyContent();
+  const result = await verifyContent();
   if (result.issues.length) {
     result.issues.forEach((issue) => console.error(`FAIL: ${issue}`));
     process.exitCode = 1;

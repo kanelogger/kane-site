@@ -14,6 +14,8 @@ tags: ["Coding Agent", "Token 成本", "多 Agent", "模型路由"]
 featured: false
 order: 2
 author: "Kane"
+cover: "/assets/blog/agent-token-economics/cover.webp"
+coverAlt: "三条并行工作通道分别消耗各自的 Token 资源"
 ---
 
 **旨在解决一个问题：在不降低正确率和证据质量的前提下，如何用更少的总成本获得可验收结果？**

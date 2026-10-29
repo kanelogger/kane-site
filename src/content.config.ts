@@ -31,7 +31,8 @@ const blog = defineCollection({
     featured: z.boolean().default(false),
     featuredOrder: z.number().int().positive().optional(),
     order: z.number().int().nonnegative().default(0),
-    cover: asset.optional(),
+    cover: asset,
+    coverAlt: text,
     author: text.default('Kane'),
   }).refine((data) => !data.featured || data.featuredOrder !== undefined, {
     message: '精选文章必须填写 featuredOrder', path: ['featuredOrder'],

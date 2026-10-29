@@ -4,12 +4,22 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { test } from 'node:test';
 import { stringify } from 'yaml';
+import sharp from 'sharp';
 import { verifyContent } from './verify-content.mjs';
 
 const put = (root, file, content = '') => {
   mkdirSync(dirname(join(root, file)), { recursive: true });
   writeFileSync(join(root, file), content);
 };
+
+
+async function putCover(root, slug, width = 1200, height = 900) {
+  const target = join(root, 'public/assets/blog', slug, 'cover.webp');
+  mkdirSync(dirname(target), { recursive: true });
+  const buffer = await sharp({ create: { width, height, channels: 3, background: '#244b3b' } }).webp().toBuffer();
+  writeFileSync(target, buffer);
+  return buffer;
+}
 
 const markdown = (data, body = '') => `---\n${stringify(data)}---\n\n${body}\n`;
 
@@ -21,33 +31,34 @@ function fixture(t) {
 }
 
 function article(slug, locale = 'zh-CN', extra = {}) {
-  return { locale, translationKey: slug, slug, featured: false, order: 0, ...extra };
+  return { locale, translationKey: slug, slug, featured: false, order: 0, cover: `/assets/blog/${slug}/cover.webp`, coverAlt: 'A concept illustration', ...extra };
 }
 
 function project(slug, locale = 'zh-CN', order = 1, extra = {}) {
   return { locale, translationKey: slug, slug, order, cover: `/assets/projects/${slug}/cover.webp`, ...extra };
 }
 
-test('current repository content passes the content verifier', () => {
-  const result = verifyContent();
+test('current repository content passes the content verifier', async () => {
+  const result = await verifyContent();
   assert.deepEqual(result.issues, []);
   assert(result.files > 0);
 });
 
-test('valid content allows optional translations, repeated blog order, locale-scoped order, and shared assets', (t) => {
+test('valid content allows optional translations, repeated blog order, locale-scoped order, and shared assets', async (t) => {
   const root = fixture(t);
-  put(root, 'public/assets/blog/shared/cover.webp');
+  await putCover(root, 'shared');
   put(root, 'public/assets/projects/tool/cover.webp');
   put(root, 'src/content/blog/zh-CN/shared.md', markdown(article('shared', 'zh-CN', { featured: true, featuredOrder: 1, cover: '/assets/blog/shared/cover.webp' }), '![中文封面](/assets/blog/shared/cover.webp)'));
   put(root, 'src/content/blog/en/shared.md', markdown(article('shared', 'en', { featured: true, featuredOrder: 1, cover: '/assets/blog/shared/cover.webp' }), '![English cover](/assets/blog/shared/cover.webp)'));
-  put(root, 'src/content/blog/zh-CN/source-only.md', markdown(article('source-only')));
+  await putCover(root, 'source-only');
+  put(root, 'src/content/blog/zh-CN/source-only.md', markdown(article('source-only', 'zh-CN', { cover: '/assets/blog/source-only/cover.webp' })));
   put(root, 'src/content/projects/zh-CN/tool.md', markdown(project('tool')));
   put(root, 'src/content/projects/en/tool.md', markdown(project('tool', 'en')));
 
-  assert.deepEqual(verifyContent(root).issues, []);
+  assert.deepEqual((await verifyContent(root)).issues, []);
 });
 
-test('reports path, identity, translation, ordering, and image failures together', (t) => {
+test('reports path, identity, translation, ordering, and image failures together', async (t) => {
   const root = fixture(t);
   put(root, 'public/assets/blog/images/empty.webp');
   put(root, 'public/assets/projects/cross/cover.webp');
@@ -69,7 +80,7 @@ test('reports path, identity, translation, ordering, and image failures together
   put(root, 'src/content/blog/zh-CN/featured-one.md', markdown(article('featured-one', 'zh-CN', { featured: true, featuredOrder: 1 })));
   put(root, 'src/content/blog/zh-CN/featured-two.md', markdown(article('featured-two', 'zh-CN', { featured: true, featuredOrder: 1 })));
 
-  const issues = verifyContent(root).issues.join('\n');
+  const issues = (await verifyContent(root)).issues.join('\n');
   for (const expected of [
     'content path must be',
     'does not match directory',
@@ -87,11 +98,35 @@ test('reports path, identity, translation, ordering, and image failures together
   ]) assert.match(issues, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
-test('reports malformed frontmatter without aborting the scan', (t) => {
+test('reports malformed frontmatter without aborting the scan', async (t) => {
   const root = fixture(t);
   put(root, 'src/content/blog/zh-CN/broken.md', '---\nslug: [broken\n---\n');
   put(root, 'src/content/blog/zh-CN/missing.md', '# no frontmatter');
-  const issues = verifyContent(root).issues.join('\n');
+  const issues = (await verifyContent(root)).issues.join('\n');
   assert.match(issues, /invalid YAML frontmatter/);
   assert.match(issues, /missing or malformed YAML frontmatter/);
+});
+
+
+test('article covers require descriptions, decodable WebP pixels and exact 4:3 dimensions', async (t) => {
+  const root = fixture(t);
+  const cases = [
+    ['missing', { cover: undefined }, 'article cover is required'],
+    ['description', { coverAlt: ' ' }, 'coverAlt must be non-empty'],
+    ['corrupt', {}, 'article cover cannot be decoded'],
+    ['truncated', {}, 'article cover cannot be decoded'],
+    ['wide', {}, 'article cover must have a 4:3 aspect ratio'],
+    ['small', {}, 'article cover must be 1200×900'],
+    ['png', {}, 'article cover must be WebP'],
+  ];
+  for (const [slug, extra] of cases) {
+    await putCover(root, slug, slug === 'small' ? 400 : 1200, slug === 'wide' ? 630 : slug === 'small' ? 300 : 900);
+    put(root, `src/content/blog/zh-CN/${slug}.md`, markdown(article(slug, 'zh-CN', extra)));
+  }
+  put(root, 'public/assets/blog/corrupt/cover.webp', 'not an image');
+  const valid = await putCover(root, 'truncated');
+  put(root, 'public/assets/blog/truncated/cover.webp', valid.subarray(0, 40));
+  put(root, 'public/assets/blog/png/cover.webp', await sharp({ create: { width: 1200, height: 900, channels: 3, background: '#244b3b' } }).png().toBuffer());
+  const issues = (await verifyContent(root)).issues;
+  for (const [slug, , expected] of cases) assert(issues.some((issue) => issue.includes(`${slug}.md:`) && issue.includes(expected)), `${slug}: ${issues.join('\n')}`);
 });

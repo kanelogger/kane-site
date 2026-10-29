@@ -53,6 +53,18 @@ try {
   }
   const articlePath = join(fixture, 'dist/writing/agent-hard-gates/index.html');
   const articleHtml = await readFile(articlePath, 'utf8');
+  for (const [label, from, to, expected] of [
+    ['article share fallback', /(<meta property="og:image" content=")[^"]+/, '$1https://kanelogger.com/og.png', 'Twitter and OG images must match'],
+    ['wrong share dimensions', /(<meta property="og:image:height" content=")900/, '$1630', '900'],
+    ['missing article cover', /<img[^>]+class="article-cover-image"[^>]*>/, '', 'article must display its cover exactly once'],
+  ]) {
+    assert.notEqual(articleHtml.replace(from, to), articleHtml, `${label}: mutation must change fixture`);
+    await writeFile(articlePath, articleHtml.replace(from, to));
+    result = run();
+    assert.equal(result.status, 1, `${label} must fail; ${result.stderr}`);
+    assert(result.stderr.includes(expected), result.stderr);
+    console.log(`PASS: ${label} is rejected`);
+  }
   await writeFile(articlePath, articleHtml.replace(/<script type="application\/ld\+json">[^<]+<\/script>/, ''));
   result = run();
   assert.equal(result.status, 1, `missing article data must fail; ${result.stderr}`);

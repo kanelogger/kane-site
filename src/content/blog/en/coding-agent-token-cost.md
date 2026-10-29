@@ -13,6 +13,8 @@ tags: ['coding-agent', 'token-cost', 'context-engineering', 'model-routing']
 featured: false
 order: 4
 author: "Kane"
+cover: "/assets/blog/coding-agent-token-cost/cover.webp"
+coverAlt: "An exploded cost device reveals context, tool output, and retry consumption"
 ---
 
 ## The visible prompt is a small line item

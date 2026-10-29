@@ -15,6 +15,7 @@ featured: false
 order: 0
 author: "Kane"
 cover: "/assets/blog/jev-agent-decision-model/cover.webp"
+coverAlt: "当前状态进入决策节点并选中一个有限输出"
 ---
 
 > 它怎样工作、如何接入，以及适合放进哪些 Agent 工作流

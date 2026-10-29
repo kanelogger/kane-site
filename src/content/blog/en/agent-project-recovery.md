@@ -15,6 +15,8 @@ featured: true
 order: 0
 author: "Kane"
 featuredOrder: 1
+cover: "/assets/blog/agent-project-recovery/cover.webp"
+coverAlt: "A workbench restored from repository rules, state, and task records"
 ---
 
 This article asks what a standard vibe-coding project must contain so that a new session with no chat history can understand the project, recover its state, and follow the right process. Treat the LLM as an approximately stateless function: every call should be able to reconstruct the task from the repository.

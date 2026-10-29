@@ -15,6 +15,8 @@ featured: true
 order: 3
 author: "Kane"
 featuredOrder: 3
+cover: "/assets/blog/learning-pi-in-practice/cover.webp"
+coverAlt: "从实际操作逐级走向扩展与架构理解"
 ---
 
 其实 Pi 没有想象的那么难，只是大多数人一开始学习的方向就错了：

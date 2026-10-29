@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { imageSize } from 'image-size';
 import { gzipSync } from 'node:zlib';
+import { parse } from 'yaml';
 
 const root = resolve('dist');
 const files = readdirSync(root, { recursive: true }).filter((file) => file.endsWith('.html'));
@@ -30,7 +31,7 @@ for (const [file, { html }] of pages) {
   assert(title.length > 0, `${file}: missing title`);
   assert.equal(meta['og:title'], title);
   assert.equal(meta['og:description'], meta.description);
-  assert.equal(meta['og:image'], 'https://kanelogger.com/og.png');
+  assert.equal(meta['twitter:image'], meta['og:image'], `${file}: Twitter and OG images must match`);
   assert.equal(meta['twitter:card'], 'summary_large_image');
   const relativeFile = file.slice(root.length + 1);
   const route = relativeFile === '404.html' ? '/404' : '/' + relativeFile.replace(/index\.html$/, '').replace(/\/$/, '');
@@ -47,6 +48,28 @@ for (const [file, { html }] of pages) {
     assert.equal(posting.inLanguage, route.startsWith('/en/') ? 'en' : 'zh-CN');
     assert.equal(posting.datePublished, meta['article:published_time']);
     assert.equal(posting.author?.name, meta.author);
+    const locale = route.startsWith('/en/') ? 'en' : 'zh-CN';
+    const slug = route.split('/').at(-1);
+    const source = readFileSync(join('src/content/blog', locale, `${slug}.md`), 'utf8');
+    const data = parse(source.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
+    const expectedCover = new URL(data.cover, 'https://kanelogger.com').href;
+    assert.equal(meta['og:image'], expectedCover, `${file}: article share image must use its cover`);
+    assert.equal(posting.image, expectedCover, `${file}: structured image must use the article cover`);
+    assert.equal(meta['og:image:type'], 'image/webp');
+    assert.equal(meta['og:image:width'], '1200');
+    assert.equal(meta['og:image:height'], '900');
+    assert.equal(meta['og:image:alt'], data.coverAlt);
+    assert.equal(meta['twitter:image:alt'], data.coverAlt);
+    const coverTags = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => attributes(tag)).filter((attrs) => attrs.src === data.cover);
+    assert.equal(coverTags.length, 1, `${file}: article must display its cover exactly once`);
+    assert.equal(coverTags[0].alt, data.coverAlt);
+    assert.equal(coverTags[0].width, '1200');
+    assert.equal(coverTags[0].height, '900');
+    assert.equal(coverTags[0].loading, 'eager');
+    const size = imageSize(readFileSync(join(root, data.cover)));
+    assert.deepEqual([size.type, size.width, size.height], ['webp', 1200, 900]);
+  } else {
+    assert.equal(meta['og:image'], 'https://kanelogger.com/og.png');
   }
   if (is404) {
     assert.equal(meta.robots, 'noindex, follow');
@@ -188,6 +211,15 @@ for (const [collection, route] of [['blog', 'writing'], ['projects', 'work']]) {
     assert(index && board, `${file}: missing locale index/dashboard`);
     assert(index.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from list`);
     assert(board.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from dashboard`);
+    if (collection === 'blog') {
+      const data = parse(source.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
+      for (const [name, html] of [['list', index], ['dashboard', board]]) {
+        const cover = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => attributes(tag)).find((attrs) => attrs.src === data.cover);
+        assert(cover, `${file}: cover missing from ${name}`);
+        assert.equal(cover.alt, data.coverAlt);
+        assert.equal(cover.loading, 'lazy');
+      }
+    }
   }
 }
 console.log(`Verified ${pages.size} pages, ${links} local references, ${images} images, theme controls, and every Markdown route in its list and dashboard.`);

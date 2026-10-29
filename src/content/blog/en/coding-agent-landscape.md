@@ -15,9 +15,8 @@ featured: false
 order: 7
 author: "Kane"
 cover: "/assets/blog/coding-agent-landscape/cover.webp"
+coverAlt: "Different coding tool forms arranged around a shared core"
 ---
-
-![Cover: AI coding agent landscape](/assets/blog/coding-agent-landscape/cover.webp)
 
 ## 0. Why a selection report is needed
 

@@ -13,6 +13,8 @@ tags: ['ai-native-development', 'coding-agent', 'software-engineering', 'quality
 featured: false
 order: 6
 author: "Kane"
+cover: "/assets/blog/ai-native-from-design-to-running/cover.webp"
+coverAlt: "A design prototype becomes a running product through small build steps"
 ---
 
 ## Make the design executable

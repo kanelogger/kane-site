@@ -16,6 +16,7 @@ order: 5
 author: "Kane"
 featuredOrder: 4
 cover: "/assets/blog/ai-native-development-system/cover.webp"
+coverAlt: "Context and execution loops connected around a repository"
 ---
 
 **AI can now generate code faster than a person can read it.** Treating line-by-line comprehension as the main quality control method only makes the human reviewer fall further behind.

@@ -1,0 +1,5 @@
+---
+interface Props { src: string; alt: string; loading?: 'eager' | 'lazy'; }
+const { src, alt, loading = 'lazy' } = Astro.props;
+---
+<img class="article-cover-image" src={src} alt={alt} width="1200" height="900" loading={loading} decoding="async" />

@@ -15,6 +15,8 @@ featured: true
 order: 1
 author: "Kane"
 featuredOrder: 2
+cover: "/assets/blog/agent-hard-gates/cover.webp"
+coverAlt: "快速执行路径经过需要验收证据的关卡"
 ---
 
 > 如何正确推进

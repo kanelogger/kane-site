@@ -19,9 +19,13 @@ const html = '<title>KANE fixture</title><link rel="canonical" href="https://kan
   + '<meta property="og:image" content="https://kanelogger.com/og.png">'
   + '<script type="module" src="/_astro/entry.js"></script>'
   + `<link href="${encodePath(unusualAsset)}" rel="preload">`;
+const articleCover = 'https://kanelogger.com/assets/blog/fixture/cover.webp';
+const articleHtml = html.replace('href="https://kanelogger.com/"', 'href="https://kanelogger.com/writing/fixture"').replace('https://kanelogger.com/og.png', articleCover);
 const errorPage = '<meta name="robots" content="noindex, follow"><h1>页面未找到。</h1><a href="/">返回首页</a>';
 const files = {
   'index.html': html,
+  'writing/fixture/index.html': articleHtml,
+  'assets/blog/fixture/cover.webp': 'article cover fixture',
   '404.html': errorPage,
   '_astro/entry.js': 'export const load = () => import("./sculpture.dynamic.js");',
   [dynamicChunk]: 'import { geometry } from "./nested/geometry.js"; export default geometry;',
@@ -43,7 +47,7 @@ const requests = new Map();
 const server = createServer(async (request, response) => {
   const pathname = new URL(request.url, 'http://fixture.local').pathname;
   requests.set(pathname, (requests.get(pathname) ?? 0) + 1);
-  const file = pathname === '/' ? 'index.html' : decodeURIComponent(pathname.slice(1));
+  const file = pathname === '/' ? 'index.html' : pathname === '/writing/fixture' ? 'writing/fixture/index.html' : decodeURIComponent(pathname.slice(1));
   if (file === 'release-check-missing' || file === absent) {
     response.writeHead(file === absent ? 404 : missingStatus);
     response.end(errorPage);
@@ -100,6 +104,13 @@ try {
   console.log('PASS: canonical checks remain active');
 
   modified.clear();
+  modified.set('writing/fixture/index.html', articleHtml.replace(articleCover, 'https://kanelogger.com/og.png'));
+  result = await run();
+  assert.notEqual(result.code, 0, 'An article falling back to the default share image must fail');
+  assert(result.stderr.includes('share image differs from verified build'), result.stderr);
+  console.log('PASS: article share image fallback is rejected');
+
+  modified.clear();
   noindex = true;
   result = await run();
   assert.notEqual(result.code, 0, 'Deployment HTTP headers must allow indexing');
@@ -121,7 +132,7 @@ try {
   assert.equal(new Set(report.results.map(({ path }) => path)).size, report.resources, 'Resource URLs must be deduplicated');
   assert.equal(requests.get(encodePath(unusualAsset)), 1, 'Encode every path segment exactly once, even when also referenced in HTML');
   assert.equal(requests.get('/assets/fonts/only-in-css.woff2'), 1, 'Assets without HTML references must be checked');
-  console.log('PASS: complete deployment, nested assets, encoded paths, and deduplication');
+  console.log('PASS: complete deployment, article cover, nested assets, encoded paths, and deduplication');
 } finally {
   server.closeAllConnections();
   await new Promise((done) => server.close(done));
