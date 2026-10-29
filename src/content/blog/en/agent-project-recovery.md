@@ -15,7 +15,7 @@ featured: true
 order: 0
 author: "Kane"
 featuredOrder: 1
-cover: "/assets/blog/agent-project-recovery/cover.webp"
+cover: "/assets/blog/agent-project-recovery/cover-1b66427016.webp"
 coverAlt: "A workbench restored from repository rules, state, and task records"
 ---
 

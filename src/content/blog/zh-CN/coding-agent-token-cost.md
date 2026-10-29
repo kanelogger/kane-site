@@ -14,7 +14,7 @@ tags: ["Coding Agent", "Token 成本", "上下文压缩", "多 Agent"]
 featured: false
 order: 4
 author: "Kane"
-cover: "/assets/blog/coding-agent-token-cost/cover.webp"
+cover: "/assets/blog/coding-agent-token-cost/cover-4eb4700adf.webp"
 coverAlt: "拆开的成本装置展示上下文、工具输出与重试消耗"
 ---
 

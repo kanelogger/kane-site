@@ -11,7 +11,7 @@ cardDescription: "A public, self-contained Agent Skills library that packages co
 year: 2026
 role: "Skill design, workflow abstraction, repository architecture, documentation, and public validation"
 tags: ['agent-skills', 'typescript', 'ai-workflow', 'developer-tools']
-cover: "/assets/projects/kane-skills/cover.webp"
+cover: "/assets/projects/kane-skills/cover-79a0eead80.webp"
 coverAlt: "A reusable skill library with writing, checking, engineering, visual, and delivery modules"
 featured: true
 order: 3

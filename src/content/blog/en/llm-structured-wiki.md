@@ -14,7 +14,7 @@ featured: false
 order: 0
 author: "Kane"
 updatedAt: "2026-04-08"
-cover: "/assets/blog/llm-structured-wiki/cover.webp"
+cover: "/assets/blog/llm-structured-wiki/cover-d3bad7c2c4.webp"
 coverAlt: "Scattered notes become an interconnected structured knowledge network"
 ---
 

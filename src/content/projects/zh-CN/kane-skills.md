@@ -12,7 +12,7 @@ cardDescription: "把反复出现的 Agent 工作流封装成 28 个独立技能
 year: 2026
 role: "技能设计、工作流抽象、仓库架构、文档与公开校验"
 tags: ["Agent Skills", "TypeScript", "AI Workflow", "Developer Tools"]
-cover: "/assets/projects/kane-skills/cover.webp"
+cover: "/assets/projects/kane-skills/cover-79a0eead80.webp"
 coverAlt: "装有写作、核验、工程、视觉与交付模块的可复用技能库"
 featured: true
 order: 3

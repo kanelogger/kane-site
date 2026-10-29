@@ -14,7 +14,7 @@ tags: ["AI 编程", "Agent", "工具选型", "Harness", "企业部署"]
 featured: false
 order: 7
 author: "Kane"
-cover: "/assets/blog/coding-agent-landscape/cover.webp"
+cover: "/assets/blog/coding-agent-landscape/cover-9e19a6e970.webp"
 coverAlt: "不同工具形态围绕共同内核形成选型地图"
 ---
 

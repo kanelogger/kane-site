@@ -11,8 +11,9 @@ cardDescription: "作品列表中展示的简短介绍。"
 year: 2026
 role: "填写你实际负责的工作"
 tags: ["Developer Tools"]
-cover: "/assets/projects/my-project/cover.webp"
+cover: "/assets/projects/my-project/cover-<content-hash>.webp"
 coverAlt: "描述封面表达的作品核心用途"
+# content-hash 替换为最终文件 SHA-256 的前 10 位，图片变化时更新路径。
 # 封面使用 1200×900（4:3）WebP，页面自动展示，不在正文重复插入。
 featured: false
 order: 4
@@ -38,7 +39,7 @@ order: 4
 
 ## 界面与资料
 
-将真实封面保存到 `public/assets/projects/my-project/cover.webp`。
+将真实封面保存到 `public/assets/projects/my-project/cover-<content-hash>.webp`。
 正文图片同样使用 `/assets/projects/my-project/` 下的路径。
 
 <!-- ![实际界面说明](/assets/projects/my-project/01.webp) -->

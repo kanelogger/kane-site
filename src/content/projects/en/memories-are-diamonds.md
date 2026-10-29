@@ -11,7 +11,7 @@ cardDescription: "A journal-style agent that uses Markdown and a TypeScript CLI 
 year: 2026
 role: "Product design and TypeScript CLI development"
 tags: ['agent', 'journal', 'typescript', 'markdown']
-cover: "/assets/projects/memories-are-diamonds/cover.webp"
+cover: "/assets/projects/memories-are-diamonds/cover-ec269be52d.webp"
 coverAlt: "Real experiences recorded in a journal become lasting memories through reflection"
 featured: false
 order: 4

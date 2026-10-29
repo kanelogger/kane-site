@@ -12,7 +12,7 @@ cardDescription: "一份 Skill，只保存一次。Skill Port 用本地 Hub、�
 year: 2026
 role: "产品设计、架构设计、CLI 与 Desktop 开发"
 tags: ["Agent Skills", "CLI", "Electron", "SQLite", "Developer Tools"]
-cover: "/assets/projects/skill-port/cover.webp"
+cover: "/assets/projects/skill-port/cover-f7d21f8cb6.webp"
 coverAlt: "一份技能从本地 Hub 按需启用到项目、终端与桌面入口"
 featured: true
 order: 1

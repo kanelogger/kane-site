@@ -14,7 +14,7 @@ tags: ["AI programming", "Agent", "Tool selection", "Harness", "Enterprise deplo
 featured: false
 order: 7
 author: "Kane"
-cover: "/assets/blog/coding-agent-landscape/cover.webp"
+cover: "/assets/blog/coding-agent-landscape/cover-9e19a6e970.webp"
 coverAlt: "Different coding tool forms arranged around a shared core"
 ---
 

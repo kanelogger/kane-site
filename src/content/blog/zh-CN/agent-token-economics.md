@@ -14,7 +14,7 @@ tags: ["Coding Agent", "Token 成本", "多 Agent", "模型路由"]
 featured: false
 order: 2
 author: "Kane"
-cover: "/assets/blog/agent-token-economics/cover.webp"
+cover: "/assets/blog/agent-token-economics/cover-5669e65a5a.webp"
 coverAlt: "三条并行工作通道分别消耗各自的 Token 资源"
 ---
 

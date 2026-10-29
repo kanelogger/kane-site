@@ -15,7 +15,7 @@ tags: ["AI", "Agent", "架构设计", "Multi-Agent", "上下文工程", "模型�
 featured: false
 order: 0
 author: "Kane"
-cover: "/assets/blog/role-agent-pipeline/cover.webp"
+cover: "/assets/blog/role-agent-pipeline/cover-59501518b3.webp"
 coverAlt: "文档经过多次流水线交接后逐步丢失信息"
 ---
 

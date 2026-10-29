@@ -14,7 +14,7 @@ featured: false
 order: 0
 author: "Kane"
 updatedAt: "2026-05-10"
-cover: "/assets/blog/role-agent-pipeline/cover.webp"
+cover: "/assets/blog/role-agent-pipeline/cover-59501518b3.webp"
 coverAlt: "A document progressively loses information through repeated pipeline handoffs"
 ---
 

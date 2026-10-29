@@ -12,7 +12,7 @@ cardDescription: "把分散的研究报告和互动网页收进一个按时间�
 year: 2026
 role: "项目设计与开发、内容整理"
 tags: ["Static Site", "GitHub Pages", "Node.js", "Research Archive"]
-cover: "/assets/projects/my-reports/cover.webp"
+cover: "/assets/projects/my-reports/cover-0bd9f5953f.webp"
 coverAlt: "独立研究报告与互动页面通过时间索引归入报告馆"
 featured: false
 order: 5

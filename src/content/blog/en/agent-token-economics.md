@@ -13,7 +13,7 @@ tags: ['coding-agent', 'token-cost', 'multi-agent', 'model-routing']
 featured: false
 order: 2
 author: "Kane"
-cover: "/assets/blog/agent-token-economics/cover.webp"
+cover: "/assets/blog/agent-token-economics/cover-5669e65a5a.webp"
 coverAlt: "Three parallel work lanes each consume their own token resources"
 ---
 

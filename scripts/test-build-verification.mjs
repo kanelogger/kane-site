@@ -53,6 +53,16 @@ try {
   }
   const projectPath = join(fixture, 'dist/work/kane-skills/index.html');
   const projectHtml = await readFile(projectPath, 'utf8');
+  const projectCover = projectHtml.match(/<meta property="og:image" content="https:\/\/kanelogger.com([^"]+)"/)[1];
+  const projectCoverPath = join(fixture, 'dist', projectCover);
+  const projectCoverBytes = await readFile(projectCoverPath);
+  await writeFile(projectCoverPath, Buffer.concat([projectCoverBytes, Buffer.from('changed')]));
+  result = run();
+  assert.equal(result.status, 1, `changed cover without a new filename must fail; ${result.stderr}`);
+  assert(result.stderr.includes('cover filename must match its content fingerprint'), result.stderr);
+  await writeFile(projectCoverPath, projectCoverBytes);
+  console.log('PASS: cover content changes require a new fingerprinted filename');
+
   for (const [label, from, to, expected] of [
     ['project share fallback', /(<meta property="og:image" content=")[^"]+/, '$1https://kanelogger.com/og.png', 'Twitter and OG images must match'],
     ['missing project cover', /<figure[^>]+class="project-detail-cover"[^>]*>[\s\S]*?<\/figure>/, '', 'project must display its cover exactly once'],

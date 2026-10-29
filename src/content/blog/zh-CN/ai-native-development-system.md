@@ -15,7 +15,7 @@ featured: true
 order: 5
 author: "Kane"
 featuredOrder: 4
-cover: "/assets/blog/ai-native-development-system/cover.webp"
+cover: "/assets/blog/ai-native-development-system/cover-306f7e9c6f.webp"
 coverAlt: "仓库周围相互连接的上下文闭环与执行闭环"
 ---
 

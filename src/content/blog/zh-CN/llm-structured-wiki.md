@@ -15,7 +15,7 @@ tags: ["AI", "知识管理", "Obsidian", "LLM", "Wiki"]
 featured: false
 order: 0
 author: "Kane"
-cover: "/assets/blog/llm-structured-wiki/cover.webp"
+cover: "/assets/blog/llm-structured-wiki/cover-d3bad7c2c4.webp"
 coverAlt: "零散笔记整理成相互连接的结构化知识网络"
 ---
 

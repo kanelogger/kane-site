@@ -15,7 +15,7 @@ featured: true
 order: 5
 author: "Kane"
 featuredOrder: 4
-cover: "/assets/blog/ai-native-development-system/cover.webp"
+cover: "/assets/blog/ai-native-development-system/cover-306f7e9c6f.webp"
 coverAlt: "Context and execution loops connected around a repository"
 ---
 

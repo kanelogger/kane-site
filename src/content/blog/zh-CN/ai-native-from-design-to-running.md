@@ -14,7 +14,7 @@ tags: ["AI 原生开发", "Coding Agent", "软件工程", "质量控制"]
 featured: false
 order: 6
 author: "Kane"
-cover: "/assets/blog/ai-native-from-design-to-running/cover.webp"
+cover: "/assets/blog/ai-native-from-design-to-running/cover-1db2966760.webp"
 coverAlt: "设计原型经过小步构建成为可运行产品"
 ---
 

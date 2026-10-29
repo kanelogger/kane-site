@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { imageSize } from 'image-size';
 import { gzipSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
 
 const root = resolve('dist');
@@ -24,8 +25,11 @@ function verifyCover(file, html, meta, data, kind) {
   assert.equal(coverTags[0].width, '1200');
   assert.equal(coverTags[0].height, '900');
   assert.equal(coverTags[0].loading, 'eager');
-  const size = imageSize(readFileSync(join(root, data.cover)));
+  const coverBytes = readFileSync(join(root, data.cover));
+  const size = imageSize(coverBytes);
   assert.deepEqual([size.type, size.width, size.height], ['webp', 1200, 900]);
+  const fingerprint = createHash('sha256').update(coverBytes).digest('hex').slice(0, 10);
+  assert(data.cover.endsWith(`/cover-${fingerprint}.webp`), `${file}: cover filename must match its content fingerprint`);
   return expectedCover;
 }
 

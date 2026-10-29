@@ -12,7 +12,7 @@ cardDescription: "A macOS menu-bar utility for several AI coding services. It su
 year: 2026
 role: "Product design, Swift architecture and development, multi-platform probes, testing, and release engineering"
 tags: ["Swift", "macOS", "SwiftUI", "AppKit", "Developer Tools"]
-cover: "/assets/projects/quota-bar/cover.webp"
+cover: "/assets/projects/quota-bar/cover-da91d8361d.webp"
 coverAlt: "Four independent quota indicators feed a menu bar that highlights the tightest metric"
 featured: true
 order: 2

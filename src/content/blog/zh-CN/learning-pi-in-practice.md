@@ -15,7 +15,7 @@ featured: true
 order: 3
 author: "Kane"
 featuredOrder: 3
-cover: "/assets/blog/learning-pi-in-practice/cover.webp"
+cover: "/assets/blog/learning-pi-in-practice/cover-c26b81688e.webp"
 coverAlt: "从实际操作逐级走向扩展与架构理解"
 ---
 

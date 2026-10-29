@@ -12,7 +12,7 @@ cardDescription: "Store a Skill once. Skill Port uses a local Hub, explicit enab
 year: 2026
 role: "Product design, architecture, CLI, and Desktop development"
 tags: ["Agent Skills", "CLI", "Electron", "SQLite", "Developer Tools"]
-cover: "/assets/projects/skill-port/cover.webp"
+cover: "/assets/projects/skill-port/cover-f7d21f8cb6.webp"
 coverAlt: "One skill enabled from a local hub to project, terminal, and desktop destinations"
 featured: true
 order: 1

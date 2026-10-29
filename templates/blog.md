@@ -16,8 +16,9 @@ author: "Kane"
 # featured: true 时必须填写 featuredOrder；首页最多显示前 4 篇。
 # featuredOrder: 5
 # updatedAt: 2026-09-12
-cover: "/assets/blog/my-article/cover.webp"
+cover: "/assets/blog/my-article/cover-<content-hash>.webp"
 coverAlt: "简要描述封面所表达的文章主题"
+# content-hash 替换为最终文件 SHA-256 的前 10 位，图片变化时更新路径。
 # 封面须为本站托管的 1200×900（4:3）WebP，详情页自动显示，不在正文重复插入。
 ---
 

@@ -14,7 +14,7 @@ tags: ["AI 模型", "Jev", "Agent", "决策模型", "TypeSafe"]
 featured: false
 order: 0
 author: "Kane"
-cover: "/assets/blog/jev-agent-decision-model/cover.webp"
+cover: "/assets/blog/jev-agent-decision-model/cover-a6649cf22a.webp"
 coverAlt: "当前状态进入决策节点并选中一个有限输出"
 ---
 
