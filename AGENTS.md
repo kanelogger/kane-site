@@ -7,7 +7,7 @@ Kane 的中文个人站，展示 AI Coding Agent、Agent Harness、开发者工�
 - 修改前检查 `git status --short`，保护已有与并发改动；跨会话任务先从 [任务入口](tasks/README.md) 恢复，再用当前源码与检查复核旧记录。
 - 新 checkout、工具受限或环境变化时读取 [环境索引](AI_ENVIRONMENT.md)。Node 版本以 [.node-version](.node-version) 为准，pnpm 版本遵循 [package.json](package.json) 的 `packageManager`。
 - 安装：`pnpm install --frozen-lockfile`；自检：`pnpm agent:doctor`。未安装依赖或 pnpm 时可直接运行 `node scripts/agent-doctor.mjs` 获取诊断。
-- 页面、内容、配置或构建脚本变更后运行统一验证，它按顺序执行内容规则、类型检查、构建、产物检查、场景预算和回归检查，失败即停止：
+- 页面、内容、配置或构建脚本变更后运行统一验证，它按顺序执行内容规则、类型检查、构建、产物检查和回归检查，失败即停止：
 
   ```sh
   pnpm verify
@@ -44,7 +44,7 @@ Kane 的中文个人站，展示 AI Coding Agent、Agent Harness、开发者工�
 | CI 与发布差异 | [CI 与发布](docs/agent-environment/ci-parity.md) |
 | 内容字段与正文格式 | [内容 Schema](src/content.config.ts)、[文章模板](templates/blog.md)、[作品模板](templates/project.md) |
 | 站点文案、文章排序与日期 | [站点数据](src/data/site.ts)、[内容工具](src/lib/content.ts) |
-| 共用布局、视觉与动效 | [基础布局](src/layouts/BaseLayout.astro)、[全局样式](src/styles/global.css)、[动效生命周期](src/scripts/motion.ts) |
+| 共用布局、视觉与动效 | [基础布局](src/layouts/BaseLayout.astro)、[全局样式](src/styles/global.css)、[工作台交互](src/scripts/workshop.js) |
 | 主域名与构建配置 | [Astro 配置](astro.config.mjs) |
 | 构建与部署验收的具体范围 | [构建验证](scripts/verify-build.mjs)、[部署验证](scripts/verify-deployment.mjs) |
 

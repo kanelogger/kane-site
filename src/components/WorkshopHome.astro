@@ -1,0 +1,109 @@
+---
+import '../styles/workshop.css';
+import { getCollection } from 'astro:content';
+import { getDictionary, getLocalePath, type Locale } from '../lib/i18n';
+interface Props { locale?: Locale }
+const { locale = 'zh-CN' } = Astro.props;
+const en = locale === 'en';
+const dictionary = getDictionary(locale);
+const copy = dictionary.workshop;
+const projectCovers = new Map((await getCollection('projects', ({ data }) => data.locale === 'zh-CN')).map(({ data }) => [data.slug, data]));
+const localizedCovers = new Map((await getCollection('projects', ({ data }) => data.locale === locale)).map(({ data }) => [data.slug, data]));
+const coverAlt = (slug: string) => localizedCovers.get(slug)?.coverAlt ?? copy.skillsCoverAlt;
+const title = copy.title;
+const description = copy.description;
+const canonical = new URL(getLocalePath(locale, '/'), Astro.site!);
+const shareImage = new URL('/og.png', Astro.site!);
+const alternateLocale = en ? 'zh-CN' : 'en';
+const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native-development-system' : 'learning-pi-in-practice'];
+---
+<!doctype html>
+
+<html lang={locale} data-palette="garden">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dfe5d5">
+  <meta name="description" content={description}>
+  <title>{title}</title>
+  <link rel="canonical" href={canonical}>
+  <meta property="og:site_name" content="KANE">
+  <meta property="og:locale" content={en ? 'en_US' : 'zh_CN'}>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={shareImage}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={shareImage}>
+  <link rel="alternate" hreflang="zh-CN" href={new URL('/', Astro.site!)}>
+  <link rel="alternate" hreflang="en" href={new URL('/en', Astro.site!)}>
+  <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site!)}>
+  <link rel="alternate" type="application/rss+xml" title={en ? 'KANE writing' : 'KANE 的文章'} href={getLocalePath(locale, '/rss.xml')}>
+  <link rel="sitemap" href="/sitemap-index.xml">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script>import '../scripts/workshop.js';</script>
+</head>
+<body data-workshop-home>
+  <a class="skip" href="#main">{dictionary.common.skipToMain}</a>
+  <header class="site-header" data-tone="hero">
+    <div class="nav-wrap">
+      <a class="wordmark" href="#top" aria-label={copy.backToTop}><span class="brand-symbol" aria-hidden="true">k.</span><span>KANE<span class="wordmark-caption">{copy.caption}</span></span></a>
+      <nav aria-label={dictionary.nav.primary}><a href="#work">{dictionary.nav.work}</a><a href="#notes">{copy.notes}</a><a href="#about">{copy.about}</a></nav>
+      <div class="header-tools"><a class="apps-link" href={getLocalePath(locale, '/apps')} data-astro-reload>{dictionary.nav.apps}</a><a class="language-switch" href={getLocalePath(alternateLocale, '/')} lang={alternateLocale} hreflang={alternateLocale} data-astro-reload>{dictionary.nav.language}</a></div>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="hero" id="top" data-section-tone="hero" aria-labelledby="hero-title" data-screen-label={en ? 'Workshop hero' : '工作台首屏'}>
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> KANE’S DIGITAL WORKSHOP</p>
+          <h1 id="hero-title">{copy.heroTitle[0]}<br>{copy.heroTitle[1]}<span class="title-accent">{copy.heroTitle[2]}</span></h1>
+          <p class="intro">{copy.intro[0]}<br>{copy.intro[1]}{en ? ' ' : ''}<br class="desktop-break">{copy.intro[2]}</p>
+          <a class="button" href="#work">{copy.explore} <span aria-hidden="true">↗</span></a>
+          <div class="hero-topics"><span>AI Coding Agent</span><span>Harness</span><span>Developer Tools</span></div>
+        </div>
+        <figure class="workshop-scene">
+          <img src="/assets/workshop/workshop.png" width="1536" height="1024" alt={copy.sceneAlt} fetchpriority="high">
+          <figcaption><span class="figure-index">FIG. 01</span><span>{copy.sceneCaption}</span><span aria-hidden="true">↙</span></figcaption>
+        </figure>
+      </div>
+      <div class="hero-bottom shell"><span>{copy.heroBottom}</span><span class="mono">THINK → BUILD → VERIFY → REPEAT</span><a href="#work" aria-label={copy.scrollLabel}>{copy.scroll} <span aria-hidden="true">↓</span></a></div>
+    </section>
+
+    <section class="work section-space" id="work" data-section-tone="paper" aria-labelledby="work-title" data-screen-label={en ? 'Work' : '作品架'}>
+      <div class="shell">
+        <div class="section-heading"><div><p class="eyebrow">01 / THE TOOL SHED</p><h2 id="work-title">{copy.workTitle[0]}<br>{copy.workTitle[1]}</h2></div><p class="section-aside">{copy.workAside[0]}<br>{copy.workAside[1]}</p></div>
+        <article class="featured-project">
+          <a class="project-visual" href="https://github.com/kanelogger/SkillPort" aria-label={copy.viewSkillPort}><img src={projectCovers.get('skill-port')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt('skill-port')}></a>
+          <div class="project-copy"><div class="project-meta"><span>01 — SKILL MANAGEMENT</span><span>CLI + Desktop</span></div><h3>Skill Port<span class="little-star" aria-hidden="true">✳</span></h3><p class="project-lead">{copy.skillLead[0]}<br>{copy.skillLead[1]}</p><p>{copy.skillDescription}</p><a class="text-link" href="https://github.com/kanelogger/SkillPort">{copy.openProject} <span aria-hidden="true">↗</span></a></div>
+        </article>
+        <div class="project-pair">
+          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/QuotaBar" aria-label={copy.viewQuotaBar}><img src={projectCovers.get('quota-bar')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt('quota-bar')}></a><div class="project-meta"><span>02 — AT A GLANCE</span><span>macOS</span></div><h3><a href="https://github.com/kanelogger/QuotaBar">QuotaBar <span aria-hidden="true">↗</span></a></h3><p>{copy.quotaDescription}</p></article>
+          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/kane-skills" aria-label={copy.viewKaneSkills}><img src={projectCovers.get('kane-skills')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt('kane-skills')}></a><div class="project-meta"><span>03 — REUSABLE PRACTICE</span><span>Agent Skills</span></div><h3><a href="https://github.com/kanelogger/kane-skills">Kane Skills <span aria-hidden="true">↗</span></a></h3><p>{copy.skillsDescription}</p></article>
+        </div>
+        <a class="all-work text-link" href="https://github.com/kanelogger?tab=repositories">{copy.moreWork} <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="notes section-space" id="notes" data-section-tone="forest" aria-labelledby="notes-title" data-screen-label={en ? 'Field notes' : '工程手记'}>
+      <div class="shell notes-layout">
+        <div class="notes-intro"><p class="eyebrow">02 / FIELD NOTES</p><h2 id="notes-title">{copy.notesTitle[0]}<br>{copy.notesTitle[1]}</h2><p>{copy.notesIntro[0]}<br>{copy.notesIntro[1]}</p><span class="margin-note">{copy.marginNote}<span aria-hidden="true">↘</span></span></div>
+        <div class="note-list">
+          {noteSlugs.map((slug, index) => <a class="note" href={getLocalePath(locale, `/writing/${slug}`)}><span class="note-category">{copy.noteCategories[index]}</span><h3>{copy.noteTitles[index][0]}<br>{copy.noteTitles[index][1]}</h3><span class="note-bottom">{copy.noteDescriptions[index]}<span aria-hidden="true">↗</span></span></a>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="about section-space" id="about" data-section-tone="paper" aria-labelledby="about-title" data-screen-label={copy.aboutTitle}>
+      <div class="shell about-layout"><div><p class="eyebrow">03 / THE MAKER</p><h2 id="about-title">{copy.aboutTitle}</h2><p class="about-english" lang="en">Always a work in progress.</p></div><div class="about-copy"><p>{copy.aboutParagraphs[0]}<br>{copy.aboutParagraphs[1]}</p><p>{copy.aboutParagraphs[2]}</p><a class="text-link" href="mailto:huakanelogger@gmail.com">{copy.email} <span aria-hidden="true">↗</span></a></div></div>
+    </section>
+  </main>
+  <footer><div class="shell footer-top"><a class="footer-brand" href="#top">kane<span>.</span></a><p>{copy.footerTagline}</p><div class="footer-links"><a href="https://github.com/kanelogger">GitHub ↗</a><a href="https://x.com/kanelogger">X ↗</a><a href="mailto:huakanelogger@gmail.com">Email ↗</a></div></div><div class="shell footer-bottom"><span>© 2026 Kane</span><span>THE WORKSHOP</span><a href="#top">{dictionary.footer.backToTop}</a></div></footer>
+
+  <details class="palette-panel" data-theme-control data-current-label={copy.paletteCurrent} hidden><summary><span aria-hidden="true">◐</span> {copy.paletteTitle}</summary><div class="palette-body"><p>{copy.paletteIntro}</p><div class="swatches" role="group" aria-label={copy.paletteLabel}><button type="button" data-theme="garden" aria-pressed="true"><span class="swatch garden"></span>{copy.palettes[0]}</button><button type="button" data-theme="blue" aria-pressed="false"><span class="swatch blue"></span>{copy.palettes[1]}</button><button type="button" data-theme="paper" aria-pressed="false"><span class="swatch paper"></span>{copy.palettes[2]}</button></div><p class="palette-caption">{copy.paletteCaption}</p><button class="palette-reset" type="button">{copy.paletteReset}</button><p class="palette-status" role="status" aria-live="polite">{copy.paletteCurrent}{copy.palettes[0]}</p></div></details>
+  <noscript><p class="noscript-note">{copy.noscript}</p></noscript>
+</body>
+</html>

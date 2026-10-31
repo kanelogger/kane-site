@@ -171,14 +171,103 @@ const en = {
     backToTop: 'Back to top ↑',
     signature: 'KANE / Engineering practice and tool design',
   },
-  sculpture: {
-    label: 'K brand sculpture made of three geometric structures',
-    caption: 'KANE · Digital Lab',
-    controls: 'K sculpture controls',
-    explode: 'Explode K',
-    rotate: 'Rotate',
-    solid: 'Show solid',
-    imageAlt: 'Green wireframe K sculpture on a technical drawing grid',
+  workshop: {
+    title: 'Kane’s Workshop — KANE',
+    description: 'Kane’s workshop for AI Coding Agents, Agent Harnesses, and developer tools.',
+    caption: 'Always a work in progress',
+    backToTop: 'Kane, back to top',
+    notes: 'Notes',
+    about: 'About',
+    heroTitle: [
+      'Make ideas real,',
+      'let useful tools ',
+      'take shape.'
+    ],
+    intro: [
+      'I’m Kane, a software engineer.',
+      'I study AI-native development and turn tested methods',
+      'into tools that help in real projects.'
+    ],
+    explore: 'Explore my work',
+    sceneAlt: 'A miniature workshop with a computer, chalkboard, and tool cabinet inside tiled-roof houses connected by copper pipes and paths.',
+    sceneCaption: 'From an idea to a tool that fits the job.',
+    heroBottom: 'Small tools. Lasting practice.',
+    scrollLabel: 'Scroll down to explore work',
+    scroll: 'Keep exploring',
+    workTitle: [
+      'On the workbench,',
+      'tools already taking shape.'
+    ],
+    workAside: [
+      'Start with a specific problem.',
+      'Make repeated work easier to do.'
+    ],
+    viewSkillPort: 'View Skill Port on GitHub',
+    skillLead: [
+      'One Skill.',
+      'Stored once.'
+    ],
+    skillDescription: 'Manage Agent Skills in a local Hub, then use the CLI and desktop app to enable the same skills across projects and agents.',
+    openProject: 'Open project',
+    viewQuotaBar: 'View QuotaBar on GitHub',
+    quotaDescription: 'See usage limits for multiple AI coding services in a macOS menu bar. Switch fewer windows and keep your attention on the work.',
+    viewKaneSkills: 'View Kane Skills on GitHub',
+    skillsDescription: 'Reusable Agent workflows for writing, verification, and engineering practice, organized as independent skills that can be inspected and improved.',
+    skillsCoverAlt: 'A reusable skills library with writing, verification, engineering, visual design, and delivery modules',
+    moreWork: 'More work on GitHub',
+    notesTitle: [
+      'After building,',
+      'leave a few notes.'
+    ],
+    notesIntro: [
+      'Notes on agent context, verification, and feedback,',
+      'and the questions worth returning to.'
+    ],
+    marginNote: 'Find answers through practice.',
+    noteCategories: [
+      'CONTEXT / PROJECT RECOVERY',
+      'VERIFICATION / BOUNDARIES',
+      'PRACTICE / AI-NATIVE DEVELOPMENT'
+    ],
+    noteTitles: [
+      [
+        'Without the chat history,',
+        'how does an agent recover a project?'
+      ],
+      [
+        'The faster the agent,',
+        'the more it needs hard gates.'
+      ],
+      [
+        'The AI-Native',
+        'Development System'
+      ]
+    ],
+    noteDescriptions: [
+      'Make the repository a recoverable working environment',
+      'Control risk with acceptance criteria and feedback loops',
+      'Connect facts, process, state, and experience in the repository'
+    ],
+    aboutTitle: 'Hi, I’m Kane.',
+    aboutParagraphs: [
+      'A software engineer focused on AI-native development.',
+      'I explore how agents recover context, respect boundaries, accept verification, and find useful feedback when things fail.',
+      'This site collects my tools, engineering practice, and ongoing research. If you’re exploring similar questions, let’s talk.'
+    ],
+    email: 'Send me an email',
+    footerTagline: 'Good tools take time to make.',
+    paletteTitle: 'Palette',
+    paletteIntro: 'Change the workshop atmosphere',
+    paletteLabel: 'Page palette',
+    palettes: [
+      'Sage',
+      'Sky blue',
+      'Warm paper'
+    ],
+    paletteCaption: 'Illustrations keep their original colors.',
+    paletteReset: 'Restore default',
+    paletteCurrent: 'Current: ',
+    noscript: 'The default Sage palette is active. All content and links work without JavaScript.'
   },
   common: {
     skipToMain: 'Skip to main content',

@@ -15,7 +15,7 @@ const media = getMediaVariant(data.cover, locale);
 const imageSrc = media?.src ?? data.cover;
 const dimensions = imageSize(readFileSync(resolve('public', imageSrc.slice(1))));
 ---
-<article class="project" data-home-reveal>
+<article class="project">
   <a class="project-image-link" href={getLocalePath(locale, `/work/${slug}`)} aria-label={copy.content.viewProject(data.title)}>
     <img src={imageSrc} alt={media?.alt ?? data.coverAlt} width={dimensions.width} height={dimensions.height} loading="lazy" decoding="async" />
     <span class="image-arrow" aria-hidden="true">↗</span>

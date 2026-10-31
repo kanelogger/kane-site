@@ -171,14 +171,103 @@ const zhCN = {
     backToTop: '回到顶部 ↑',
     signature: 'KANE / 工程实践与工具设计',
   },
-  sculpture: {
-    label: '由三块几何结构组成的 K 品牌雕塑',
-    caption: 'KANE · 数字实验室',
-    controls: '操作 K 雕塑',
-    explode: '拆解 K',
-    rotate: '转动',
-    solid: '显示实体',
-    imageAlt: '绿色线框 K 雕塑，置于技术制图网格上',
+  workshop: {
+    title: 'Kane 的工作台 — KANE',
+    description: 'Kane 的工作台：AI Coding Agent、Agent Harness 与开发者工具。',
+    caption: '一个持续搭建的工作台',
+    backToTop: 'Kane，回到顶部',
+    notes: '手记',
+    about: '关于',
+    heroTitle: [
+      '让想法落地，',
+      '让工具',
+      '长出来。'
+    ],
+    intro: [
+      '我是 Kane，软件工程师。',
+      '研究 AI 原生开发，把反复验证的方法，',
+      '做成能在真实项目里派上用场的工具。'
+    ],
+    explore: '逛逛我的作品',
+    sceneAlt: '微缩造物工作台：瓦顶小屋里的电脑、黑板与工具柜，由铜管和小径相连。',
+    sceneCaption: '从一个想法，到一件趁手的工具。',
+    heroBottom: '小工具，长实践。',
+    scrollLabel: '向下查看作品',
+    scroll: '往下逛',
+    workTitle: [
+      '工作台上，',
+      '已经做出来的东西。'
+    ],
+    workAside: [
+      '从一个具体问题开始，',
+      '让重复工作有更顺手的解法。'
+    ],
+    viewSkillPort: '在 GitHub 查看 Skill Port',
+    skillLead: [
+      '一份 Skill，',
+      '只保存一次。'
+    ],
+    skillDescription: '用一个本地 Hub 集中管理 Agent Skills，再通过 CLI 和 Desktop，把同一份技能启用到不同项目与 Agent。',
+    openProject: '打开项目',
+    viewQuotaBar: '在 GitHub 查看 QuotaBar',
+    quotaDescription: '把多个 AI 编程服务的额度状态，收进一个 macOS 菜单栏。少切几个窗口，多留一点注意力。',
+    viewKaneSkills: '在 GitHub 查看 Kane Skills',
+    skillsDescription: '把反复出现的 Agent 工作流整理成独立技能。让写作、核验与工程实践，可以被复用，也可以被检视。',
+    skillsCoverAlt: '装有写作、核验、工程、视觉与交付模块的可复用技能库',
+    moreWork: '去 GitHub 看更多作品',
+    notesTitle: [
+      '动手之后，',
+      '留下些笔记。'
+    ],
+    notesIntro: [
+      '记录 Agent 的上下文、验证与反馈，',
+      '也记录那些需要回头再想一遍的问题。'
+    ],
+    marginNote: '在实践里找答案。',
+    noteCategories: [
+      'CONTEXT / 项目上下文',
+      'VERIFICATION / 验证与边界',
+      'PRACTICE / 实践与工具'
+    ],
+    noteTitles: [
+      [
+        '没有历史对话，',
+        'Agent 如何恢复项目？'
+      ],
+      [
+        'Agent 越快，',
+        '越需要硬门禁。'
+      ],
+      [
+        '学 Pi 不是难，',
+        '是顺序搞反了。'
+      ]
+    ],
+    noteDescriptions: [
+      '把代码仓库变成可恢复的工作环境',
+      '用验收条件和反馈回路控制风险',
+      '从动手实践开始理解 Harness'
+    ],
+    aboutTitle: '你好，我是 Kane。',
+    aboutParagraphs: [
+      '一名专注 AI 原生开发的软件工程师。',
+      '我关心 Agent 如何在真实项目里恢复上下文、遵守边界、接受验证，并在失败时找到正确的反馈环节。',
+      '这个小站，收录我的工具、工程实践与长期研究。如果你也在探索这些问题，欢迎来聊聊。'
+    ],
+    email: '写封邮件给我',
+    footerTagline: '好工具，值得慢慢打磨。',
+    paletteTitle: '调色台',
+    paletteIntro: '换一种工作台的气氛',
+    paletteLabel: '页面配色',
+    palettes: [
+      '鼠尾草',
+      '晴空蓝',
+      '暖纸白'
+    ],
+    paletteCaption: '插图保留原色，比较页面配色。',
+    paletteReset: '恢复默认',
+    paletteCurrent: '当前：',
+    noscript: '当前为鼠尾草配色。所有正文和链接均可直接浏览。'
   },
   common: {
     skipToMain: '跳到主要内容',

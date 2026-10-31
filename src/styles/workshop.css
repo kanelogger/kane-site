@@ -7,21 +7,14 @@
 @media(max-width:760px){html{scroll-padding-top:85px}.shell{width:calc(100% - 40px)}.nav-wrap{width:calc(100% - 40px);min-height:76px;gap:16px}.wordmark{font-size:14px;gap:8px}.wordmark-caption{display:none}.brand-symbol{width:30px;height:33px;font-size:27px}nav{gap:10px}nav a{font-size:12px}.nav-contact{display:none}.hero{padding-top:33px}.hero-inner{display:flex;flex-direction:column;align-items:stretch;gap:7px;padding-bottom:26px;min-height:0}.hero-copy{padding-inline:6px}.hero h1{font-size:clamp(36px,8.8vw,56px);margin-top:24px;line-height:1.4}.intro{font-size:14px;margin-block:20px 24px}.eyebrow{font-size:9px}.hero-topics{margin-top:23px;font-size:9px}.workshop-scene{margin:0 -10px}.workshop-scene img{width:100%}.workshop-scene figcaption{margin-top:0;font-size:9px;gap:9px}.hero-bottom{padding-block:14px;font-size:10px;gap:12px}.hero-bottom .mono{display:none}.hero-bottom>a{gap:14px}.section-space{padding-block:66px}.section-heading{display:block;margin-bottom:30px}.section-aside{margin-top:20px;font-size:12px}h2{font-size:34px;margin-top:19px;line-height:1.45}.featured-project{display:flex;flex-direction:column;align-items:stretch;gap:24px;padding-block:20px 28px}.project-copy{padding:0 4px}.project-copy h3{margin-top:21px}.project-lead br{display:none}.project-lead{font-size:23px}.project-copy>p:not(.project-lead){max-width:none}.project-pair{grid-template-columns:1fr;gap:36px;margin-top:30px}.small-visual{margin-bottom:21px}.small-project>p{font-size:13px}.all-work{margin-top:31px}.notes-layout,.about-layout{grid-template-columns:1fr;gap:34px}.notes-intro{position:static}.margin-note{display:none}.notes-intro>p:not(.eyebrow){margin-top:20px}.note{padding-block:23px 27px}.note h3{font-size:27px}.about-copy{padding-top:0}.about-english{font-size:18px}.footer-top{flex-wrap:wrap;gap:16px;padding-bottom:30px}.footer-brand{font-size:50px}.footer-top>p{font-size:15px}.footer-links{width:100%;gap:25px}.footer-bottom{flex-wrap:wrap;padding-bottom:80px;font-size:9px;gap:16px}.footer-bottom>span:nth-child(2){display:none}.palette-panel{bottom:16px;right:16px}.palette-panel summary{min-height:44px;padding-inline:15px;font-size:11px}.desktop-break{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
-/* Both home designs use normal navigation and keep their styles independent. */
-.design-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 44px;
-  padding-inline: 14px;
-  border: 1px solid currentColor;
-  border-radius: 3px;
-  font-size: 12px;
-}
-.design-switch:hover { color: var(--accent); }
+/* Keep app and language navigation visible at every viewport width. */
+.header-tools { display: flex; align-items: center; gap: 24px; }
+.header-tools a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; font-size: 14px; }
+.header-tools a:hover { color: var(--accent); }
 @media (max-width: 760px) {
   html { scroll-padding-top: 140px; }
-  .nav-wrap { flex-wrap: wrap; padding-block: 10px; gap: 4px 16px; }
-  .design-switch { margin-left: auto; }
+  .nav-wrap { display: grid; grid-template-columns: 1fr auto; padding-block: 10px 4px; gap: 4px 16px; }
+  .nav-wrap nav { grid-column: 1 / -1; grid-row: 2; justify-content: space-between; }
+  .header-tools { gap: 16px; }
+  .header-tools a { font-size: 12px; }
 }

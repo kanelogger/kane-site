@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { imageSize } from 'image-size';
-import { gzipSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
 
@@ -160,25 +159,25 @@ for (const item of items) {
   assert(position > previousPosition, 'RSS order must match Writing');
   previousPosition = position;
 }
-// The prologue must never cover content in the server-rendered/no-JS page.
+// Home content is available immediately, with no entrance dialog or replay control.
 for (const route of ['index.html', 'en/index.html']) {
   const html = pages.get(join(root, route)).html;
-  const dialog = html.match(/<dialog\b[^>]*data-entrance[^>]*>/)?.[0];
-  assert(dialog, `${route}: missing entrance dialog`);
-  assert(!/\sopen(?:[\s=>])/.test(dialog), `${route}: entrance must be closed without JavaScript`);
-  assert.match(html, /<button\b[^>]*data-entrance-replay[^>]*\bhidden(?:[\s=>])/, `${route}: replay must be hidden without JavaScript`);
-  assert.match(html, /id="hero-title"[^>]*tabindex="-1"/, `${route}: missing entrance focus destination`);
+  assert.doesNotMatch(html, /\bdata-entrance(?:[\s=>]|-)/, `${route}: home must not include entrance UI`);
+  assert.match(html, /<h1\b[^>]*id="hero-title"/, `${route}: missing home heading`);
+  assert.match(html, /<body\b[^>]*\bdata-workshop-home(?:[\s=>])/, `${route}: home must use the workshop layout`);
+  assert.doesNotMatch(html, /\bdata-home(?:[\s=>])|\bdata-sculpture(?:[\s=>])|class="design-switch"/, `${route}: old home must be removed`);
+  const header = html.match(/<header\b[^>]*>[\s\S]*?<\/header>/)?.[0] ?? '';
+  const english = route.startsWith('en/');
+  const appPath = english ? '/en/apps' : '/apps';
+  const alternatePath = english ? '/' : '/en';
+  assert.match(header, new RegExp(`<a\\b[^>]*class="apps-link"[^>]*href="${appPath}"`), `${route}: missing home apps link`);
+  assert.match(header, new RegExp(`<a\\b[^>]*class="language-switch"[^>]*href="${alternatePath}"`), `${route}: missing home language switch`);
+  for (const id of ['work', 'notes', 'about']) {
+    assert(header.includes(`href="#${id}"`), `${route}: missing workshop navigation ${id}`);
+  }
 }
-const entrancePoster = readFileSync(join(root, 'assets/brand/entrance-filaments.svg'));
-assert(gzipSync(entrancePoster).length <= 40 * 1024, 'Entrance poster exceeds its 40 KiB gzip budget');
-console.log('Verified entrance no-JavaScript defaults, focus destination and static poster budget.');
-// Both designs must ship with real links, including in the no-JavaScript build.
-const originalHome = pages.get(join(root, 'index.html')).html;
-const workshopHome = pages.get(join(root, 'workshop/index.html'));
-assert(workshopHome, 'Workshop home route must be built');
-assert.match(originalHome, /<a\b[^>]*href="\/workshop"[^>]*data-astro-reload[^>]*>切换工作台设计/, 'Home must link to the workshop design');
-assert.match(workshopHome.html, /<a\b[^>]*class="design-switch"[^>]*href="\/"[^>]*data-astro-reload[^>]*>切换原版首页/, 'Workshop must link back to the original home');
-console.log('Verified both home designs and their no-JavaScript switch links.');
+assert(!pages.has(join(root, 'workshop/index.html')), 'Workshop must live at the home routes');
+console.log('Verified workshop home pages, apps links, language switches and section navigation without JavaScript.');
 const englishArticlePages = new Map([...pages].filter(([file]) => file.includes('/en/writing/')).map(([file, { html }]) => {
   const route = '/' + file.slice(root.length + 1).replace(/index\.html$/, '').replace(/\/$/, '');
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => { const attrs = attributes(tag); return [attrs.property ?? attrs.name, attrs.content]; }));

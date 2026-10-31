@@ -21,7 +21,7 @@ try {
 
   for (const [label, injection, expected] of [
     ['broken link', '<a href="/agent-test-missing-route">fixture</a>', 'missing /agent-test-missing-route'],
-    ['missing alt', '<img src="/assets/brand/entrance-filaments.svg" width="1000" height="1000">', 'image needs alt and dimensions'],
+    ['missing alt', '<img src="/favicon.svg" width="1000" height="1000">', 'image needs alt and dimensions'],
     ['missing image', '<img src="/assets/agent-test-missing.webp" alt="fixture" width="1" height="1">', 'missing /assets/agent-test-missing.webp'],
   ]) {
     await writeFile(index, html.replace('</body>', `${injection}</body>`));
@@ -31,25 +31,34 @@ try {
     console.log(`PASS: ${label} is rejected by the build verifier`);
   }
   await writeFile(index, html);
-  await writeFile(index, html.replace('<dialog ', '<dialog open '));
-  result = run();
-  assert.equal(result.status, 1, `server-open entrance must fail; ${result.stderr}`);
-  assert(result.stderr.includes('entrance must be closed without JavaScript'), result.stderr);
-  console.log('PASS: server-open entrance is rejected to protect no-JavaScript access');
-  await writeFile(index, html);
-  const workshopPath = join(fixture, 'dist/workshop/index.html');
-  const workshopHtml = await readFile(workshopPath, 'utf8');
-  for (const [label, path, source, from, expected] of [
-    ['workshop switch', index, html, 'href="/workshop"', 'Home must link to the workshop design'],
-    ['original home switch', workshopPath, workshopHtml, 'class="design-switch" href="/"', 'Workshop must link back to the original home'],
-  ]) {
-    assert(source.includes(from), `${label}: fixture must contain the real link`);
-    await writeFile(path, source.replace(from, from.replace(/href="[^"]+"/, 'href="/about"')));
-    result = run();
-    assert.equal(result.status, 1, `${label} must fail; ${result.stderr}`);
-    assert(result.stderr.includes(expected), result.stderr);
-    await writeFile(path, source);
-    console.log(`PASS: missing ${label} is rejected`);
+  for (const route of ['index.html', 'en/index.html']) {
+    const path = join(fixture, 'dist', route);
+    const source = await readFile(path, 'utf8');
+    for (const injection of ['<dialog data-entrance></dialog>', '<button data-entrance-replay>Replay intro</button>']) {
+      await writeFile(path, source.replace('</body>', `${injection}</body>`));
+      result = run();
+      assert.equal(result.status, 1, `${route}: entrance UI must fail; ${result.stderr}`);
+      assert(result.stderr.includes('home must not include entrance UI'), result.stderr);
+      await writeFile(path, source);
+    }
+    console.log(`PASS: ${route} rejects entrance dialog and replay control`);
+  }
+  for (const route of ['index.html', 'en/index.html']) {
+    const path = join(fixture, 'dist', route);
+    const source = await readFile(path, 'utf8');
+    for (const [label, from, to, expected] of [
+      ['apps link', 'class="apps-link"', 'class="removed-apps-link"', 'missing home apps link'],
+      ['language switch', 'class="language-switch"', 'class="removed-language-switch"', 'missing home language switch'],
+      ['workshop layout', 'data-workshop-home', 'data-old-home', 'home must use the workshop layout'],
+    ]) {
+      assert(source.includes(from), `${route}: fixture must contain ${from}`);
+      await writeFile(path, source.replace(from, to));
+      result = run();
+      assert.equal(result.status, 1, `${route}: missing ${label} must fail; ${result.stderr}`);
+      assert(result.stderr.includes(expected), result.stderr);
+      await writeFile(path, source);
+      console.log(`PASS: ${route} rejects missing ${label}`);
+    }
   }
   const projectPath = join(fixture, 'dist/work/kane-skills/index.html');
   const projectHtml = await readFile(projectPath, 'utf8');
