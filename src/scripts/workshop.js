@@ -1,4 +1,6 @@
 /* Core content and navigation work without JS. */
+import { initHeroPortrait } from './workshop-hero.js';
+
 let cleanup;
 
 function initWorkshop() {
@@ -8,9 +10,11 @@ function initWorkshop() {
   if (!panel) return;
   const controller = new AbortController();
   const { signal } = controller;
+  const cleanupHero = initHeroPortrait();
   let frame;
   cleanup = () => {
     controller.abort();
+    cleanupHero();
     if (frame !== undefined) cancelAnimationFrame(frame);
   };
   const root = document.documentElement;
@@ -21,7 +25,7 @@ function initWorkshop() {
     root.dataset.palette = palette;
     buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.theme === palette)));
     document.querySelector('.palette-status').textContent = `${panel.dataset.currentLabel}${palettes.get(palette)}`;
-    document.querySelector('meta[name="theme-color"]').content = getComputedStyle(root).getPropertyValue('--hero').trim();
+    document.querySelector('meta[name="theme-color"]').content = getComputedStyle(document.querySelector('.hero')).backgroundColor;
     try { localStorage.setItem('kane-workshop-palette', palette); } catch { /* Storage is optional. */ }
   };
   try { applyPalette(localStorage.getItem('kane-workshop-palette') || 'garden'); } catch { /* Keep default. */ }

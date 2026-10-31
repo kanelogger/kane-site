@@ -1,0 +1,99 @@
+---
+interface Props { label: string }
+const { label } = Astro.props;
+---
+
+<svg class="hero-portrait" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" width="200" height="220" role="img" aria-label={label}>
+  <g class="portrait-colour">
+    <path class="hood" d="M100 13C56 10 28 39 17 77C8 103 6 133 17 153C28 175 55 181 100 181C145 181 172 175 183 153C194 133 192 103 183 77C172 39 144 10 100 13Z"/>
+    <path class="hood-light" d="M23 96C36 47 65 24 100 22C136 22 165 49 177 96C162 66 133 48 100 49C66 48 38 66 23 96Z"/>
+    <path class="hood-inside" d="M24 136C24 100 37 73 59 59C81 45 119 45 141 59C163 73 176 100 176 136C178 161 151 174 100 175C49 174 22 161 24 136Z"/>
+    <path class="skin" d="M84 163L84 181Q100 193 116 181L116 163ZM40 113C22 106 20 127 29 138Q34 143 43 139M160 113C178 106 180 127 171 138Q166 143 157 139"/>
+    <path class="skin" d="M37 103C35 73 62 55 100 55C138 55 165 73 163 103L162 131C159 157 136 172 100 172C64 172 41 157 38 131Z"/>
+    <path class="hair" d="M38 108C30 85 42 64 59 57C78 48 125 48 143 61C160 72 168 89 162 108L156 91L149 83L146 89L137 72L126 70L128 76L112 67L104 72L92 70L82 69L70 76L63 70L47 89L44 108Z"/>
+    <ellipse class="eye-white" cx="68" cy="116" rx="22" ry="24"/>
+    <ellipse class="eye-white" cx="132" cy="116" rx="22" ry="24"/>
+    <ellipse class="cheek" cx="49" cy="143" rx="10" ry="5"/>
+    <ellipse class="cheek" cx="151" cy="143" rx="10" ry="5"/>
+    <path class="hood" d="M51 175C33 179 24 194 22 214H178C176 194 167 179 149 175L126 173L100 185L74 173Z"/>
+    <path class="hood-light" d="M51 175L72 169L100 185L81 193L62 184ZM100 185L128 169L149 175L138 184L119 193Z"/>
+    <path class="hood-shade" d="M33 195L37 214H22Q25 203 33 195M167 195L163 214H178Q175 203 167 195"/>
+    <path class="shirt" d="M90 180L100 185L110 180L105 190H95Z"/>
+  </g>
+  <g class="portrait-lines">
+    <path class="stroke" style="--order:0" pathLength="1" d="M100 13C56 10 28 39 17 77C8 103 6 133 17 153C24 167 39 174 57 177M100 13C144 10 172 39 183 77C192 103 194 133 183 153C176 167 161 174 143 177"/>
+    <path class="stroke fine" style="--order:1" pathLength="1" d="M24 136C24 100 37 73 59 59C81 45 119 45 141 59C163 73 176 100 176 136M99 20L98 29M98 34L98 39"/>
+    <path class="stroke" style="--order:2" pathLength="1" d="M38 108C30 85 42 64 59 57C78 48 125 48 143 61C160 72 168 89 162 108M44 108L47 89L63 70L70 76L82 69L92 70L104 72L112 67L128 76L126 70L137 72L146 89L149 83L156 91"/>
+    <path class="stroke" style="--order:3" pathLength="1" d="M38 131C41 157 64 172 100 172C136 172 159 157 162 131M39 114C22 106 20 127 29 138Q34 143 42 139M161 114C178 106 180 127 171 138Q166 143 158 139"/>
+    <path class="stroke brows" style="--order:4" pathLength="1" d="M54 88Q64 80 77 85M123 85Q136 80 146 88"/>
+    <path class="stroke glasses" style="--order:5" pathLength="1" d="M39 100C49 93 76 91 89 98C98 104 98 124 90 135C82 146 57 148 45 137C38 130 35 110 39 100ZM111 98C124 91 151 93 161 100C165 110 162 130 155 137C143 148 118 146 110 135C102 124 102 104 111 98ZM96 107Q100 104 104 107M30 101L38 104M162 104L170 101"/>
+    <path class="stroke eyes" style="--order:6" pathLength="1" d="M73 112L73 124M127 112L127 124"/>
+    <path class="stroke eye-sparkle" style="--order:7" pathLength="1" d="M76 110L76 110.1M130 110L130 110.1"/>
+    <path class="stroke fine" style="--order:7" pathLength="1" d="M99 139Q100 142 103 139M91 150Q100 157 109 150"/>
+    <path class="stroke" style="--order:8" pathLength="1" d="M22 214C24 194 33 179 51 175L72 169L100 185L128 169L149 175C167 179 176 194 178 214M51 175L62 184L81 193L100 185L119 193L138 184L149 175"/>
+    <path class="stroke fine" style="--order:9" pathLength="1" d="M36 201L38 214M164 201L162 214M69 210Q100 205 131 210"/>
+    <path class="stroke cord" style="--order:10" pathLength="1" d="M76 188L75 206M124 188L125 206"/>
+    <path class="stroke fine" style="--order:11" pathLength="1" d="M73 204L77 204L77 209L73 209ZM123 204L127 204L127 209L123 209Z"/>
+  </g>
+</svg>
+
+<style>
+  .hero-portrait {
+    --portrait-line: #342c28;
+    --portrait-hood: #9b7159;
+    --portrait-hood-light: #b58a6d;
+    --portrait-hood-shade: #87614e;
+    --portrait-hood-inside: #694e41;
+    --portrait-skin: #f2d2ae;
+    --portrait-hair: #38302b;
+    --portrait-cheek: #e89d7d;
+    --portrait-shirt: #f6efdc;
+    --portrait-eye-white: #fffdf7;
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .hood { fill: var(--portrait-hood); }
+  .hood-light { fill: var(--portrait-hood-light); }
+  .hood-shade { fill: var(--portrait-hood-shade); }
+  .hood-inside { fill: var(--portrait-hood-inside); }
+  .skin { fill: var(--portrait-skin); }
+  .hair { fill: var(--portrait-hair); }
+  .cheek { fill: var(--portrait-cheek); opacity: .44; }
+  .shirt { fill: var(--portrait-shirt); }
+  .eye-white { fill: var(--portrait-eye-white); }
+  .portrait-lines {
+    fill: none;
+    stroke: var(--portrait-line);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .fine { stroke-width: 1.5; }
+  .brows { stroke-width: 3.5; }
+  .glasses { stroke-width: 4.5; }
+  .eyes { stroke-width: 13; }
+  .eye-sparkle { stroke: var(--portrait-eye-white); stroke-width: 4.8; }
+  .cord { stroke: var(--portrait-shirt); stroke-width: 2.7; }
+  .stroke { stroke-dasharray: 1 2; stroke-dashoffset: 0; }
+  .hero-portrait[data-drawing] .stroke {
+    animation: portrait-line .46s ease-out both;
+    animation-delay: calc(var(--order) * .135s);
+  }
+  .hero-portrait[data-drawing] .portrait-colour {
+    animation: portrait-colour .65s ease-out 1.55s both;
+  }
+  @keyframes portrait-line {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes portrait-colour {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-portrait[data-drawing] .stroke,
+    .hero-portrait[data-drawing] .portrait-colour { animation: none; }
+  }
+</style>

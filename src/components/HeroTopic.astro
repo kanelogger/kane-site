@@ -1,0 +1,20 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  icon: 'agent' | 'harness' | 'tools';
+}
+const { href, label, icon } = Astro.props;
+---
+<a class="hero-topic" href={href}>
+  <span class="hero-topic-frame" aria-hidden="true">
+    <span class="hero-topic-icon">
+      <span class="hero-topic-corners"><i></i><i></i><i></i><i></i></span>
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        {icon === 'agent' && <><rect x="3.5" y="5.5" width="25" height="21" rx="3"/><path d="M4 11h24M9 16l4 3-4 3m8 0h6M8 8.3h.01m3 0h.01"/></>}
+        {icon === 'harness' && <><rect x="3.5" y="4.5" width="9" height="9" rx="2"/><rect x="19.5" y="18.5" width="9" height="9" rx="2"/><path d="M12.5 9H23a2 2 0 0 1 2 2v7.5M19.5 23H9a2 2 0 0 1-2-2v-7.5m14 2 4 3 3-4M4 17l3-3.5 4 3"/></>}
+        {icon === 'tools' && <path d="M20 5a7 7 0 0 0-8 9L4.5 21.5a3.5 3.5 0 0 0 5 5L17 19a7 7 0 0 0 9-8l-4 4-5-1-1-5 4-4ZM7 24h.01"/>}
+      </svg>
+    </span>
+  </span><span class="hero-topic-label">{label}<span class="hero-topic-wipe" aria-hidden="true">{label}</span></span>
+</a>

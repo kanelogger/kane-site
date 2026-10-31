@@ -1,5 +1,10 @@
 ---
 import '../styles/workshop.css';
+import '../styles/workshop-hero.css';
+import HeroPortrait from './HeroPortrait.astro';
+import HeroTopic from './HeroTopic.astro';
+import WorkshopScene from './WorkshopScene.astro';
+import WelcomeMascot from './WelcomeMascot.astro';
 import { getCollection } from 'astro:content';
 import { getDictionary, getLocalePath, type Locale } from '../lib/i18n';
 interface Props { locale?: Locale }
@@ -23,7 +28,7 @@ const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#dfe5d5">
+  <meta name="theme-color" content="#f0f0e5">
   <meta name="description" content={description}>
   <title>{title}</title>
   <link rel="canonical" href={canonical}>
@@ -58,17 +63,33 @@ const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native
   <main id="main" tabindex="-1">
     <section class="hero" id="top" data-section-tone="hero" aria-labelledby="hero-title" data-screen-label={en ? 'Workshop hero' : '工作台首屏'}>
       <div class="shell hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> KANE’S DIGITAL WORKSHOP</p>
-          <h1 id="hero-title">{copy.heroTitle[0]}<br>{copy.heroTitle[1]}<span class="title-accent">{copy.heroTitle[2]}</span></h1>
-          <p class="intro">{copy.intro[0]}<br>{copy.intro[1]}{en ? ' ' : ''}<br class="desktop-break">{copy.intro[2]}</p>
-          <a class="button" href="#work">{copy.explore} <span aria-hidden="true">↗</span></a>
-          <div class="hero-topics"><span>AI Coding Agent</span><span>Harness</span><span>Developer Tools</span></div>
+        <div class="hero-identity">
+          <div class="hero-avatar">
+            <HeroPortrait label={copy.portraitAlt} />
+          </div>
+          <div class="hero-greeting">
+            <p class="eyebrow">SOFTWARE ENGINEER · MAKER</p>
+            <h1 id="hero-title">{copy.heroGreeting}<span class="hero-name">Kane<span class="hero-period">.</span></span></h1>
+            <p class="hero-aside">{copy.heroAside}</p>
+          </div>
         </div>
-        <figure class="workshop-scene">
-          <img src="/assets/workshop/workshop.png" width="1536" height="1024" alt={copy.sceneAlt} fetchpriority="high">
-          <figcaption><span class="figure-index">FIG. 01</span><span>{copy.sceneCaption}</span><span aria-hidden="true">↙</span></figcaption>
-        </figure>
+        <p class="hero-statement">{copy.statementStart}<span class="hero-phrase"><HeroTopic href={getLocalePath(locale, '/writing/agent-project-recovery')} label="Coding Agent" icon="agent" />{copy.statementJoin}</span>{en ? ' ' : ''}<span class="hero-phrase"><HeroTopic href={getLocalePath(locale, '/writing/agent-hard-gates')} label="Agent Harness" icon="harness" />{copy.statementComma}</span>{copy.statementTools}<span class="hero-phrase"><HeroTopic href="#work" label={copy.toolsLabel} icon="tools" />{copy.statementPeriod}</span>{copy.statementEnd}<span class="hero-phrase">{copy.statementClosing}</span></p>
+        <div class="hero-actions">
+          <a class="hero-primary" href="#work">{copy.explore}<span aria-hidden="true">↗</span></a>
+          <a class="hero-secondary" href="#notes">{copy.readNotes}<span aria-hidden="true">↗</span></a>
+          <button class="hero-redraw" type="button" aria-label={copy.redrawLabel} hidden><span aria-hidden="true">↻</span> {copy.redraw}</button>
+        </div>
+        <div class="hero-scene">
+          <WorkshopScene label={copy.sceneAlt} />
+          <div class="workshop-welcome" aria-hidden="true">
+            <WelcomeMascot />
+            <div class="workshop-bubble">
+              <span class="bubble-eyebrow">SOFTWARE ENGINEER · MAKER</span>
+              <span class="bubble-greeting">{copy.heroGreeting}Kane<span class="hero-period">.</span></span>
+              <span class="bubble-aside">{copy.heroAside}</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="hero-bottom shell"><span>{copy.heroBottom}</span><span class="mono">THINK → BUILD → VERIFY → REPEAT</span><a href="#work" aria-label={copy.scrollLabel}>{copy.scroll} <span aria-hidden="true">↓</span></a></div>
     </section>

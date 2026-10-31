@@ -1,0 +1,103 @@
+---
+import HeroPortrait from './HeroPortrait.astro';
+---
+
+<div class="workshop-mascot" aria-hidden="true">
+  <div class="mascot-character">
+    <svg class="mascot-body" viewBox="0 0 260 330" width="260" height="330" aria-hidden="true" focusable="false">
+      <ellipse class="mascot-shadow" cx="130" cy="322" rx="78" ry="6"/>
+      <g class="mascot-clothes">
+        <path class="mascot-pants" d="M78 244H182L184 286L170 299H139L130 266L121 299H90L76 287Z"/>
+        <path class="mascot-pants-shade" d="M82 247L96 251L96 286L111 295L90 299L76 287ZM163 250L177 246L184 286L170 299L151 296L168 285Z"/>
+        <path class="mascot-seam" d="M130 249V263M90 284L116 287M144 287L171 283"/>
+
+        <g class="mascot-shoes">
+          <path class="mascot-shoe" d="M90 288L119 289L122 300Q130 306 129 315Q93 322 58 314L57 307Q60 296 90 288Z"/>
+          <path class="mascot-shoe-panel" d="M67 298L88 291L104 295L99 303L76 306Z"/>
+          <path class="mascot-sole" d="M58 307Q89 315 128 307L129 315Q93 322 58 314Z"/>
+          <path class="mascot-laces" d="M88 296L107 299M82 301L103 304"/>
+          <path class="mascot-shoe" d="M140 289L170 288Q200 296 203 308L202 315Q167 322 132 315Q130 306 138 300Z"/>
+          <path class="mascot-shoe-panel" d="M155 295L172 291L193 299L184 307L162 303Z"/>
+          <path class="mascot-sole" d="M133 307Q170 316 202 308V315Q167 322 132 315Z"/>
+          <path class="mascot-laces" d="M152 298L172 295M157 304L179 301"/>
+        </g>
+
+        <g class="mascot-arm mascot-arm-left">
+          <path class="mascot-hand" d="M23 194L15 185L9 180Q3 176 7 172Q9 170 19 175L12 165Q9 161 13 159Q15 159 25 171L22 160Q21 154 25 154Q28 154 31 171L33 162Q35 158 38 161Q40 162 36 181Q34 188 30 193Z"/>
+          <path class="mascot-hand-detail" d="M19 179Q24 179 29 185M25 175L30 179"/>
+          <path class="mascot-sleeve" d="M73 187Q62 178 53 186L39 195L26 187L15 201L37 219Q48 227 59 220L79 205Z"/>
+          <path class="mascot-cuff" d="M26 187L39 195L28 210L15 201Z"/>
+          <path class="mascot-seam" d="M41 211L57 204M24 198L29 193"/>
+        </g>
+
+        <g class="mascot-arm mascot-arm-right">
+          <path class="mascot-hand" d="M234 176L228 163Q217 161 220 154Q222 150 231 155L229 141Q228 136 232 136Q235 136 238 149L239 134Q239 129 243 130Q246 130 246 148L250 137Q252 132 255 135Q257 137 252 153L257 146Q259 142 262 145Q264 147 257 163Q255 170 249 177Z"/>
+          <path class="mascot-hand-detail" d="M233 157Q240 158 242 166M240 151L241 156M248 152L247 158"/>
+          <path class="mascot-sleeve" d="M188 185Q200 179 208 190L220 193L233 169L250 177L231 208Q225 217 214 216L192 207Z"/>
+          <path class="mascot-cuff" d="M233 168L250 176L245 186L227 177Z"/>
+          <path class="mascot-seam" d="M216 204L224 208M235 175L243 179"/>
+        </g>
+
+        <!-- Continue the existing portrait's hoodie below its uncropped lower edge. -->
+        <path class="mascot-hoodie" d="M54 205H206L199 239Q196 248 184 251H76Q64 248 61 239Z"/>
+        <path class="mascot-hoodie-shade" d="M55 206L68 207L72 237L85 246L76 251Q64 248 61 239ZM193 207L205 205L199 239Q196 248 184 251L174 246L188 236Z"/>
+        <path class="mascot-seam" d="M76 242Q130 247 184 242M98 218L90 233Q130 240 170 233L162 218"/>
+        <path class="mascot-pocket" d="M102 220Q130 223 158 220"/>
+      </g>
+    </svg>
+    <!-- Match the source portrait exactly: 200×220 inside the 260×330 figure. -->
+    <div class="mascot-face"><HeroPortrait label="" /></div>
+  </div>
+</div>
+
+<style>
+  .workshop-mascot {
+    --mascot-line: #342c28;
+    --mascot-hood: #9b7159;
+    --mascot-hood-shade: #87614e;
+    --mascot-cuff: #b58a6d;
+    --mascot-skin: #f2d2ae;
+    --mascot-pants: #69665f;
+    --mascot-pants-shade: #53524d;
+    --mascot-shoe: #ac8970;
+    --mascot-cream: #f6efdc;
+    --mascot-shadow: var(--ink);
+    width: 100%;
+    pointer-events: none;
+  }
+  .mascot-character { position: relative; width: 100%; aspect-ratio: 260 / 330; }
+  .mascot-body { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+  .mascot-face { position: absolute; top: 0; left: 11.5384615%; width: 76.9230769%; }
+  .mascot-shadow { fill: var(--mascot-shadow); opacity: .16; }
+  .mascot-clothes { stroke: var(--mascot-line); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .mascot-pants { fill: var(--mascot-pants); }
+  .mascot-pants-shade { fill: var(--mascot-pants-shade); stroke: none; }
+  .mascot-hand { fill: var(--mascot-skin); }
+  .mascot-hand-detail, .mascot-seam, .mascot-pocket { fill: none; stroke-width: 1.4; }
+  .mascot-sleeve, .mascot-hoodie { fill: var(--mascot-hood); }
+  .mascot-cuff { fill: var(--mascot-cuff); }
+  .mascot-hoodie-shade { fill: var(--mascot-hood-shade); stroke: none; }
+  .mascot-shoe { fill: var(--mascot-shoe); }
+  .mascot-shoe-panel, .mascot-sole { fill: var(--mascot-cream); }
+  .mascot-shoe-panel { stroke-width: 1.3; }
+  .mascot-laces { fill: none; stroke: var(--mascot-cream); stroke-width: 3.2; }
+  .mascot-arm { transform-box: view-box; }
+  .mascot-arm-left { transform-origin: 70px 195px; }
+  .mascot-arm-right { transform-origin: 192px 195px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.hero[data-mascot-state="welcome"]) .mascot-arm-left { animation: mascot-open .5s ease-out both; }
+    :global(.hero[data-mascot-state="welcome"]) .mascot-arm-right { animation: mascot-wave .9s ease-in-out both; }
+    @keyframes mascot-open {
+      from { transform: rotate(-14deg); }
+      to { transform: rotate(0); }
+    }
+    @keyframes mascot-wave {
+      0% { transform: rotate(8deg); }
+      25% { transform: rotate(-12deg); }
+      50% { transform: rotate(7deg); }
+      75% { transform: rotate(-7deg); }
+      100% { transform: rotate(0); }
+    }
+  }
+</style>

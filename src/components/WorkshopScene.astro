@@ -1,0 +1,67 @@
+---
+interface Props { label: string }
+const { label } = Astro.props;
+---
+
+<figure class="hero-workshop" aria-label={label}>
+  <img class="scene-image" src="/assets/workshop/workshop.png" width="1536" height="1024" alt={label} fetchpriority="high" decoding="async">
+  <!-- The drawing and source image share one coordinate system; neither moves during the reveal. -->
+  <svg class="scene-outline" viewBox="0 0 1536 1024" width="1536" height="1024" aria-hidden="true" focusable="false">
+    <g class="scene-structure">
+      <path class="scene-line" style="--delay:0s" pathLength="1" d="M542 291L782 200L1037 272L938 313L555 304ZM782 200L938 313M557 312L937 321L1018 291"/>
+      <path class="scene-line scene-fine" style="--delay:.06s" pathLength="1" d="M808 194V173L803 171V165L827 160L860 165V173L853 174V202M810 175L852 178M581 297L799 211M627 301L821 225M682 304L847 241M738 306L878 259M796 309L903 279M850 311L926 296"/>
+      <path class="scene-line" style="--delay:.18s" pathLength="1" d="M572 310L574 550L617 572L618 369Q631 316 650 326Q671 340 671 391V469M904 328L909 560L938 573L939 377Q938 327 961 327Q980 331 980 381V489M1009 301L1011 541L939 573"/>
+      <path class="scene-line scene-fine" style="--delay:.29s" pathLength="1" d="M709 327L899 334L902 466L710 459ZM781 350L796 352L796 363L781 362ZM743 372L754 373L754 385L742 384ZM778 376L799 377L799 389L777 388ZM741 406L760 407L760 420L741 419ZM777 433L793 434L793 444L777 443M788 363V376M748 385V398L788 400V389M750 420V428L784 430V433M810 402L823 403L823 417L810 416M788 400L816 401V403M840 381L864 370L888 382L887 407L863 418L840 406ZM840 381L864 393L888 382M864 393L863 418"/>
+      <path class="scene-line" style="--delay:.42s" pathLength="1" d="M620 472L687 466L902 478L908 492L694 487L620 483ZM635 485L632 550M893 491V552M654 494L653 534L676 535L677 494M698 429L746 426L750 463L703 467ZM702 467L693 472L749 478L759 470L749 463M706 434L741 432L744 458L707 460"/>
+      <path class="scene-line scene-fine" style="--delay:.52s" pathLength="1" d="M659 469L674 469M664 468V422L687 404M684 405L683 420L715 418L699 402L694 394M727 516Q757 507 788 516L791 523L726 523ZM732 523L724 567M782 523L790 572M750 525L749 562"/>
+      <path class="scene-line" style="--delay:.62s" pathLength="1" d="M495 578Q525 564 561 562L614 570L903 586L1019 553L1026 577L934 614L511 604ZM511 604V626M934 614V640M65 659Q98 639 181 636M65 659Q70 684 180 695L428 705L567 674M65 659L67 708Q72 744 181 753L428 775L569 731V676M1081 628L1171 639L1425 647Q1463 664 1425 681L1339 700L1136 678"/>
+      <path class="scene-line" style="--delay:.74s" pathLength="1" d="M354 424L462 419L494 432L492 530L462 544L352 531ZM354 424L462 436L492 432M462 436V544M353 473L463 483M352 506L462 515M409 480V539M378 489L394 490M429 494L446 496M371 518L389 520M428 525L444 527M1172 507L1308 512L1355 506L1354 633L1304 657L1168 643ZM1172 507L1169 585L1305 594L1308 512M1169 585L1305 594L1304 657M1237 591L1236 650M1184 609L1206 611M1254 614L1276 616"/>
+      <path class="scene-line scene-fine" style="--delay:.86s" pathLength="1" d="M190 568L282 558L308 567L213 582ZM191 576V664M299 574V609M212 583V670M285 624L315 617L340 628L314 640ZM285 624V679L314 694L340 679V628M314 640V694M1195 540L1209 537L1209 588M1215 536L1233 536L1231 590M1243 531L1270 532L1268 591M1276 533L1291 536L1287 592"/>
+      <path class="scene-line" style="--delay:.98s" pathLength="1" d="M741 616L852 630L838 649L722 635L712 650L828 663L814 680L695 667L688 681L801 696L784 710L669 697M731 783Q774 762 824 769L1054 811L1077 799V845L1048 874L779 827Q731 821 731 803ZM731 783V803M1048 827V874"/>
+    </g>
+    <g class="scene-pipes">
+      <path class="scene-line" style="--delay:.82s" pathLength="1" d="M471 402L470 272Q471 249 494 249L638 252M257 533V485Q257 467 277 465L304 461Q319 459 319 443V421Q320 400 339 401L414 406M220 747V697Q220 676 239 671L262 662M454 655L591 669Q613 673 613 697V727"/>
+      <path class="scene-line" style="--delay:.99s" pathLength="1" d="M1131 496V423Q1132 396 1157 397L1292 412Q1310 414 1314 436L1316 445Q1320 460 1337 462L1371 465Q1391 468 1391 490V598Q1391 622 1370 620L1308 612Q1283 609 1281 635V662"/>
+    </g>
+    <g class="scene-structure scene-fine">
+      <path class="scene-line" style="--delay:1.13s" pathLength="1" d="M148 657L148 563L127 537L118 501M148 564L171 533L182 496M145 548L150 496M1176 397L1179 360L1152 332L1138 291M1178 360L1212 332L1228 288M1177 347L1177 292M1189 351L1247 318M1183 341L1145 314"/>
+      <path class="scene-line" style="--delay:1.24s" pathLength="1" d="M85 510Q62 494 85 477Q75 452 102 449Q108 424 136 435Q157 410 177 434Q206 431 210 455Q238 462 218 485Q234 506 210 517Q199 542 170 532Q146 549 125 530Q101 538 85 510ZM1109 308Q1084 295 1098 274Q1082 253 1113 246Q1118 221 1143 232Q1160 212 1183 227Q1209 211 1228 234Q1257 226 1263 251Q1290 255 1278 279Q1300 300 1270 316Q1265 338 1233 327Q1210 347 1189 332Q1163 348 1144 328Q1114 334 1109 308Z"/>
+    </g>
+  </svg>
+</figure>
+
+<style>
+  .hero-workshop {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    min-width: 0;
+    margin: 0;
+    mix-blend-mode: multiply;
+    /* Fade only the surrounding ground; keep the house, shelves and garden crisp. */
+    mask-image: linear-gradient(to right, transparent, var(--ink) 6%, var(--ink) 94%, transparent), linear-gradient(to bottom, transparent, var(--ink) 13%, var(--ink) 86%, transparent);
+    mask-composite: intersect;
+  }
+  .scene-image { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .scene-outline { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+  .scene-structure, .scene-pipes { fill: none; stroke: var(--ink); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .scene-pipes { stroke: var(--accent); stroke-width: 4; }
+  .scene-fine { stroke-width: 2.4; }
+  .scene-line { stroke-dasharray: 1 2; stroke-dashoffset: 0; }
+  .hero-workshop[data-drawing] .scene-line { animation: scene-stroke .56s ease-out var(--delay) both; }
+  .hero-workshop[data-drawing] .scene-outline { animation: scene-outline-out 2.8s linear both; }
+  .hero-workshop[data-drawing] .scene-image { animation: scene-image-in 2.8s ease-in-out both; }
+  @keyframes scene-stroke { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes scene-outline-out { 0%, 65% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes scene-image-in { 0%, 65% { opacity: 0; } 100% { opacity: 1; } }
+  .hero-workshop[data-image-error] .scene-image { display: none; }
+  .hero-workshop[data-image-error] .scene-outline { opacity: 1; }
+  .hero-workshop[data-image-error] .scene-line { stroke-dashoffset: 0; }
+  .hero-workshop[data-image-error] .scene-image,
+  .hero-workshop[data-image-error] .scene-outline,
+  .hero-workshop[data-image-error] .scene-line { animation: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-workshop[data-drawing] .scene-image,
+    .hero-workshop[data-drawing] .scene-outline,
+    .hero-workshop[data-drawing] .scene-line { animation: none; }
+  }
+</style>
