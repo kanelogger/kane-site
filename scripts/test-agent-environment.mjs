@@ -22,7 +22,7 @@ function fixture(t) {
     cpSync(join(source, file), join(root, file));
   }
   // Include public link targets and package scripts, but no private docs or Skills.
-  for (const dir of ['src', 'scripts']) cpSync(join(source, dir), join(root, dir), { recursive: true });
+  for (const dir of ['src', 'scripts', 'templates']) cpSync(join(source, dir), join(root, dir), { recursive: true });
   cpSync(join(source, 'astro.config.mjs'), join(root, 'astro.config.mjs'));
   assert.equal(spawnSync('git', ['init', '--quiet'], { cwd: root }).status, 0);
   return root;
