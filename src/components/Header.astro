@@ -1,17 +1,23 @@
 ---
+import '../styles/site-header.css';
 import { getAlternateLocale, getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
-interface Props { locale?: Locale; alternateHref?: string; }
+interface Props { locale?: Locale; alternateHref?: string; home?: boolean; }
 const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
 const copy = getDictionary(locale);
-const links = [[copy.nav.work, '/work'], [copy.nav.writing, '/writing'], [copy.nav.notes, '/notes'], [copy.nav.apps, '/apps']];
+const home = Astro.props.home ?? false;
+const homePath = getLocalePath(locale, '/');
+const links = [[copy.nav.work, home ? '#work' : getLocalePath(locale, '/work')], [copy.nav.writing, home ? '#notes' : getLocalePath(locale, '/writing')], [copy.workshop.contactTitle, home ? '#contact' : `${homePath}#contact`]];
 const route = locale === 'en' && Astro.url.pathname.startsWith('/en') ? Astro.url.pathname.slice(3) || '/' : Astro.url.pathname;
 const alternateLocale = getAlternateLocale(locale);
 const alternateHref = Astro.props.alternateHref ?? getLocalePath(alternateLocale, route);
 ---
-<header class="site-header">
-  <div class="shell header-inner">
-    <a href={getLocalePath(locale, '/')} class="wordmark" aria-label="Kane"><span class="brand-symbol" aria-hidden="true">k.</span><span>KANELOGGER</span></a>
-    <nav aria-label={copy.nav.primary}>{links.map(([label, href]) => <a href={getLocalePath(locale, href)} aria-current={route.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav>
-    <a class="language-switch" href={alternateHref} lang={alternateLocale} hreflang={alternateLocale}>{copy.nav.language}</a>
+<header class="site-header" data-tone={home ? 'hero' : undefined}>
+  <div class="header-inner">
+    <a href={home ? '#top' : homePath} class="wordmark" aria-label={home ? copy.workshop.backToTop : copy.nav.backToHome}><span class="brand-symbol" aria-hidden="true">k.</span><span>KANELOGGER</span></a>
+    <nav aria-label={copy.nav.primary}>{links.map(([label, href]) => <a href={href} aria-current={!home && !href.includes('#') && Astro.url.pathname.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav>
+    <div class="header-tools">
+      <a href={getLocalePath(locale, '/notes')} data-astro-reload aria-current={route === '/notes' ? 'page' : undefined}>{copy.nav.notes}</a>
+      <a class="language-switch" href={alternateHref} data-astro-reload lang={alternateLocale} hreflang={alternateLocale}>{copy.nav.language}</a>
+    </div>
   </div>
 </header>

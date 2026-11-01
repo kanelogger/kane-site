@@ -1,18 +1,12 @@
 ---
-import ThemeControl from './ThemeControl.astro';
-import { getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
+import QuickLinks from './QuickLinks.astro';
+import { getDictionary, getLocaleFromPath, normalizeLocale, type Locale } from '../lib/i18n';
 interface Props { locale?: Locale; }
 const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
 const copy = getDictionary(locale);
 ---
 <footer class="site-footer">
   <div class="shell">
-    <nav class="footer-links" aria-label={copy.nav.contentNav}>
-      <a href={getLocalePath(locale, '/dashboard')}>{copy.nav.content}</a>
-      <a href={getLocalePath(locale, '/about')}>{copy.nav.about}</a>
-      <a href={getLocalePath(locale, '/rss.xml')}>{copy.footer.rss}</a>
-      <ThemeControl locale={locale} />
-    </nav>
-    <div class="footer-bottom"><span>© {new Date().getFullYear()} Kane</span><a href="#top">{copy.footer.backToTop}</a></div>
+    <div class="footer-bottom"><span>© {new Date().getFullYear()} Kane</span><QuickLinks locale={locale} /><a href="#top">{copy.footer.backToTop}</a></div>
   </div>
 </footer>

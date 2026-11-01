@@ -13,13 +13,57 @@ const title = en ? 'Notes' : '说说';
 const description = en ? 'Thoughts, everyday moments, and things I want to remember.' : '一些想法、日常，以及想留下的话。';
 ---
 <WorkspaceLayout title={title} description={description} active="notes" locale={locale}>
-  <header class="workspace-heading"><h1>{title}</h1><p>{description}</p></header>
-  <div class="notes-feed" data-notes-feed>
-    {entries.length ? entries.map((entry) => (
-      <article class="notes-entry" id={entry.id} aria-labelledby={`${entry.id}-date`}>
-        <h2 id={`${entry.id}-date`}><a href={`#${entry.id}`} aria-label={`${en ? 'Link to note' : '此条说说链接'}：${entry.label}`}><time datetime={entry.datetime}>{entry.label}</time></a></h2>
-        <div class="notes-body" lang="zh-CN" set:html={entry.html} />
-      </article>
-    )) : <p class="notes-empty">{en ? 'No notes yet.' : '还没有说说。'}</p>}
+  <div class="notes-page" data-notes>
+    <header class="workspace-heading notes-heading">
+      <div><h1>{title}</h1><p>{description}</p></div>
+      <span class="notes-index" aria-hidden="true">{en ? 'FIELD NOTES' : '日常手记'}</span>
+    </header>
+    <div class="notes-layout">
+    <form class="notes-search" data-notes-search hidden role="search" aria-label={en ? 'Search notes' : '搜索说说'}>
+      <label class="notes-query" for="notes-query">
+        <span>{en ? 'Keyword' : '关键词'}</span>
+        <input id="notes-query" name="q" type="search" placeholder={en ? 'Search thoughts and moments…' : '搜索想法、日常、只言片语…'} autocomplete="off" />
+      </label>
+      <div class="notes-calendar">
+        <p id="notes-calendar-label">{en ? 'Date range' : '日期区间'}</p>
+        <calendar-range locale={locale} first-day-of-week="1" aria-labelledby="notes-calendar-label" aria-describedby="notes-calendar-help" data-notes-calendar>
+          <span slot="previous" aria-label={en ? 'Previous month' : '上个月'}>‹</span>
+          <span slot="next" aria-label={en ? 'Next month' : '下个月'}>›</span>
+          <calendar-month></calendar-month>
+        </calendar-range>
+        <p id="notes-calendar-help" class="notes-calendar-help">{en ? 'Select a start date, then an end date.' : '先选开始日期，再选结束日期。'}</p>
+      </div>
+      <div class="notes-date-row">
+        <label for="notes-from"><span>{en ? 'From' : '开始日期'}</span><input id="notes-from" name="from" type="date" /></label>
+        <span class="notes-date-separator" aria-hidden="true">—</span>
+        <label for="notes-to"><span>{en ? 'To' : '结束日期'}</span><input id="notes-to" name="to" type="date" /></label>
+        <button type="button" class="notes-reset" data-notes-reset>{en ? 'Reset' : '重置'}</button>
+      </div>
+    </form>
+    <div class="notes-results">
+    <div class="notes-feed-heading">
+      <p data-notes-status role="status" aria-live="polite" aria-atomic="true">{en ? `${entries.length} notes` : `共 ${entries.length} 条`}</p>
+      <span>{en ? 'Newest first' : '由近及远'}</span>
+    </div>
+    <div class="notes-feed" data-notes-feed>
+      {entries.length ? entries.map((entry) => (
+        <article class="notes-entry" id={entry.id} data-note-date={entry.label.slice(0, 10)} aria-labelledby={`${entry.id}-date`}>
+          <h2 id={`${entry.id}-date`}><a href={`#${entry.id}`} aria-label={`${en ? 'Link to note' : '此条说说链接'}：${entry.label}`}>
+            <time datetime={entry.datetime}><span class="notes-year">{entry.label.slice(0, 4)}</span><span class="notes-day">{entry.label.slice(5, 10).replace('-', '.')}</span>{entry.label.includes(' ') && <span class="notes-time">{entry.label.slice(11)}</span>}</time>
+          </a></h2>
+          <div class="notes-body" lang="zh-CN" set:html={entry.html} />
+        </article>
+      )) : <p class="notes-empty">{en ? 'No notes yet.' : '还没有说说。'}</p>}
+    </div>
+    <div class="notes-no-results" data-notes-empty hidden>
+      <h2>{en ? 'No matching notes' : '没有找到相关说说'}</h2>
+      <p>{en ? 'Try another keyword or a wider date range.' : '换个关键词，或扩大日期范围再看看。'}</p>
+      <button type="button" class="notes-reset" data-notes-reset>{en ? 'Clear filters' : '清除筛选'}</button>
+    </div>
+    </div>
+    </div>
   </div>
+  <script>
+    import '../scripts/notes-search';
+  </script>
 </WorkspaceLayout>

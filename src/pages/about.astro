@@ -1,9 +1,0 @@
----
-import WorkspaceLayout from '../layouts/WorkspaceLayout.astro';
-import Contacts from '../components/Contacts.astro';
-import { site } from '../data/site';
----
-<WorkspaceLayout title="关于 Kane" description="我是 Kane，一名专注 AI 原生开发的 Software Engineer，关注 Coding Agent、Agent Harness 和开发者工具。" active="about">
-  <header class="workspace-heading"><div><h1>关于 Kane</h1></div></header>
-  <div class="workspace-about"><div class="workspace-about-copy">{site.about.map((paragraph) => <p>{paragraph}</p>)}<section class="workspace-about-contact" aria-labelledby="contact-heading"><h2 id="contact-heading">联系</h2><p>项目合作、技术交流或文章反馈，可以通过 GitHub 或 X 联系我。</p><Contacts detailed /></section></div></div>
-</WorkspaceLayout>

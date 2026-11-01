@@ -2,33 +2,12 @@
 
 @import './site-tokens.css';
 
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:104px}body{margin:0;color:var(--ink);background:var(--paper);font-family:var(--font);font-size:16px;-webkit-font-smoothing:antialiased}h1,h2,h3,p,figure{margin:0}p{line-height:1.85;text-wrap:pretty}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}img{display:block;max-width:100%;height:auto}button,a,summary{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:6px}::selection{background:#d9a77b;color:#1b2d24}.shell{width:min(var(--layout-max),calc(100% - 2 * var(--layout-gutter)));margin-inline:auto}.skip{position:fixed;top:-100px;left:16px;padding:15px;background:var(--paper);z-index:100}.skip:focus{top:12px}.site-header{position:sticky;top:0;background:var(--paper);z-index:20;border-bottom:1px solid transparent;transition:background .25s,color .25s}.site-header[data-tone="paper"]{background:var(--paper);border-color:var(--line)}.site-header[data-tone="forest"]{background:var(--forest);color:var(--light);border-color:#ffffff24}.nav-wrap{width:min(var(--layout-max),calc(100% - 2 * var(--layout-gutter)));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:28px;min-height:84px}.wordmark{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-weight:600;letter-spacing:.07em;font-size:18px}.brand-symbol{width:39px;height:42px;display:grid;place-items:center;background:var(--ink);color:var(--hero);font-family:var(--serif);font-size:33px;letter-spacing:-.09em;padding-right:4px}nav{display:flex;gap:38px}nav a,.nav-contact{min-height:44px;display:flex;align-items:center;gap:15px;font-size:14px}nav a{position:relative;min-width:44px;justify-content:center}nav a[aria-current="location"]:after{content:"";height:3px;width:14px;background:currentColor;position:absolute;bottom:1px;left:50%;transform:translateX(-50%)}.nav-contact{font-family:var(--mono);font-size:13px}.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;line-height:1.5;display:flex;align-items:center;gap:10px}.mono{font-family:var(--mono);font-size:10px;letter-spacing:.08em}.noscript-note{text-align:center;background:var(--paper);font-size:12px;padding:12px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:104px}body{margin:0;color:var(--ink);background:var(--paper);font-family:var(--font);font-size:16px;-webkit-font-smoothing:antialiased}h1,h2,h3,p,figure{margin:0}p{line-height:1.85;text-wrap:pretty}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}img{display:block;max-width:100%;height:auto}button,a,summary{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:6px}::selection{background:#d9a77b;color:#1b2d24}.shell{width:min(var(--layout-max),calc(100% - 2 * var(--layout-gutter)));margin-inline:auto}.skip{position:fixed;top:-100px;left:16px;padding:15px;background:var(--paper);z-index:100}.skip:focus{top:12px}.site-header{position:sticky;top:0;background:var(--paper);z-index:20;border-bottom:1px solid transparent;transition:background .25s,color .25s}.site-header[data-tone="paper"]{background:var(--paper);border-color:var(--line)}.site-header[data-tone="forest"]{background:var(--forest);color:var(--light);border-color:#ffffff24}.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;line-height:1.5;display:flex;align-items:center;gap:10px}.mono{font-family:var(--mono);font-size:10px;letter-spacing:.08em}.noscript-note{text-align:center;background:var(--paper);font-size:12px;padding:12px}
 
-@media(max-width:760px){html{scroll-padding-top:85px}.nav-wrap{min-height:76px;gap:16px}.wordmark{font-size:14px;gap:8px}.brand-symbol{width:30px;height:33px;font-size:27px}nav{gap:10px}nav a{font-size:12px}.nav-contact{display:none}.eyebrow{font-size:9px}}
+@media(max-width:760px){html{scroll-padding-top:85px}.eyebrow{font-size:9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
-/* Keep app and language navigation visible at every viewport width. */
-.site-header, .hero { --layout-max: 1080px; }
-.header-tools { display: flex; align-items: center; gap: 24px; }
-.header-tools a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; font-size: 14px; }
-.header-tools a:hover { color: var(--accent); }
-@media (max-width: 760px) {
-  .header-tools { gap: 8px; }
-  .header-tools a { font-size: 12px; }
-}
-
-@media (max-width: 480px) {
-  .nav-wrap { gap: 8px; min-height: 68px; }
-  .wordmark > span:last-child { display: none; }
-  .nav-wrap nav, .header-tools { gap: 4px; }
-}
-
-/* Keep all navigation targets usable on the narrowest phone screens. */
-@media (max-width: 380px) {
-  html { scroll-padding-top: 124px; }
-  .nav-wrap { flex-wrap: wrap; padding-block: 8px; }
-  .nav-wrap nav { order: 3; flex-basis: 100%; justify-content: center; }
-}
+.hero { --layout-max: 1080px; }
 
 /* A reading-width directory with matching cover layouts. */
 .section-space { padding-block: 56px 0; }
@@ -72,9 +51,10 @@
 .contact-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .project-entry:active h3, .note:active h3, .text-link:active, .contact-icon:active { color: var(--accent); }
 footer { background: var(--paper); color: var(--muted); }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 16px 72px; border-top: 1px solid var(--line); font: 11px/1.7 var(--mono); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px 72px; border-top: 1px solid var(--line); font: 11px/1.7 var(--mono); white-space: nowrap; }
 .footer-bottom a { display: inline-flex; align-items: center; min-height: 44px; }
 .footer-bottom a:hover { color: var(--accent); }
+.footer-apps-link { gap: 6px; margin-right: auto; }
 @media (max-width: 760px) {
   .section-space { padding-top: 44px; }
   .find-me { padding-bottom: 44px; }

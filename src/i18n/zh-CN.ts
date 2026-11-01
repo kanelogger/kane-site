@@ -5,7 +5,6 @@ const zhCN = {
     writing: '文章',
     notes: '说说',
     apps: '应用',
-    about: '关于 Kane',
     primary: '主导航',
     contentNav: '内容导航',
     backToHome: '返回品牌首页',
@@ -178,6 +177,7 @@ const zhCN = {
     toc: '本页目录',
   },
   footer: {
+    quickLinks: '常用链接',
     tagline: '保持好奇，持续构建。',
     rss: 'RSS 订阅',
     backToTop: '回到顶部 ↑',

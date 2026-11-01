@@ -1,6 +1,8 @@
 ---
 import '../styles/workshop.css';
 import '../styles/workshop-hero.css';
+import Header from './Header.astro';
+import QuickLinks from './QuickLinks.astro';
 import HeroPortrait from './HeroPortrait.astro';
 import ContactIcon from './ContactIcon.astro';
 import WorkshopScene from './WorkshopScene.astro';
@@ -60,13 +62,7 @@ const projects = [
 </head>
 <body data-workshop-home>
   <a class="skip" href="#main">{dictionary.common.skipToMain}</a>
-  <header class="site-header" data-tone="hero">
-    <div class="nav-wrap">
-      <a class="wordmark" href="#top" aria-label={copy.backToTop}><span class="brand-symbol" aria-hidden="true">k.</span><span>KANELOGGER</span></a>
-      <nav aria-label={dictionary.nav.primary}><a href="#work">{dictionary.nav.work}</a><a href="#notes">{dictionary.nav.writing}</a><a href={getLocalePath(locale, '/notes')} data-astro-reload>{dictionary.nav.notes}</a><a href="#contact">{copy.contactTitle}</a></nav>
-      <div class="header-tools"><a class="apps-link" href={getLocalePath(locale, '/apps')} data-astro-reload>{dictionary.nav.apps}</a><a class="language-switch" href={getLocalePath(alternateLocale, '/')} lang={alternateLocale} hreflang={alternateLocale} data-astro-reload>{dictionary.nav.language}</a></div>
-    </div>
-  </header>
+  <Header locale={locale} home alternateHref={getLocalePath(alternateLocale, '/')} />
   <main id="main" tabindex="-1">
     <section class="hero" id="top" data-section-tone="hero" aria-labelledby="hero-title" data-screen-label={en ? 'Workshop hero' : '工作台首屏'}>
       <div class="shell hero-inner">
@@ -172,7 +168,7 @@ const projects = [
       </div>
     </section>
   </main>
-  <footer><div class="shell footer-bottom"><span>© {new Date().getFullYear()} Kane</span><a href="#top">{dictionary.footer.backToTop}</a></div></footer>
+  <footer><div class="shell footer-bottom"><span>© {new Date().getFullYear()} Kane</span><QuickLinks locale={locale} /><a href="#top">{dictionary.footer.backToTop}</a></div></footer>
 
   <noscript><p class="noscript-note">{copy.noscript}</p></noscript>
 </body>

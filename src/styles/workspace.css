@@ -35,11 +35,6 @@
 .content-empty { padding: 48px 0; }
 .content-empty h2 { font-size: 22px; }
 .content-empty p { margin-block: 12px 24px; color: var(--muted); font-size: 15px; }
-.workspace-about { padding-top: 28px; border-top: 1px solid var(--line); }
-.workspace-about-copy p { margin-bottom: 24px; font-size: 16px; line-height: 1.95; }
-.workspace-about-contact { margin-top: 40px; }
-.workspace-about-contact h2 { font: 500 26px/1.5 var(--font-display); }
-.workspace-about-contact .contacts { margin-top: 16px; }
 @media (hover: hover) and (pointer: fine) {
   .content-row:hover h3 a { color: var(--accent); text-decoration-color: currentColor; }
   .content-clear:hover, .content-empty-clear:hover { border-color: var(--accent); }

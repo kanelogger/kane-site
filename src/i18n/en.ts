@@ -5,7 +5,6 @@ const en = {
     writing: 'Writing',
     notes: 'Notes',
     apps: 'Apps',
-    about: 'About Kane',
     primary: 'Primary navigation',
     contentNav: 'Content navigation',
     backToHome: 'Back to brand home',
@@ -178,6 +177,7 @@ const en = {
     toc: 'On this page',
   },
   footer: {
+    quickLinks: 'Quick links',
     tagline: 'Stay curious. Keep building.',
     rss: 'Subscribe via RSS',
     backToTop: 'Back to top ↑',

@@ -51,3 +51,23 @@ test('local images render with intrinsic sizes; remote, missing, undescribed and
     '![图片][photo]\n\n[photo]: https://example.com/test.webp',
   ]) await assert.rejects(renderNotes(`## 2026-11-01\n\n${body}`, root));
 });
+
+test('note search combines normalized keywords and inclusive Beijing date boundaries', async () => {
+  const { matchesNote } = await import('../src/scripts/notes-filter.mjs');
+  const text = 'GPT 与 Claude：今天的工作流';
+  assert.equal(matchesNote(text, '2026-11-01', { q: 'ｇｐｔ 工作流', from: '2026-11-01', to: '2026-11-01' }), true);
+  assert.equal(matchesNote(text, '2026-11-01', { q: 'Grok' }), false);
+  assert.equal(matchesNote(text, '2026-11-01', { from: '2026-11-02' }), false);
+  assert.equal(matchesNote(text, '2026-11-01', { to: '2026-10-31' }), false);
+  assert.equal(matchesNote(text, '2026-11-01', { q: '  ' }), true);
+  assert.equal(matchesNote(text, '2026-11-01', { q: 'GPT', to: '2026-10-31' }), false);
+});
+
+test('highlight ranges preserve original offsets, merge overlaps, and treat queries as literal text', async () => {
+  const { noteMatchRanges } = await import('../src/scripts/notes-filter.mjs');
+  assert.deepEqual(noteMatchRanges('GPT 与 gpt', 'gPt'), [[0, 3], [6, 9]]);
+  assert.deepEqual(noteMatchRanges('ＡＩ ﬁ e\u0301', 'ai fi é'), [[0, 2], [3, 4], [5, 7]]);
+  assert.deepEqual(noteMatchRanges('Claude', 'claude laud'), [[0, 6]]);
+  assert.deepEqual(noteMatchRanges('[GPT] <script>', '[GPT]'), [[0, 5]]);
+  assert.deepEqual(noteMatchRanges('正文', '  '), []);
+});

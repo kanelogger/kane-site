@@ -42,11 +42,21 @@ const canonicalUrls = new Set();
 const articlePages = new Map();
 for (const [file, { html }] of pages) {
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `${file}: expected exactly one h1`);
+  const siteHeader = html.match(/<header\b[^>]*class="site-header"[^>]*>[\s\S]*?<\/header>/)?.[0] ?? '';
+  assert.match(siteHeader, /<div class="header-inner">/, `${file}: must use shared home header layout`);
+  const primaryNav = siteHeader.match(/<nav\b[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
+  assert.equal((primaryNav.match(/<a\b/g) || []).length, 3, `${file}: header navigation must contain work, writing and contact`);
+  const headerTools = siteHeader.match(/<div class="header-tools">([\s\S]*?)<\/div>/)?.[1] ?? '';
+  const notesPath = file.startsWith(join(root, 'en') + '/') ? '/en/notes' : '/notes';
+  assert(headerTools.includes(`href="${notesPath}"`), `${file}: notes link must appear beside language switch`);
+  assert.equal((siteHeader.match(new RegExp(`href="${notesPath}"`, 'g')) || []).length, 1, `${file}: header must contain one notes link`);
+  const siteFooter = html.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0] ?? '';
+  const quickLinksPath = notesPath.replace('/notes', '/apps');
+  assert.match(siteFooter, new RegExp(`Kane</span><a class="footer-apps-link" href="${quickLinksPath}"[^>]*data-astro-reload><svg\\b[^>]*aria-hidden="true"`), `${file}: quick links must appear beside copyright with an icon`);
+  assert(siteFooter.includes(notesPath.startsWith('/en/') ? 'Quick links' : '常用链接'), `${file}: missing quick links label`);
   assert.doesNotMatch(html, /class="[^"]*\bfooter-top\b[^"]*"/, `${file}: redundant footer contact block must be removed`);
   assert.match(html, /<meta name="description" content="[^"]+"/);
-  if (file !== join(root, 'index.html') && file !== join(root, 'en/index.html')) {
-    assert.match(html, /\bdata-theme-control(?:\s|=|>)/, `${file}: missing theme control`);
-  }
+  assert.doesNotMatch(html, /class="[^"]*\bfooter-links\b[^"]*"/, `${file}: footer navigation must be removed`);
   assert(!/\/Users\/(?!yourname\/)/.test(html), `${file}: private source path leaked`);
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => {
     const attrs = attributes(tag);
@@ -173,7 +183,11 @@ for (const route of ['index.html', 'en/index.html']) {
   const english = route.startsWith('en/');
   const appPath = english ? '/en/apps' : '/apps';
   const alternatePath = english ? '/' : '/en';
-  assert.match(header, new RegExp(`<a\\b[^>]*class="apps-link"[^>]*href="${appPath}"`), `${route}: missing home apps link`);
+  assert.doesNotMatch(header, /href="(?:\/en)?\/apps"/, `${route}: apps link must not appear in header`);
+  const footer = html.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0] ?? '';
+  assert.match(footer, new RegExp(`<a\\b[^>]*class="footer-apps-link"[^>]*href="${appPath}"[^>]*data-astro-reload`), `${route}: missing home apps link`);
+  assert.match(footer, /class="footer-apps-link"[^>]*><svg\b[^>]*aria-hidden="true"/, `${route}: missing quick links icon`);
+  assert(footer.includes(english ? 'Quick links' : '常用链接'), `${route}: missing quick links label`);
   assert.match(header, new RegExp(`<a\\b[^>]*class="language-switch"[^>]*href="${alternatePath}"`), `${route}: missing home language switch`);
   for (const id of ['work', 'notes', 'contact']) {
     assert(header.includes(`href="#${id}"`), `${route}: missing workshop navigation ${id}`);

@@ -1,7 +1,7 @@
 ---
 import ThemeControl from './ThemeControl.astro';
 import defaultData from '../data/app-navigation-defaults.json';
-import { getAlternateLocale, getDictionary, getLocalePath, type Locale } from '../lib/i18n';
+import { getDictionary, type Locale } from '../lib/i18n';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/noto-sans-sc';
 import '../styles/apps-base.css';
@@ -10,7 +10,6 @@ import '../styles/app-navigation.css';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const copy = getDictionary(locale).apps;
-const alternateLocale = getAlternateLocale(locale);
 const starterApps = defaultData.apps.map((app) => ({
   id: app.id,
   name: app.name,
@@ -47,12 +46,9 @@ const bootstrap = JSON.stringify({ copy, starterApps, starterCategories: default
 <div class="apps-shell" data-app-navigation data-ready="false" aria-busy="true">
   <script is:inline type="application/json" data-app-navigation-bootstrap set:html={bootstrap}></script>
 
-  <header class="apps-topbar">
-    <div class="apps-topbar-inner">
-      <a class="apps-brand" href={getLocalePath(locale, '/')} aria-label="Kane">
-        <span class="apps-brand-mark" aria-hidden="true">k.</span>
-        <span class="apps-brand-copy"><strong>Kane</strong></span>
-      </a>
+  <div class="apps-toolbar">
+    <div class="apps-toolbar-inner">
+
       <div class="apps-header-actions">
         <button class="apps-action apps-action-primary" type="button" data-add-button data-app-enhancement aria-label={copy.add}><svg aria-hidden="true"><use href="#apps-icon-plus"></use></svg><span>{copy.add}</span></button>
         <div class="apps-data-control" data-app-enhancement>
@@ -67,10 +63,9 @@ const bootstrap = JSON.stringify({ copy, starterApps, starterCategories: default
           </div>
         </div>
         <ThemeControl locale={locale} />
-        <a class="apps-language" href={getLocalePath(alternateLocale, '/apps')} lang={alternateLocale} hreflang={alternateLocale}>{locale === 'en' ? '中' : 'EN'}</a>
       </div>
     </div>
-  </header>
+  </div>
 
   <div class="apps-workspace" id="workspace-content" tabindex="-1">
     <aside class="apps-category-panel" data-category-desktop data-app-enhancement>

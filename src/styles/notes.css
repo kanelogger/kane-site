@@ -1,7 +1,35 @@
+.workspace-content:has(.notes-page) { --layout-max: 1080px; }
+.notes-page { margin-inline: auto; }
+.notes-layout { display: grid; grid-template-columns: 352px minmax(0, 1fr); align-items: start; gap: 40px; }
+.notes-layout:has(.notes-search[hidden]) { grid-template-columns: minmax(0, 1fr); }
+.notes-results { min-width: 0; }
+.notes-heading { display: flex; justify-content: space-between; align-items: start; gap: 24px; margin-bottom: 32px; }
+.notes-index { padding-top: 14px; color: var(--muted); font: 11px/1.8 var(--font-mono); letter-spacing: .12em; }
+.notes-search { position: sticky; top: 108px; max-height: calc(100dvh - 128px); overflow-y: auto; padding: 22px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+.notes-search label { display: grid; gap: 8px; min-width: 0; }
+.notes-search label > span { color: var(--muted); font-size: 12px; }
+.notes-search input { width: 100%; min-width: 0; min-height: 44px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper); color: var(--ink); font: 15px/1.6 var(--font-body); }
+.notes-search input::placeholder { color: var(--muted); opacity: 1; }
+.notes-search input:focus-visible, .notes-reset:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.notes-search input[aria-invalid="true"] { border-color: var(--accent); }
+.notes-date-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 12px; margin-top: 18px; }
+.notes-date-row > .notes-reset { grid-column: 1 / -1; }
+.notes-date-separator { display: none; }
+.notes-reset { min-height: 44px; padding: 8px 14px; background: transparent; border: 1px solid var(--line); border-radius: 2px; color: var(--ink); font: 14px/1.6 var(--font-body); cursor: pointer; }
+.notes-reset:hover { border-color: var(--accent); color: var(--accent); }
+.notes-feed-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; min-height: 24px; padding-bottom: 12px; color: var(--muted); font-size: 12px; }
 .notes-feed { border-top: 1px solid var(--line); }
-.notes-entry { padding-block: 28px 32px; border-bottom: 1px solid var(--line); scroll-margin-top: 112px; }
-.notes-entry > h2 { margin-bottom: 14px; color: var(--muted); font: 12px/1.8 var(--font-mono); }
-.notes-entry > h2 a { display: inline-flex; align-items: center; min-height: 44px; }
+.notes-entry { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 28px; padding-block: 32px 40px; border-bottom: 1px solid var(--line); scroll-margin-top: 112px; }
+.notes-entry[hidden], .notes-search[hidden], .notes-no-results[hidden] { display: none; }
+.notes-entry > h2 { font-weight: 400; }
+.notes-entry > h2 a { display: block; min-height: 44px; }
+.notes-entry time { display: grid; gap: 4px; font-family: var(--font-mono); }
+.notes-year, .notes-time { color: var(--muted); font-size: 12px; line-height: 1.8; }
+.notes-day { color: var(--ink); font-size: 24px; line-height: 1.4; letter-spacing: -.05em; }
+.notes-entry > h2 a:hover .notes-day { color: var(--accent); }
+.notes-no-results { padding-block: 48px; text-align: center; border-bottom: 1px solid var(--line); }
+.notes-no-results h2 { font: 500 24px/1.5 var(--font-display); }
+.notes-no-results p { margin-block: 12px 24px; color: var(--muted); font-size: 14px; }
 .notes-body { font-size: 16px; line-height: 1.95; overflow-wrap: anywhere; }
 .notes-body > * + * { margin-top: 16px; }
 .notes-body a { color: var(--accent); text-decoration: underline; }
@@ -16,6 +44,44 @@
 .notes-body table { display: block; border-collapse: collapse; }
 .notes-body th, .notes-body td { padding: 8px 12px; border: 1px solid var(--line); }
 .notes-empty { padding-block: 36px; color: var(--muted); }
-@media (max-width: 520px) {
-  .notes-entry { padding-block: 20px 24px; }
+mark[data-note-highlight] { background: #efd49a; color: #253c31; border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+@media (max-width: 1000px) {
+  .notes-page { max-width: 624px; }
+  .notes-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .notes-search { position: static; max-height: none; overflow: visible; }
+
 }
+@media (max-width: 520px) {
+  .notes-index { display: none; }
+  .notes-heading { margin-bottom: 24px; }
+  .notes-search { padding: 16px; }
+  .notes-date-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+  .notes-date-separator { display: none; }
+  .notes-reset { grid-column: 1 / -1; }
+  .notes-entry { grid-template-columns: minmax(0, 1fr); gap: 16px; padding-block: 24px 28px; }
+  .notes-entry time { display: flex; align-items: baseline; gap: 10px; }
+  .notes-day { font-size: 20px; }
+  .notes-time { margin-left: auto; }
+}
+
+.notes-calendar { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.notes-calendar > p:first-child { margin-bottom: 8px; color: var(--muted); font-size: 12px; }
+.notes-calendar-help { margin-top: 10px; color: var(--muted); font-size: 12px; }
+.notes-calendar calendar-range { display: block; width: 100%; color: var(--ink); font-family: var(--font-body); }
+.notes-calendar calendar-range::part(header) { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.notes-calendar calendar-range::part(heading) { font-size: 14px; font-weight: 500; }
+.notes-calendar calendar-range::part(button) { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper); color: var(--ink); cursor: pointer; font-size: 24px; }
+.notes-calendar calendar-range::part(button):hover { border-color: var(--accent); color: var(--accent); }
+.notes-calendar calendar-range::part(button):focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.notes-calendar calendar-month { width: 100%; --color-accent: var(--accent); --color-text-on-accent: var(--accent-contrast); }
+.notes-calendar calendar-month::part(heading) { padding-block: 4px; color: var(--ink); font-size: 14px; font-weight: 500; }
+.notes-calendar calendar-month::part(table) { width: 100%; table-layout: fixed; }
+.notes-calendar calendar-month::part(th) { width: auto; height: 32px; color: var(--muted); font-size: 12px; font-weight: 400; }
+.notes-calendar calendar-month::part(button) { width: 100%; min-width: 0; height: 44px; border-radius: 2px; color: var(--ink); font: 13px/1 var(--font-mono); cursor: pointer; }
+.notes-calendar calendar-month::part(button):hover { background: var(--paper); outline: 1px solid var(--line); outline-offset: -1px; }
+.notes-calendar calendar-month::part(range-inner) { background: var(--paper); color: var(--accent); border-radius: 0; }
+.notes-calendar calendar-month::part(range-start), .notes-calendar calendar-month::part(range-end) { background: var(--accent); color: var(--accent-contrast); }
+.notes-calendar calendar-month::part(today) { text-decoration: underline; text-underline-offset: 5px; }
+.notes-calendar calendar-month::part(button):focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; background: var(--paper); color: var(--ink); }
+
+.notes-calendar calendar-month::part(range-start):hover, .notes-calendar calendar-month::part(range-end):hover { background: var(--accent); color: var(--accent-contrast); }

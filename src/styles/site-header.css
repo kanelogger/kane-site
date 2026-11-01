@@ -1,0 +1,28 @@
+.site-header { --layout-max: 1080px; font-family: var(--font); }
+.site-header .header-inner { width: min(var(--layout-max), calc(100% - 2 * var(--layout-gutter))); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 84px; }
+.site-header .wordmark { display: flex; align-items: center; gap: 12px; min-height: 44px; font: 600 18px/normal var(--mono); letter-spacing: .07em; text-decoration: none; }
+.site-header .brand-symbol { display: grid; place-items: center; width: 39px; height: 42px; padding-right: 4px; background: var(--ink); color: var(--hero); font: 400 33px/normal var(--serif); letter-spacing: -.09em; }
+.site-header nav { display: flex; gap: 38px; }
+.site-header .header-tools { display: flex; align-items: center; gap: 24px; }
+.site-header nav a, .site-header .header-tools a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; font-size: 14px; text-decoration: none; }
+.site-header a:hover { color: var(--accent); }
+.site-header a[aria-current] { color: inherit; text-decoration: none; }
+.site-header a[aria-current]::after { content: ''; position: absolute; bottom: 1px; left: 50%; width: 14px; height: 3px; background: currentColor; transform: translateX(-50%); }
+@media (max-width: 760px) {
+  .site-header .header-inner { min-height: 76px; gap: 16px; }
+  .site-header .wordmark { font-size: 14px; gap: 8px; }
+  .site-header .brand-symbol { width: 30px; height: 33px; font-size: 27px; }
+  .site-header nav { gap: 10px; }
+  .site-header .header-tools { gap: 8px; }
+  .site-header nav a, .site-header .header-tools a { font-size: 12px; }
+}
+@media (max-width: 480px) {
+  .site-header .header-inner { min-height: 68px; gap: 8px; }
+  .site-header .wordmark > span:last-child { display: none; }
+  .site-header nav, .site-header .header-tools { gap: 4px; }
+}
+@media (max-width: 380px) {
+  html { scroll-padding-top: 124px; }
+  .site-header .header-inner { flex-wrap: wrap; padding-block: 8px; }
+  .site-header nav { order: 3; flex-basis: 100%; justify-content: center; }
+}

@@ -74,7 +74,7 @@ try {
     const path = join(fixture, 'dist', route);
     const source = await readFile(path, 'utf8');
     for (const [label, from, to, expected] of [
-      ['apps link', 'class="apps-link"', 'class="removed-apps-link"', 'missing home apps link'],
+      ['apps link', 'class="footer-apps-link"', 'class="removed-apps-link"', 'quick links must appear beside copyright with an icon'],
       ['language switch', 'class="language-switch"', 'class="removed-language-switch"', 'missing home language switch'],
       ['workshop layout', 'data-workshop-home', 'data-old-home', 'home must use the workshop layout'],
     ]) {
