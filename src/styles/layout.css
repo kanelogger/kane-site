@@ -1,0 +1,11 @@
+/* Shared maximum content width across the site. */
+:root {
+  --layout-max: 624px;
+  --layout-gutter: 32px;
+  --layout-workspace-max: var(--layout-max);
+  --layout-apps-max: var(--layout-max);
+}
+
+@media (max-width: 760px) {
+  :root { --layout-gutter: 20px; }
+}

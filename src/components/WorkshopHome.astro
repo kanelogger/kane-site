@@ -6,6 +6,7 @@ import HeroTopic from './HeroTopic.astro';
 import WorkshopScene from './WorkshopScene.astro';
 import WelcomeMascot from './WelcomeMascot.astro';
 import { getCollection } from 'astro:content';
+import { site } from '../data/site';
 import { getDictionary, getLocalePath, type Locale } from '../lib/i18n';
 interface Props { locale?: Locale }
 const { locale = 'zh-CN' } = Astro.props;
@@ -56,7 +57,7 @@ const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native
   <header class="site-header" data-tone="hero">
     <div class="nav-wrap">
       <a class="wordmark" href="#top" aria-label={copy.backToTop}><span class="brand-symbol" aria-hidden="true">k.</span><span>KANE<span class="wordmark-caption">{copy.caption}</span></span></a>
-      <nav aria-label={dictionary.nav.primary}><a href="#work">{dictionary.nav.work}</a><a href="#notes">{copy.notes}</a><a href="#about">{copy.about}</a></nav>
+      <nav aria-label={dictionary.nav.primary}><a href="#work">{dictionary.nav.work}</a><a href="#notes">{copy.notes}</a><a href="#contact">{copy.contactTitle}</a></nav>
       <div class="header-tools"><a class="apps-link" href={getLocalePath(locale, '/apps')} data-astro-reload>{dictionary.nav.apps}</a><a class="language-switch" href={getLocalePath(alternateLocale, '/')} lang={alternateLocale} hreflang={alternateLocale} data-astro-reload>{dictionary.nav.language}</a></div>
     </div>
   </header>
@@ -73,7 +74,12 @@ const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native
             <p class="hero-aside">{copy.heroAside}</p>
           </div>
         </div>
-        <p class="hero-statement">{copy.statementStart}<span class="hero-phrase"><HeroTopic href={getLocalePath(locale, '/writing/agent-project-recovery')} label="Coding Agent" icon="agent" />{copy.statementJoin}</span>{en ? ' ' : ''}<span class="hero-phrase"><HeroTopic href={getLocalePath(locale, '/writing/agent-hard-gates')} label="Agent Harness" icon="harness" />{copy.statementComma}</span>{copy.statementTools}<span class="hero-phrase"><HeroTopic href="#work" label={copy.toolsLabel} icon="tools" />{copy.statementPeriod}</span>{copy.statementEnd}<span class="hero-phrase">{copy.statementClosing}</span></p>
+        <div class="hero-statement">
+          <p>{copy.statementExperience}</p>
+          <p>{copy.statementFocus}<HeroTopic href={getLocalePath(locale, '/writing/agent-hard-gates')} label="Agent Harness" icon="harness" />{copy.statementAgents}<HeroTopic href={getLocalePath(locale, '/writing/agent-project-recovery')} label="Coding Agent" icon="agent" />{copy.statementTools}<HeroTopic href="#work" label={copy.toolsLabel} icon="tools" />{copy.statementPeriod}</p>
+          <p>{copy.statementRecord}<a href={getLocalePath(locale, '/work')}>{copy.productsLabel}</a>{copy.statementInterests}</p>
+          <p>{copy.statementContact}<a href={site.contacts[0].href}>GitHub</a>{copy.statementSocialJoin}<a href={site.contacts[1].href}>X</a>{copy.statementEmailJoin}{copy.statementPeriod}</p>
+        </div>
         <div class="hero-actions">
           <a class="hero-primary" href="#work">{copy.explore}<span aria-hidden="true">↗</span></a>
           <a class="hero-secondary" href="#notes">{copy.readNotes}<span aria-hidden="true">↗</span></a>
@@ -118,11 +124,23 @@ const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native
       </div>
     </section>
 
-    <section class="about section-space" id="about" data-section-tone="paper" aria-labelledby="about-title" data-screen-label={copy.aboutTitle}>
-      <div class="shell about-layout"><div><p class="eyebrow">03 / THE MAKER</p><h2 id="about-title">{copy.aboutTitle}</h2><p class="about-english" lang="en">Always a work in progress.</p></div><div class="about-copy"><p>{copy.aboutParagraphs[0]}<br>{copy.aboutParagraphs[1]}</p><p>{copy.aboutParagraphs[2]}</p><a class="text-link" href="mailto:huakanelogger@gmail.com">{copy.email} <span aria-hidden="true">↗</span></a></div></div>
+    <section class="find-me section-space" id="contact" data-section-tone="paper" aria-labelledby="contact-title" data-screen-label={copy.contactTitle}>
+      <div class="shell contact-layout">
+        <div class="contact-intro"><p class="eyebrow">03 / FIND ME</p><h2 id="contact-title">{copy.contactTitle}</h2><p>{copy.contactIntro}</p></div>
+        <div class="contact-directory">
+          <ul class="contact-list">
+            {site.contacts.map((contact) => <li><a href={contact.href}><span class="contact-name">{contact.name}</span><span class="contact-handle">{contact.label}</span><span aria-hidden="true">↗</span></a></li>)}
+            <li><a href="https://weibo.com/u/2272877934"><span class="contact-name">{copy.weibo}</span><span class="contact-handle">weibo.com/u/2272877934</span><span aria-hidden="true">↗</span></a></li>
+          </ul>
+          <details class="contact-wechat">
+            <summary><span class="contact-name">{copy.wechat}</span><span class="contact-handle">GeekGuru</span><span class="contact-toggle" aria-hidden="true">+</span></summary>
+            <div class="contact-qr"><img src="/assets/contact/geekguru-qr.jpg" width="258" height="258" loading="lazy" decoding="async" alt={copy.wechatQrAlt}><p>{copy.wechatScan}</p></div>
+          </details>
+        </div>
+      </div>
     </section>
   </main>
-  <footer><div class="shell footer-top"><a class="footer-brand" href="#top">kane<span>.</span></a><p>{copy.footerTagline}</p><div class="footer-links"><a href="https://github.com/kanelogger">GitHub ↗</a><a href="https://x.com/kanelogger">X ↗</a><a href="mailto:huakanelogger@gmail.com">Email ↗</a></div></div><div class="shell footer-bottom"><span>© 2026 Kane</span><span>THE WORKSHOP</span><a href="#top">{dictionary.footer.backToTop}</a></div></footer>
+  <footer><div class="shell footer-bottom"><span>© {new Date().getFullYear()} Kane</span><span>THE WORKSHOP</span><a href="#top">{dictionary.footer.backToTop}</a></div></footer>
 
   <details class="palette-panel" data-theme-control data-current-label={copy.paletteCurrent} hidden><summary><span aria-hidden="true">◐</span> {copy.paletteTitle}</summary><div class="palette-body"><p>{copy.paletteIntro}</p><div class="swatches" role="group" aria-label={copy.paletteLabel}><button type="button" data-theme="garden" aria-pressed="true"><span class="swatch garden"></span>{copy.palettes[0]}</button><button type="button" data-theme="blue" aria-pressed="false"><span class="swatch blue"></span>{copy.palettes[1]}</button><button type="button" data-theme="paper" aria-pressed="false"><span class="swatch paper"></span>{copy.palettes[2]}</button></div><p class="palette-caption">{copy.paletteCaption}</p><button class="palette-reset" type="button">{copy.paletteReset}</button><p class="palette-status" role="status" aria-live="polite">{copy.paletteCurrent}{copy.palettes[0]}</p></div></details>
   <noscript><p class="noscript-note">{copy.noscript}</p></noscript>

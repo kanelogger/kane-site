@@ -46,6 +46,30 @@ try {
   for (const route of ['index.html', 'en/index.html']) {
     const path = join(fixture, 'dist', route);
     const source = await readFile(path, 'utf8');
+    const prefix = route.startsWith('en/') ? '/en' : '';
+    for (const [label, mutate, expected] of [
+      ['missing introduction paragraph', (html) => html.replace(/(<div\b[^>]*class="hero-statement"[^>]*>)\s*<p\b[^>]*>[\s\S]*?<\/p>/, '$1'), 'home introduction must retain four readable paragraphs'],
+      ['unlinked introduction keyword', (html) => html.replace(`href="${prefix}/writing/agent-hard-gates"`, 'href="#work"'), `missing introduction link ${prefix}/writing/agent-hard-gates`],
+      ['missing contact navigation', (html) => html.replace('href="#contact"', 'href="#notes"'), 'missing workshop navigation contact'],
+      ['old about section', (html) => html.replace('</main>', '<section id="about"></section></main>'), 'old about section must be removed'],
+      ['redundant footer contacts', (html) => html.replace('</footer>', '<div class="footer-top"></div></footer>'), 'redundant footer contact block must be removed'],
+      ['missing contact destination', (html) => html.replace('href="https://weibo.com/u/2272877934"', 'href="https://weibo.com/"'), 'missing contact destination https://weibo.com/u/2272877934'],
+      ['JavaScript-only WeChat contact', (html) => html.replace(/<summary\b[^>]*>[\s\S]*?GeekGuru[\s\S]*?<\/summary>/, ''), 'WeChat contact must work without JavaScript'],
+      ['missing WeChat QR', (html) => html.replace(/<img\b[^>]*src="\/assets\/contact\/[^"]+"[^>]*>/, ''), 'WeChat contact needs a local QR image'],
+    ]) {
+      const mutated = mutate(source);
+      assert.notEqual(mutated, source, `${route}: ${label} mutation must change fixture`);
+      await writeFile(path, mutated);
+      result = run();
+      assert.equal(result.status, 1, `${route}: ${label} must fail; ${result.stderr}`);
+      assert(result.stderr.includes(expected), result.stderr);
+      await writeFile(path, source);
+      console.log(`PASS: ${route} rejects ${label}`);
+    }
+  }
+  for (const route of ['index.html', 'en/index.html']) {
+    const path = join(fixture, 'dist', route);
+    const source = await readFile(path, 'utf8');
     for (const [label, from, to, expected] of [
       ['apps link', 'class="apps-link"', 'class="removed-apps-link"', 'missing home apps link'],
       ['language switch', 'class="language-switch"', 'class="removed-language-switch"', 'missing home language switch'],

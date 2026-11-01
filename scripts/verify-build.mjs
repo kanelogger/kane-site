@@ -42,6 +42,7 @@ const canonicalUrls = new Set();
 const articlePages = new Map();
 for (const [file, { html }] of pages) {
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `${file}: expected exactly one h1`);
+  assert.doesNotMatch(html, /class="[^"]*\bfooter-top\b[^"]*"/, `${file}: redundant footer contact block must be removed`);
   assert.match(html, /<meta name="description" content="[^"]+"/);
   assert.match(html, /\bdata-theme-control(?:\s|=|>)/, `${file}: missing theme control`);
   assert(!/\/Users\/(?!yourname\/)/.test(html), `${file}: private source path leaked`);
@@ -172,12 +173,36 @@ for (const route of ['index.html', 'en/index.html']) {
   const alternatePath = english ? '/' : '/en';
   assert.match(header, new RegExp(`<a\\b[^>]*class="apps-link"[^>]*href="${appPath}"`), `${route}: missing home apps link`);
   assert.match(header, new RegExp(`<a\\b[^>]*class="language-switch"[^>]*href="${alternatePath}"`), `${route}: missing home language switch`);
-  for (const id of ['work', 'notes', 'about']) {
+  for (const id of ['work', 'notes', 'contact']) {
     assert(header.includes(`href="#${id}"`), `${route}: missing workshop navigation ${id}`);
   }
+  assert.doesNotMatch(html, /<section\b[^>]*\bid="about"/, `${route}: old about section must be removed`);
+  const statement = html.match(/<div\b[^>]*class="hero-statement"[^>]*>([\s\S]*?)<\/div>/)?.[1] ?? '';
+  assert.equal((statement.match(/<p\b/g) || []).length, 4, `${route}: home introduction must retain four readable paragraphs`);
+  const prefix = english ? '/en' : '';
+  for (const href of [
+    `${prefix}/writing/agent-hard-gates`, `${prefix}/writing/agent-project-recovery`, '#work', `${prefix}/work`,
+    'https://github.com/kanelogger', 'https://x.com/kanelogger',
+  ]) {
+    assert(statement.includes(`href="${href}"`), `${route}: missing introduction link ${href}`);
+  }
+  const contact = html.match(/<section\b[^>]*\bid="contact"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+  assert(contact, `${route}: missing find-me section`);
+  for (const href of [
+    'https://github.com/kanelogger', 'https://x.com/kanelogger',
+    'https://weibo.com/u/2272877934',
+  ]) {
+    assert(contact.includes(`href="${href}"`), `${route}: missing contact destination ${href}`);
+  }
+  const wechat = contact.match(/<details\b[^>]*class="contact-wechat"[^>]*>([\s\S]*?)<\/details>/)?.[1] ?? '';
+  assert.match(wechat, /<summary\b[^>]*>[\s\S]*?GeekGuru[\s\S]*?<\/summary>/, `${route}: WeChat contact must work without JavaScript`);
+  const qr = attributes(wechat.match(/<img\b[^>]*>/)?.[0] ?? '');
+  assert(qr.src?.startsWith('/assets/contact/'), `${route}: WeChat contact needs a local QR image`);
+  const qrSize = imageSize(readFileSync(join(root, qr.src)));
+  assert.deepEqual([Number(qr.width), Number(qr.height)], [qrSize.width, qrSize.height], `${route}: QR dimensions must match its local image`);
 }
 assert(!pages.has(join(root, 'workshop/index.html')), 'Workshop must live at the home routes');
-console.log('Verified workshop home pages, apps links, language switches and section navigation without JavaScript.');
+console.log('Verified workshop home pages, introductions, contacts, apps links, language switches and section navigation without JavaScript.');
 const englishArticlePages = new Map([...pages].filter(([file]) => file.includes('/en/writing/')).map(([file, { html }]) => {
   const route = '/' + file.slice(root.length + 1).replace(/index\.html$/, '').replace(/\/$/, '');
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => { const attrs = attributes(tag); return [attrs.property ?? attrs.name, attrs.content]; }));

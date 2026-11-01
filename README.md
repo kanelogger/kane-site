@@ -23,6 +23,6 @@
 
 ## 找到我
 
-[关于我](https://kanelogger.com/about) · [GitHub](https://github.com/kanelogger) · [X](https://x.com/kanelogger) · [Email](mailto:huakanelogger@gmail.com)
+[关于我](https://kanelogger.com/about) · [GitHub](https://github.com/kanelogger) · [X](https://x.com/kanelogger)
 
 欢迎交流工具设计、Agent 工程实践，也欢迎对文章提出反馈。

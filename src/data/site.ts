@@ -10,8 +10,7 @@ export const site = {
   ],
   contacts: [
     { name: 'GitHub', label: 'github.com/kanelogger', href: 'https://github.com/kanelogger' },
-    { name: 'X', label: '@kanelogger', href: 'https://x.com/kanelogger' },
-    { name: 'Email', label: 'huakanelogger@gmail.com', href: 'mailto:huakanelogger@gmail.com' },
+    { name: 'X', label: '@kanelogger', href: 'https://x.com/kanelogger' }
   ],
 };
 

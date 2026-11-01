@@ -46,7 +46,9 @@ function initWorkshop() {
       header.getBoundingClientRect().bottom + 12,
       parseFloat(getComputedStyle(root).scrollPaddingTop) + 1,
     );
-    const current = [...sections].reverse().find((section) => section.getBoundingClientRect().top <= marker) || sections[0];
+    // The final section may be too short to reach the header's scroll marker.
+    const atBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight;
+    const current = atBottom ? sections.at(-1) : [...sections].reverse().find((section) => section.getBoundingClientRect().top <= marker) || sections[0];
     header.dataset.tone = current.dataset.sectionTone;
     navLinks.forEach((link) => {
       if (link.hash === `#${current.id}`) link.setAttribute('aria-current', 'location');
