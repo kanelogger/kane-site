@@ -174,7 +174,6 @@ const en = {
   workshop: {
     title: 'Kane’s Workshop — KANE',
     description: 'Kane’s workshop for AI Coding Agents, Agent Harnesses, and developer tools.',
-    caption: 'Consume deliberately. Take in information over affirmation.',
     backToTop: 'Kane, back to top',
     notes: 'Notes',
     heroGreeting: 'Hi, I’m ',
@@ -196,11 +195,8 @@ const en = {
     statementSocialJoin: ' or ',
     statementEmailJoin: ', or ',
     emailLabel: 'send me an email',
-    explore: 'Explore my work',
-    readNotes: 'Read field notes',
-    heroBottom: 'Small tools. Lasting practice.',
-    scrollLabel: 'Scroll down to explore work',
-    scroll: 'Keep exploring',
+    explore: 'Work',
+    readNotes: 'Articles',
     workTitle: [
       'On the workbench,',
       'tools already taking shape.'

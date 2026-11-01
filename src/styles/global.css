@@ -218,7 +218,6 @@ ul, ol { margin: 0; padding: 0; }
   .page-heading p { font-size: 15px; }
   .contacts.detailed a { font-size: 14px; }
   .contact-label { width: 100%; order: 3; }
-  .contacts.detailed a > span:last-child { margin-left: auto; }
   .detail-header { padding-block: 24px 36px; }
   .detail-header h1 { font-size: 29px; }
   .detail-description { margin-top: 20px; font-size: 16px; }

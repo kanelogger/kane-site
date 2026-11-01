@@ -44,7 +44,6 @@
 .content-row-copy { min-width: 0; }
 .content-row-copy h3 { margin: 0; font-size: 18px; line-height: 1.55; font-weight: 500; overflow-wrap: anywhere; }
 .content-row-copy h3 a { display: inline; }
-.content-row-copy h3 a span { display: inline-block; margin-left: 12px; color: var(--accent); font-family: var(--font-mono); font-size: 17px; }
 .content-project-row h3 { font-family: var(--font-mono); font-size: 21px; }
 .content-row-copy p { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.85; max-width: 64em; }
 .content-row-tags { display: flex; flex-wrap: wrap; gap: 6px 16px; list-style: none; padding: 0; margin: 8px 0 0; color: var(--accent); font-size: 12px; line-height: 1.7; }

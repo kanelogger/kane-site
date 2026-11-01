@@ -34,11 +34,11 @@ const links = [
         <ThemeControl locale={locale} />
         <a class="workspace-home-link" href={getLocalePath(locale, '/')}>↖ {copy.nav.backToHome}</a>
         <a class="workspace-language-link" href={getLocalePath(alternateLocale, Astro.url.pathname)}>{copy.nav.language}</a>
-        <div class="workspace-contacts">{site.contacts.map((contact) => <a href={contact.href}>{contact.name}<span aria-hidden="true">↗</span></a>)}</div>
+        <div class="workspace-contacts">{site.contacts.map((contact) => <a href={contact.href}>{contact.name}</a>)}</div>
       </div>
     </aside>
     <section class="workspace-content" id="workspace-content" tabindex="-1" data-workspace-scroll>
-      <div class="workspace-content-inner"><slot /><footer class="workspace-footer"><span>{copy.footer.signature}</span><a href={getLocalePath(locale, '/rss.xml')}>{copy.common.rss} ↗</a></footer></div>
+      <div class="workspace-content-inner"><slot /><footer class="workspace-footer"><span>{copy.footer.signature}</span><a href={getLocalePath(locale, '/rss.xml')}>{copy.common.rss}</a></footer></div>
     </section>
   </div>
 </BaseLayout>

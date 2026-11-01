@@ -174,7 +174,6 @@ const zhCN = {
   workshop: {
     title: 'Kane 的工作台 — KANE',
     description: 'Kane 的工作台：AI Coding Agent、Agent Harness 与开发者工具。',
-    caption: '一个持续搭建的工作台',
     backToTop: 'Kane，回到顶部',
     notes: '手记',
     heroGreeting: '你好，我是 ',
@@ -196,11 +195,8 @@ const zhCN = {
     statementSocialJoin: '、',
     statementEmailJoin: ' 找到我，或',
     emailLabel: '写信给我',
-    explore: '逛逛我的作品',
-    readNotes: '读读工程手记',
-    heroBottom: '小工具，长实践。',
-    scrollLabel: '向下查看作品',
-    scroll: '往下逛',
+    explore: '作品',
+    readNotes: '文章',
     workTitle: [
       '工作台上，',
       '已经做出来的东西。'
