@@ -44,7 +44,9 @@ for (const [file, { html }] of pages) {
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `${file}: expected exactly one h1`);
   assert.doesNotMatch(html, /class="[^"]*\bfooter-top\b[^"]*"/, `${file}: redundant footer contact block must be removed`);
   assert.match(html, /<meta name="description" content="[^"]+"/);
-  assert.match(html, /\bdata-theme-control(?:\s|=|>)/, `${file}: missing theme control`);
+  if (file !== join(root, 'index.html') && file !== join(root, 'en/index.html')) {
+    assert.match(html, /\bdata-theme-control(?:\s|=|>)/, `${file}: missing theme control`);
+  }
   assert(!/\/Users\/(?!yourname\/)/.test(html), `${file}: private source path leaked`);
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => {
     const attrs = attributes(tag);
@@ -181,10 +183,22 @@ for (const route of ['index.html', 'en/index.html']) {
   assert.equal((statement.match(/<p\b/g) || []).length, 4, `${route}: home introduction must retain four readable paragraphs`);
   const prefix = english ? '/en' : '';
   for (const href of [
-    `${prefix}/writing/agent-hard-gates`, `${prefix}/writing/agent-project-recovery`, '#work', `${prefix}/work`,
-    'https://github.com/kanelogger', 'https://x.com/kanelogger',
+    `${prefix}/work`, `${prefix}/writing`, '#contact',
   ]) {
     assert(statement.includes(`href="${href}"`), `${route}: missing introduction link ${href}`);
+  }
+  assert.doesNotMatch(html, /palette-panel|data-palette=|data-theme-control/, `${route}: home palette control must be removed`);
+  const projectEntries = [...html.matchAll(/<a\b[^>]*class="project-entry"[^>]*>/g)];
+  assert.equal(projectEntries.length, 3, `${route}: home must show three projects`);
+  for (const [index, slug] of ['skill-port', 'quota-bar', 'kane-skills'].entries()) {
+    const projectPrefix = english && slug !== 'kane-skills' ? '/en' : '';
+    assert.equal(attributes(projectEntries[index][0]).href, `${projectPrefix}/work/${slug}`, `${route}: project must link to its internal article`);
+  }
+  const notes = [...html.matchAll(/<a\b[^>]*class="note"[^>]*>([\s\S]*?)<\/a>/g)];
+  assert.equal(notes.length, 3, `${route}: home must show three notes`);
+  for (const [, note] of notes) {
+    const cover = attributes(note.match(/<img\b[^>]*class="note-cover"[^>]*>/)?.[0] ?? '');
+    assert(cover.src?.startsWith('/assets/blog/') && cover.alt, `${route}: note needs a local cover and alt text`);
   }
   const contact = html.match(/<section\b[^>]*\bid="contact"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
   assert(contact, `${route}: missing find-me section`);

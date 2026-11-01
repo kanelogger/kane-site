@@ -175,100 +175,50 @@ const zhCN = {
     title: 'Kane 的工作台 — KANE',
     description: 'Kane 的工作台：AI Coding Agent、Agent Harness 与开发者工具。',
     backToTop: 'Kane，回到顶部',
-    notes: '手记',
+    notes: '文章',
     heroGreeting: '你好，我是 ',
-    heroAside: '以代码，回应好奇心。',
     portraitAlt: 'Kane 的 Q 版头像：棕色连帽衫、黑框眼镜，圆脸、大眼睛，带着微笑。',
     redraw: '再画一次',
     redrawLabel: '重播描线、人物入场与欢迎动画',
     sceneAlt: '微缩造物工作台：瓦顶小屋里的电脑、黑板与工具柜，由铜管和小径相连。',
-    statementExperience: '我是一名软件开发者，也是一个喜欢把想法做成产品的人。我的经历从开发迭代 ERP 系统开始，做过前端，也做过后端，主要是上层应用。',
-    statementFocus: '现在，我把主要精力放在 ',
-    statementAgents: ' 上，也在尝试不同的 ',
-    statementTools: '，开发',
-    toolsLabel: '自己的工具',
-    statementPeriod: '。',
+    statementExperience: '我是一名软件开发者，也是一个喜欢把想法做成产品的人。',
+    statementFocus: '现在，我把主要精力放在开发小应用上。',
     statementRecord: '这里记录我',
-    productsLabel: '做过的产品',
-    statementInterests: '、关注的投资方向，以及技术之外那些让我保持好奇的东西。',
-    statementContact: '想聊关于开发和产品的话，欢迎在 ',
-    statementSocialJoin: '、',
-    statementEmailJoin: ' 找到我，或',
+    productsLabel: '做过的作品',
+    statementWritingJoin: '和',
+    articlesLabel: '平时写的文章',
+    statementPeriod: '。',
+    statementContact: '想聊关于开发和产品的话，欢迎',
+    contactLinkLabel: '联系我',
     emailLabel: '写信给我',
     explore: '作品',
     readNotes: '文章',
-    workTitle: [
-      '工作台上，',
-      '已经做出来的东西。'
-    ],
-    workAside: [
-      '从一个具体问题开始，',
-      '让重复工作有更顺手的解法。'
-    ],
-    viewSkillPort: '在 GitHub 查看 Skill Port',
-    skillLead: [
-      '一份 Skill，',
-      '只保存一次。'
-    ],
-    skillDescription: '用一个本地 Hub 集中管理 Agent Skills，再通过 CLI 和 Desktop，把同一份技能启用到不同项目与 Agent。',
-    openProject: '打开项目',
-    viewQuotaBar: '在 GitHub 查看 QuotaBar',
-    quotaDescription: '把多个 AI 编程服务的额度状态，收进一个 macOS 菜单栏。少切几个窗口，多留一点注意力。',
-    viewKaneSkills: '在 GitHub 查看 Kane Skills',
-    skillsDescription: '把反复出现的 Agent 工作流整理成独立技能。让写作、核验与工程实践，可以被复用，也可以被检视。',
-    skillsCoverAlt: '装有写作、核验、工程、视觉与交付模块的可复用技能库',
-    moreWork: '去 GitHub 看更多作品',
-    notesTitle: [
-      '动手之后，',
-      '留下些笔记。'
-    ],
-    notesIntro: [
-      '记录 Agent 的上下文、验证与反馈，',
-      '也记录那些需要回头再想一遍的问题。'
-    ],
-    marginNote: '在实践里找答案。',
-    noteCategories: [
-      'CONTEXT / 项目上下文',
-      'VERIFICATION / 验证与边界',
-      'PRACTICE / 实践与工具'
-    ],
-    noteTitles: [
-      [
-        '没有历史对话，',
-        'Agent 如何恢复项目？'
-      ],
-      [
-        'Agent 越快，',
-        '越需要硬门禁。'
-      ],
-      [
-        '学 Pi 不是难，',
-        '是顺序搞反了。'
-      ]
-    ],
+    workLabel: '在做',
+    workTitle: '工具与作品',
+    workIntro: '从日常开发里的具体问题出发，做一些自己也会用的工具。',
+    skillDescription: '集中管理本地 Agent Skills，通过命令行和桌面端，把同一份技能用到不同项目与 Agent。',
+    quotaDescription: '在 macOS 菜单栏查看多个 AI 编程服务的额度状态，少切几个窗口。',
+    skillsDescription: '把写作、核验和工程实践中的 Agent 工作流，整理成可以独立使用的技能。',
+    moreWork: '全部作品',
+    notesLabel: '在写',
+    notesTitle: '文章与笔记',
+    notesIntro: '记录使用 Coding Agent 的方法，以及动手之后的思考。',
     noteDescriptions: [
-      '把代码仓库变成可恢复的工作环境',
-      '用验收条件和反馈回路控制风险',
-      '从动手实践开始理解 Harness'
+      '把代码仓库变成可恢复的工作环境。',
+      '用验收条件和反馈回路控制风险。',
+      '从动手实践开始理解 Harness。'
     ],
+    moreNotes: '全部文章',
+    contactLabel: '联系',
+    contactAvatarAlt: 'Kane 的卡通头像，戴黑框眼镜和棕色兜帽',
+    contactSocials: '社交账号',
     contactTitle: '找到我',
     contactIntro: '关于开发、产品，或者一个有趣的想法，欢迎来聊。',
     weibo: '微博',
     wechat: '微信公众号',
     wechatScan: '用微信扫描二维码，关注 GeekGuru。',
     wechatQrAlt: '微信公众号 GeekGuru 的关注二维码',
-    paletteTitle: '调色台',
-    paletteIntro: '换一种工作台的气氛',
-    paletteLabel: '页面配色',
-    palettes: [
-      '鼠尾草',
-      '晴空蓝',
-      '暖纸白'
-    ],
-    paletteCaption: '插图保留原色，比较页面配色。',
-    paletteReset: '恢复默认',
-    paletteCurrent: '当前：',
-    noscript: '当前为鼠尾草配色。所有正文和链接均可直接浏览。'
+    noscript: '所有正文和链接均可直接浏览。'
   },
   common: {
     skipToMain: '跳到主要内容',

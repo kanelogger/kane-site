@@ -2,7 +2,7 @@
 import '../styles/workshop.css';
 import '../styles/workshop-hero.css';
 import HeroPortrait from './HeroPortrait.astro';
-import HeroTopic from './HeroTopic.astro';
+import ContactIcon from './ContactIcon.astro';
 import WorkshopScene from './WorkshopScene.astro';
 import WelcomeMascot from './WelcomeMascot.astro';
 import { getCollection } from 'astro:content';
@@ -15,21 +15,27 @@ const dictionary = getDictionary(locale);
 const copy = dictionary.workshop;
 const projectCovers = new Map((await getCollection('projects', ({ data }) => data.locale === 'zh-CN')).map(({ data }) => [data.slug, data]));
 const localizedCovers = new Map((await getCollection('projects', ({ data }) => data.locale === locale)).map(({ data }) => [data.slug, data]));
-const coverAlt = (slug: string) => localizedCovers.get(slug)?.coverAlt ?? copy.skillsCoverAlt;
+const coverAlt = (slug: string) => localizedCovers.get(slug)?.coverAlt ?? projectCovers.get(slug)!.coverAlt;
 const title = copy.title;
 const description = copy.description;
 const canonical = new URL(getLocalePath(locale, '/'), Astro.site!);
 const shareImage = new URL('/og.png', Astro.site!);
 const alternateLocale = en ? 'zh-CN' : 'en';
 const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native-development-system' : 'learning-pi-in-practice'];
+const articles = new Map((await getCollection('blog', ({ data }) => data.locale === locale)).map(({ data }) => [data.slug, data]));
+const projects = [
+  { slug: 'skill-port', platform: 'CLI + Desktop', description: copy.skillDescription },
+  { slug: 'quota-bar', platform: 'macOS', description: copy.quotaDescription },
+  { slug: 'kane-skills', platform: 'Agent Skills', description: copy.skillsDescription },
+];
 ---
 <!doctype html>
 
-<html lang={locale} data-palette="garden">
+<html lang={locale}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f0f0e5">
+  <meta name="theme-color" content="#f8f5ec">
   <meta name="description" content={description}>
   <title>{title}</title>
   <link rel="canonical" href={canonical}>
@@ -71,14 +77,13 @@ const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native
           <div class="hero-greeting">
             <p class="eyebrow">SOFTWARE ENGINEER · MAKER</p>
             <h1 id="hero-title">{copy.heroGreeting}<span class="hero-name">Kane<span class="hero-period">.</span></span></h1>
-            <p class="hero-aside">{copy.heroAside}</p>
           </div>
         </div>
         <div class="hero-statement">
           <p>{copy.statementExperience}</p>
-          <p>{copy.statementFocus}<HeroTopic href={getLocalePath(locale, '/writing/agent-hard-gates')} label="Agent Harness" icon="harness" />{copy.statementAgents}<HeroTopic href={getLocalePath(locale, '/writing/agent-project-recovery')} label="Coding Agent" icon="agent" />{copy.statementTools}<HeroTopic href="#work" label={copy.toolsLabel} icon="tools" />{copy.statementPeriod}</p>
-          <p>{copy.statementRecord}<a href={getLocalePath(locale, '/work')}>{copy.productsLabel}</a>{copy.statementInterests}</p>
-          <p>{copy.statementContact}<a href={site.contacts[0].href}>GitHub</a>{copy.statementSocialJoin}<a href={site.contacts[1].href}>X</a>{copy.statementEmailJoin}{copy.statementPeriod}</p>
+          <p>{copy.statementFocus}</p>
+          <p>{copy.statementRecord}<a href={getLocalePath(locale, '/work')}>{copy.productsLabel}</a>{copy.statementWritingJoin}<a href={getLocalePath(locale, '/writing')}>{copy.articlesLabel}</a>{copy.statementPeriod}</p>
+          <p>{copy.statementContact}<a href="#contact">{copy.contactLinkLabel}</a>{copy.statementPeriod}</p>
         </div>
         <div class="hero-actions">
           <a class="hero-primary" href="#work">{copy.explore}</a>
@@ -92,56 +97,83 @@ const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native
             <div class="workshop-bubble">
               <span class="bubble-eyebrow">SOFTWARE ENGINEER · MAKER</span>
               <span class="bubble-greeting">{copy.heroGreeting}Kane<span class="hero-period">.</span></span>
-              <span class="bubble-aside">{copy.heroAside}</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="work section-space" id="work" data-section-tone="paper" aria-labelledby="work-title" data-screen-label={en ? 'Work' : '作品架'}>
+    <section class="work section-space" id="work" data-section-tone="paper" aria-labelledby="work-title" data-screen-label={en ? 'Work' : '作品'}>
       <div class="shell">
-        <div class="section-heading"><div><p class="eyebrow">01 / THE TOOL SHED</p><h2 id="work-title">{copy.workTitle[0]}<br>{copy.workTitle[1]}</h2></div><p class="section-aside">{copy.workAside[0]}<br>{copy.workAside[1]}</p></div>
-        <article class="featured-project">
-          <a class="project-visual" href="https://github.com/kanelogger/SkillPort" aria-label={copy.viewSkillPort}><img src={projectCovers.get('skill-port')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt('skill-port')}></a>
-          <div class="project-copy"><div class="project-meta"><span>01 — SKILL MANAGEMENT</span><span>CLI + Desktop</span></div><h3>Skill Port<span class="little-star" aria-hidden="true">✳</span></h3><p class="project-lead">{copy.skillLead[0]}<br>{copy.skillLead[1]}</p><p>{copy.skillDescription}</p><a class="text-link" href="https://github.com/kanelogger/SkillPort">{copy.openProject}</a></div>
-        </article>
-        <div class="project-pair">
-          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/QuotaBar" aria-label={copy.viewQuotaBar}><img src={projectCovers.get('quota-bar')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt('quota-bar')}></a><div class="project-meta"><span>02 — AT A GLANCE</span><span>macOS</span></div><h3><a href="https://github.com/kanelogger/QuotaBar">QuotaBar</a></h3><p>{copy.quotaDescription}</p></article>
-          <article class="small-project"><a class="small-visual" href="https://github.com/kanelogger/kane-skills" aria-label={copy.viewKaneSkills}><img src={projectCovers.get('kane-skills')!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt('kane-skills')}></a><div class="project-meta"><span>03 — REUSABLE PRACTICE</span><span>Agent Skills</span></div><h3><a href="https://github.com/kanelogger/kane-skills">Kane Skills</a></h3><p>{copy.skillsDescription}</p></article>
+        <div class="section-heading">
+          <p class="section-label">{copy.workLabel}</p>
+          <h2 id="work-title">{copy.workTitle}</h2>
+          <p class="section-intro">{copy.workIntro}</p>
         </div>
-        <a class="all-work text-link" href="https://github.com/kanelogger?tab=repositories">{copy.moreWork}</a>
+        <ul class="project-list">
+          {projects.map(({ slug, platform, description }) => {
+            const project = projectCovers.get(slug)!;
+            return <li>
+              <a class="project-entry" href={getLocalePath(en && localizedCovers.get(slug)?.translationStatus !== 'reviewed' ? 'zh-CN' : locale, `/work/${slug}`)} aria-labelledby={`project-${slug}`}>
+                <div class="project-copy">
+                  <div class="project-heading"><h3 id={`project-${slug}`}>{project.title}</h3><span class="project-platform">{platform}</span></div>
+                  <p>{description}</p>
+                </div>
+                <img class="project-cover" src={project.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt(slug)}>
+              </a>
+            </li>;
+          })}
+        </ul>
+        <a class="text-link" href={getLocalePath(locale, '/work')}>{copy.moreWork}</a>
       </div>
     </section>
 
-    <section class="notes section-space" id="notes" data-section-tone="forest" aria-labelledby="notes-title" data-screen-label={en ? 'Field notes' : '工程手记'}>
-      <div class="shell notes-layout">
-        <div class="notes-intro"><p class="eyebrow">02 / FIELD NOTES</p><h2 id="notes-title">{copy.notesTitle[0]}<br>{copy.notesTitle[1]}</h2><p>{copy.notesIntro[0]}<br>{copy.notesIntro[1]}</p><span class="margin-note">{copy.marginNote}<span aria-hidden="true">↘</span></span></div>
-        <div class="note-list">
-          {noteSlugs.map((slug, index) => <a class="note" href={getLocalePath(locale, `/writing/${slug}`)}><span class="note-category">{copy.noteCategories[index]}</span><h3>{copy.noteTitles[index][0]}<br>{copy.noteTitles[index][1]}</h3><span class="note-bottom">{copy.noteDescriptions[index]}</span></a>)}
+    <section class="notes section-space" id="notes" data-section-tone="paper" aria-labelledby="notes-title" data-screen-label={en ? 'Articles' : '文章'}>
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-label">{copy.notesLabel}</p>
+          <h2 id="notes-title">{copy.notesTitle}</h2>
+          <p class="section-intro">{copy.notesIntro}</p>
         </div>
+        <ul class="note-list">
+          {noteSlugs.map((slug, index) => <li>
+            <a class="note" href={getLocalePath(locale, `/writing/${slug}`)} aria-labelledby={`note-${slug}`}>
+              <div class="note-copy">
+                <h3 id={`note-${slug}`}>{articles.get(slug)!.title}</h3>
+                <p>{copy.noteDescriptions[index]}</p>
+              </div>
+              <img class="note-cover" src={articles.get(slug)!.cover} width="1200" height="900" loading="lazy" decoding="async" alt={articles.get(slug)!.coverAlt}>
+            </a>
+          </li>)}
+        </ul>
+        <a class="text-link" href={getLocalePath(locale, '/writing')}>{copy.moreNotes}</a>
       </div>
     </section>
 
     <section class="find-me section-space" id="contact" data-section-tone="paper" aria-labelledby="contact-title" data-screen-label={copy.contactTitle}>
-      <div class="shell contact-layout">
-        <div class="contact-intro"><p class="eyebrow">03 / FIND ME</p><h2 id="contact-title">{copy.contactTitle}</h2><p>{copy.contactIntro}</p></div>
-        <div class="contact-directory">
-          <ul class="contact-list">
-            {site.contacts.map((contact) => <li><a href={contact.href}><span class="contact-name">{contact.name}</span><span class="contact-handle">{contact.label}</span></a></li>)}
-            <li><a href="https://weibo.com/u/2272877934"><span class="contact-name">{copy.weibo}</span><span class="contact-handle">weibo.com/u/2272877934</span></a></li>
-          </ul>
-          <details class="contact-wechat">
-            <summary><span class="contact-name">{copy.wechat}</span><span class="contact-handle">GeekGuru</span><span class="contact-toggle" aria-hidden="true">+</span></summary>
-            <div class="contact-qr"><img src="/assets/contact/geekguru-qr.jpg" width="258" height="258" loading="lazy" decoding="async" alt={copy.wechatQrAlt}><p>{copy.wechatScan}</p></div>
-          </details>
+      <div class="shell">
+        <div class="section-heading"><p class="section-label">{copy.contactLabel}</p><h2 id="contact-title">{copy.contactTitle}</h2><p class="section-intro">{copy.contactIntro}</p></div>
+        <div class="contact-identity">
+          <div class="contact-profile">
+            <img class="contact-avatar" src="/assets/contact/kane-avatar.jpg" width="940" height="940" loading="lazy" decoding="async" alt={copy.contactAvatarAlt}>
+            <p class="contact-identity-name">Kane <span>@kanelogger</span></p>
+          </div>
+          <div class="contact-socials" role="group" aria-label={copy.contactSocials}>
+            <div class="contact-links">
+              {site.contacts.map((contact, index) => <a class="contact-icon" href={contact.href} aria-label={`${contact.name} · @kanelogger`} title={`${contact.name} · @kanelogger`}><ContactIcon name={index === 0 ? 'github' : 'x'} /></a>)}
+              <a class="contact-icon" href="https://weibo.com/u/2272877934" aria-label={copy.weibo} title={copy.weibo}><ContactIcon name="sinaweibo" /></a>
+            </div>
+            <details class="contact-wechat">
+              <summary class="contact-icon" title={`${copy.wechat} · GeekGuru`}><ContactIcon name="wechat" /><span class="contact-sr-only">{copy.wechat} GeekGuru</span></summary>
+              <div class="contact-qr"><img src="/assets/contact/geekguru-qr.jpg" width="258" height="258" loading="lazy" decoding="async" alt={copy.wechatQrAlt}><p>{copy.wechatScan}</p></div>
+            </details>
+          </div>
         </div>
       </div>
     </section>
   </main>
-  <footer><div class="shell footer-bottom"><span>© {new Date().getFullYear()} Kane</span><span>THE WORKSHOP</span><a href="#top">{dictionary.footer.backToTop}</a></div></footer>
+  <footer><div class="shell footer-bottom"><span>© {new Date().getFullYear()} Kane</span><a href="#top">{dictionary.footer.backToTop}</a></div></footer>
 
-  <details class="palette-panel" data-theme-control data-current-label={copy.paletteCurrent} hidden><summary><span aria-hidden="true">◐</span> {copy.paletteTitle}</summary><div class="palette-body"><p>{copy.paletteIntro}</p><div class="swatches" role="group" aria-label={copy.paletteLabel}><button type="button" data-theme="garden" aria-pressed="true"><span class="swatch garden"></span>{copy.palettes[0]}</button><button type="button" data-theme="blue" aria-pressed="false"><span class="swatch blue"></span>{copy.palettes[1]}</button><button type="button" data-theme="paper" aria-pressed="false"><span class="swatch paper"></span>{copy.palettes[2]}</button></div><p class="palette-caption">{copy.paletteCaption}</p><button class="palette-reset" type="button">{copy.paletteReset}</button><p class="palette-status" role="status" aria-live="polite">{copy.paletteCurrent}{copy.palettes[0]}</p></div></details>
   <noscript><p class="noscript-note">{copy.noscript}</p></noscript>
 </body>
 </html>

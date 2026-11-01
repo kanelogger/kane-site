@@ -6,8 +6,7 @@ let cleanup;
 function initWorkshop() {
   cleanup?.();
   cleanup = undefined;
-  const panel = document.querySelector('.palette-panel');
-  if (!panel) return;
+  if (!document.querySelector('[data-workshop-home]')) return;
   const controller = new AbortController();
   const { signal } = controller;
   const cleanupHero = initHeroPortrait();
@@ -18,26 +17,6 @@ function initWorkshop() {
     if (frame !== undefined) cancelAnimationFrame(frame);
   };
   const root = document.documentElement;
-  const buttons = [...document.querySelectorAll('[data-theme]')];
-  const palettes = new Map(buttons.map((button) => [button.dataset.theme, button.textContent.trim()]));
-  const applyPalette = (palette) => {
-    if (!palettes.has(palette)) return;
-    root.dataset.palette = palette;
-    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.theme === palette)));
-    document.querySelector('.palette-status').textContent = `${panel.dataset.currentLabel}${palettes.get(palette)}`;
-    document.querySelector('meta[name="theme-color"]').content = getComputedStyle(document.querySelector('.hero')).backgroundColor;
-    try { localStorage.setItem('kane-workshop-palette', palette); } catch { /* Storage is optional. */ }
-  };
-  try { applyPalette(localStorage.getItem('kane-workshop-palette') || 'garden'); } catch { /* Keep default. */ }
-  panel.hidden = false;
-  buttons.forEach((button) => button.addEventListener('click', () => applyPalette(button.dataset.theme), { signal }));
-  document.querySelector('.palette-reset').addEventListener('click', () => applyPalette('garden'), { signal });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && panel.open) {
-      panel.open = false;
-      panel.querySelector('summary').focus();
-    }
-  }, { signal });
   const header = document.querySelector('.site-header');
   const sections = [...document.querySelectorAll('[data-section-tone]')];
   const navLinks = [...document.querySelectorAll('nav a')];

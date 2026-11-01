@@ -48,14 +48,17 @@ try {
     const source = await readFile(path, 'utf8');
     const prefix = route.startsWith('en/') ? '/en' : '';
     for (const [label, mutate, expected] of [
+      ['external project destination', (html) => html.replace(`href="${prefix}/work/skill-port"`, 'href="https://github.com/kanelogger"'), 'project must link to its internal article'],
+      ['missing note cover', (html) => html.replace(/<img\b[^>]*class="note-cover"[^>]*>/, ''), 'note needs a local cover and alt text'],
+      ['home palette control', (html) => html.replace('</body>', '<details class="palette-panel"></details></body>'), 'home palette control must be removed'],
       ['missing introduction paragraph', (html) => html.replace(/(<div\b[^>]*class="hero-statement"[^>]*>)\s*<p\b[^>]*>[\s\S]*?<\/p>/, '$1'), 'home introduction must retain four readable paragraphs'],
-      ['unlinked introduction keyword', (html) => html.replace(`href="${prefix}/writing/agent-hard-gates"`, 'href="#work"'), `missing introduction link ${prefix}/writing/agent-hard-gates`],
+      ['unlinked introduction keyword', (html) => html.replace(`href="${prefix}/writing"`, 'href="#work"'), `missing introduction link ${prefix}/writing`],
       ['missing contact navigation', (html) => html.replace('href="#contact"', 'href="#notes"'), 'missing workshop navigation contact'],
       ['old about section', (html) => html.replace('</main>', '<section id="about"></section></main>'), 'old about section must be removed'],
       ['redundant footer contacts', (html) => html.replace('</footer>', '<div class="footer-top"></div></footer>'), 'redundant footer contact block must be removed'],
       ['missing contact destination', (html) => html.replace('href="https://weibo.com/u/2272877934"', 'href="https://weibo.com/"'), 'missing contact destination https://weibo.com/u/2272877934'],
       ['JavaScript-only WeChat contact', (html) => html.replace(/<summary\b[^>]*>[\s\S]*?GeekGuru[\s\S]*?<\/summary>/, ''), 'WeChat contact must work without JavaScript'],
-      ['missing WeChat QR', (html) => html.replace(/<img\b[^>]*src="\/assets\/contact\/[^"]+"[^>]*>/, ''), 'WeChat contact needs a local QR image'],
+      ['missing WeChat QR', (html) => html.replace(/(<details\b[^>]*class="contact-wechat"[^>]*>[\s\S]*?)<img\b[^>]*>/, '$1'), 'WeChat contact needs a local QR image'],
     ]) {
       const mutated = mutate(source);
       assert.notEqual(mutated, source, `${route}: ${label} mutation must change fixture`);

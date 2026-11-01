@@ -177,98 +177,48 @@ const en = {
     backToTop: 'Kane, back to top',
     notes: 'Notes',
     heroGreeting: 'Hi, I’m ',
-    heroAside: 'Following curiosity, through code.',
     portraitAlt: 'A chibi portrait of Kane with a round face, big eyes, a brown hoodie, and black glasses.',
     redraw: 'Draw again',
     redrawLabel: 'Replay the drawing, arrival, and welcome animation',
     sceneAlt: 'A miniature workshop with a computer, chalkboard, and tool cabinets, connected by copper pipes and paths.',
-    statementExperience: 'I started by building and iterating on ERP systems, working across frontend and backend, mainly at the application layer.',
-    statementFocus: 'Now, I focus on ',
-    statementAgents: ', experiment with different ',
-    statementTools: ' tools, and build ',
-    toolsLabel: 'tools of my own',
-    statementPeriod: '.',
+    statementExperience: 'I’m a software developer who enjoys turning ideas into products.',
+    statementFocus: 'These days, I focus on building small apps.',
     statementRecord: 'Here I share ',
-    productsLabel: 'the products I’ve built',
-    statementInterests: ', the investment areas I follow, and the things beyond technology that keep me curious.',
-    statementContact: 'To talk about development and products, find me on ',
-    statementSocialJoin: ' or ',
-    statementEmailJoin: ', or ',
+    productsLabel: 'the projects I’ve built',
+    statementWritingJoin: ' and ',
+    articlesLabel: 'the articles I write',
+    statementPeriod: '.',
+    statementContact: 'To chat about development and products, feel free to ',
+    contactLinkLabel: 'get in touch',
     emailLabel: 'send me an email',
     explore: 'Work',
     readNotes: 'Articles',
-    workTitle: [
-      'On the workbench,',
-      'tools already taking shape.'
-    ],
-    workAside: [
-      'Start with a specific problem.',
-      'Make repeated work easier to do.'
-    ],
-    viewSkillPort: 'View Skill Port on GitHub',
-    skillLead: [
-      'One Skill.',
-      'Stored once.'
-    ],
-    skillDescription: 'Manage Agent Skills in a local Hub, then use the CLI and desktop app to enable the same skills across projects and agents.',
-    openProject: 'Open project',
-    viewQuotaBar: 'View QuotaBar on GitHub',
-    quotaDescription: 'See usage limits for multiple AI coding services in a macOS menu bar. Switch fewer windows and keep your attention on the work.',
-    viewKaneSkills: 'View Kane Skills on GitHub',
-    skillsDescription: 'Reusable Agent workflows for writing, verification, and engineering practice, organized as independent skills that can be inspected and improved.',
-    skillsCoverAlt: 'A reusable skills library with writing, verification, engineering, visual design, and delivery modules',
-    moreWork: 'More work on GitHub',
-    notesTitle: [
-      'After building,',
-      'leave a few notes.'
-    ],
-    notesIntro: [
-      'Notes on agent context, verification, and feedback,',
-      'and the questions worth returning to.'
-    ],
-    marginNote: 'Find answers through practice.',
-    noteCategories: [
-      'CONTEXT / PROJECT RECOVERY',
-      'VERIFICATION / BOUNDARIES',
-      'PRACTICE / AI-NATIVE DEVELOPMENT'
-    ],
-    noteTitles: [
-      [
-        'Without the chat history,',
-        'how does an agent recover a project?'
-      ],
-      [
-        'The faster the agent,',
-        'the more it needs hard gates.'
-      ],
-      [
-        'The AI-Native',
-        'Development System'
-      ]
-    ],
+    workLabel: 'BUILDING',
+    workTitle: 'Tools & projects',
+    workIntro: 'Tools I use myself, built around problems in everyday development.',
+    skillDescription: 'Manage local Agent Skills with a CLI and desktop app, and use the same skills across projects and agents.',
+    quotaDescription: 'Check usage limits for AI coding services from the macOS menu bar, with fewer windows to switch.',
+    skillsDescription: 'Reusable Agent workflows for writing, verification, and engineering, packaged as independent skills.',
+    moreWork: 'All projects',
+    notesLabel: 'WRITING',
+    notesTitle: 'Articles & notes',
+    notesIntro: 'Ways of working with Coding Agents, and thoughts from putting them into practice.',
     noteDescriptions: [
-      'Make the repository a recoverable working environment',
-      'Control risk with acceptance criteria and feedback loops',
-      'Connect facts, process, state, and experience in the repository'
+      'Make the repository a recoverable working environment.',
+      'Control risk with acceptance criteria and feedback loops.',
+      'Connect facts, process, state, and experience in the repository.'
     ],
+    moreNotes: 'All articles',
+    contactLabel: 'CONNECT',
+    contactAvatarAlt: 'Kane’s cartoon avatar with black glasses and a brown hood',
+    contactSocials: 'Social profiles',
     contactTitle: 'Find me',
     contactIntro: 'Let’s talk about development, products, or an interesting idea.',
     weibo: 'Weibo',
     wechat: 'WeChat official account',
     wechatScan: 'Scan with WeChat to follow GeekGuru.',
     wechatQrAlt: 'QR code for the GeekGuru WeChat official account',
-    paletteTitle: 'Palette',
-    paletteIntro: 'Change the workshop atmosphere',
-    paletteLabel: 'Page palette',
-    palettes: [
-      'Sage',
-      'Sky blue',
-      'Warm paper'
-    ],
-    paletteCaption: 'Illustrations keep their original colors.',
-    paletteReset: 'Restore default',
-    paletteCurrent: 'Current: ',
-    noscript: 'The default Sage palette is active. All content and links work without JavaScript.'
+    noscript: 'All content and links work without JavaScript.'
   },
   common: {
     skipToMain: 'Skip to main content',
