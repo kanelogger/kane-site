@@ -237,7 +237,7 @@ for (const item of englishItems) {
 const og = imageSize(readFileSync(join(root, 'og.png')));
 assert.deepEqual([og.type, og.width, og.height], ['png', 1200, 630]);
 assert.match(readFileSync(join(root, 'favicon.svg'), 'utf8'), /<svg/);
-// A new Markdown file must be linked from its index and get its own route.
+// Content must appear in its list and dashboard; direct-link projects have no detail route.
 const dashboard = pages.get(join(root, 'dashboard/index.html'));
 assert(dashboard, 'The content dashboard must have a statically built route');
 for (const route of ['apps/index.html', 'en/apps/index.html']) {
@@ -257,16 +257,32 @@ for (const [collection, route] of [['blog', 'writing'], ['projects', 'work']]) {
     const publishedPrefix = locale === 'en' && status === 'reviewed' ? '/en' : '';
     const prefix = locale === 'en' ? '/en' : '';
     const page = pages.get(join(root, publishedPrefix.slice(1), route, slug, 'index.html')) ?? pages.get(join(root, route, slug, 'index.html'));
-    assert(page, `${file}: missing detail page`);
+    const data = parse(source.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
+    const directLink = collection === 'projects' && data.directLink;
+    if (directLink) {
+      for (const localePrefix of ['', 'en/']) {
+        assert(!pages.has(join(root, localePrefix, route, slug, 'index.html')), `${file}: direct-link project must not generate a detail page`);
+      }
+    } else {
+      assert(page, `${file}: missing detail page`);
+    }
     const indexFile = join(root, prefix.slice(1), route, 'index.html');
     const dashboardFile = locale === 'en' ? join(root, 'en/dashboard/index.html') : join(root, 'dashboard/index.html');
     const index = pages.get(indexFile)?.html;
     const board = pages.get(dashboardFile)?.html;
     assert(index && board, `${file}: missing locale index/dashboard`);
-    assert(index.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from list`);
-    assert(board.includes(`href="${publishedPrefix}/${route}/${slug}"`), `${file}: missing from dashboard`);
+    const destination = directLink ? data.website : `${publishedPrefix}/${route}/${slug}`;
+    assert(index.includes(`href="${destination}"`), `${file}: missing from list`);
+    assert(board.includes(`href="${destination}"`), `${file}: missing from dashboard`);
     {
-      const data = parse(source.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
+      if (directLink) {
+        for (const [name, html] of [['list', index], ['dashboard', board]]) {
+          const row = [...html.matchAll(/<article\b[^>]*class="content-row content-project-row"[^>]*>[\s\S]*?<\/article>/g)].find(([row]) => row.includes(`src="${data.cover}"`))?.[0];
+          assert(row, `${file}: missing project row in ${name}`);
+          const targets = [...row.matchAll(/<a\b[^>]*>/g)].map(([tag]) => attributes(tag).href);
+          assert.deepEqual(targets, [data.website, data.website], `${file}: project image and title must link directly to website in ${name}`);
+        }
+      }
       for (const [name, html] of [['list', index], ['dashboard', board]]) {
         const cover = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => attributes(tag)).find((attrs) => attrs.src === data.cover);
         assert(cover, `${file}: cover missing from ${name}`);

@@ -19,6 +19,7 @@ featured: false
 order: 4
 # 以下链接均可选；仅填写公开可访问的真实地址，不要保留空字符串。
 # website: "https://example.com"
+# directLink: true # 仅展示作品卡片并直接打开 website，不生成详情文章。
 # 私有项目可以省略 github，页面会自动隐藏 GitHub 按钮。
 # github: "https://github.com/OWNER/REPOSITORY"
 # release: "https://github.com/OWNER/REPOSITORY/releases"

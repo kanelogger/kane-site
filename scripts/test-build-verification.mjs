@@ -87,6 +87,18 @@ try {
       console.log(`PASS: ${route} rejects missing ${label}`);
     }
   }
+  for (const route of ['work/index.html', 'dashboard/index.html', 'en/work/index.html', 'en/dashboard/index.html']) {
+    const path = join(fixture, 'dist', route);
+    const source = await readFile(path, 'utf8');
+    const mutated = source.replace('href="https://tuyi.kanelogger.com"', 'href="/work/skill-port"');
+    assert.notEqual(mutated, source, `${route}: direct-link mutation must change fixture`);
+    await writeFile(path, mutated);
+    result = run();
+    assert.equal(result.status, 1, `${route}: broken direct project link must fail`);
+    assert(result.stderr.includes('project image and title must link directly to website'), result.stderr);
+    await writeFile(path, source);
+    console.log(`PASS: ${route} rejects a broken direct project link`);
+  }
   const projectPath = join(fixture, 'dist/work/kane-skills/index.html');
   const projectHtml = await readFile(projectPath, 'utf8');
   const projectCover = projectHtml.match(/<meta property="og:image" content="https:\/\/kanelogger.com([^"]+)"/)[1];

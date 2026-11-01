@@ -59,9 +59,12 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     order: z.number().int().positive(),
     website: z.url().optional(),
+    directLink: z.boolean().default(false),
     github: z.url().optional(),
     release: z.url().optional(),
     designDoc: z.url().optional(),
+  }).refine((data) => !data.directLink || Boolean(data.website), {
+    message: '直接跳转的作品必须填写 website', path: ['website'],
   }),
 });
 

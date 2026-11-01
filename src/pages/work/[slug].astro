@@ -4,7 +4,7 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { readFileSync } from 'node:fs';
 import { imageSize } from 'image-size';
 import { getMediaVariant } from '../../data/media';
-export async function getStaticPaths() { return (await getCollection('projects', ({ data }) => data.locale === 'zh-CN')).map((project) => ({ params: { slug: project.data.slug }, props: { project } })); }
+export async function getStaticPaths() { return (await getCollection('projects', ({ data }) => data.locale === 'zh-CN' && !data.directLink)).map((project) => ({ params: { slug: project.data.slug }, props: { project } })); }
 interface Props { project: CollectionEntry<'projects'>; }
 const { project } = Astro.props;
 const { data } = project;
