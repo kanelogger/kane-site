@@ -1,0 +1,14 @@
+/* Shared with the home directory and all reading pages. */
+:root {
+  --paper: #f8f5ec;
+  --hero: #dfe5d5;
+  --ink: #253c31;
+  --muted: #536250;
+  --accent: #a3422d;
+  --forest: #263e33;
+  --light: #f4f0dc;
+  --line: #cbd0be;
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Noto Sans SC', sans-serif;
+  --serif: 'Iowan Old Style', 'Palatino Linotype', 'Songti SC', 'Noto Serif CJK SC', serif;
+  --mono: 'SFMono-Regular', Consolas, monospace;
+}

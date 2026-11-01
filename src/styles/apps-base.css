@@ -1,0 +1,40 @@
+/* Scope the document backdrop and theme controls to the app directory. */
+:root:has([data-app-navigation]) {
+  --paper: #f8f5ec;
+  --surface: #f0f1e9;
+  --ink: #253c31;
+  --muted: #526456;
+  --line: #d6ddcf;
+  --accent: #315d43;
+  --font-body: 'Noto Sans SC Variable', 'Manrope Variable', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-display: var(--font-body);
+  scroll-padding-top: 96px;
+}
+:root[data-theme='dark']:has([data-app-navigation]) {
+  --paper: #141d18;
+  --surface: #1b2820;
+  --ink: #e9efe6;
+  --muted: #b9c8b3;
+  --line: #3a4d3e;
+  --accent: #b8d2b8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]):has([data-app-navigation]) {
+    --paper: #141d18;
+    --surface: #1b2820;
+    --ink: #e9efe6;
+    --muted: #b9c8b3;
+    --line: #3a4d3e;
+    --accent: #b8d2b8;
+  }
+}
+.apps-shell .theme-control { min-height: 44px; padding: 0 8px; border: 1px solid var(--atlas-control-border); border-radius: 10px; color: var(--atlas-text-secondary); background: var(--atlas-surface-raised); }
+.apps-shell .theme-control:hover { border-color: var(--atlas-accent); }
+.apps-shell .theme-control:focus-within { outline: 2px solid var(--atlas-border-focus); outline-offset: 3px; }
+.apps-shell .theme-control select { min-height: 42px; padding: 6px 2px; color: var(--atlas-text); background: var(--atlas-transparent); font: 400 15px/1.7 var(--atlas-font-body); }
+.apps-shell .theme-control select:focus-visible { outline: none; }
+.apps-shell .theme-control option { color: var(--atlas-text); background: var(--atlas-surface-raised); }
+@media (max-width: 599px) {
+  :root:has([data-app-navigation]) { scroll-padding-top: 144px; }
+  .apps-shell .theme-control > span[aria-hidden] { display: none; }
+}

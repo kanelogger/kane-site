@@ -13,7 +13,8 @@ function apply(target: Document = document) {
   window.__kaneTheme = { preference, theme };
   target.documentElement.dataset.theme = theme;
   target.documentElement.style.colorScheme = theme;
-  target.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#101917' : '#f3f6f0');
+  const themeColor = target.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  themeColor?.setAttribute('content', theme === 'dark' ? themeColor.dataset.darkColor ?? '#101917' : themeColor.dataset.lightColor ?? '#f8f5ec');
   target.querySelectorAll<HTMLSelectElement>('[data-theme-control]').forEach(select => {
     select.value = preference;
     select.closest<HTMLElement>('[data-theme-picker]')?.removeAttribute('hidden');

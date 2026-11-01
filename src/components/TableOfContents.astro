@@ -7,4 +7,4 @@ const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url
 const copy = getDictionary(locale);
 const items = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 ---
-{items.length > 0 && <aside class="toc"><details open><summary>{copy.article.toc} <span aria-hidden="true">↙</span></summary><nav aria-label={copy.article.toc}><ol>{items.map((heading) => <li class:list={{ 'toc-sub': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav></details></aside>}
+{items.length > 0 && <aside class="toc"><details><summary>{copy.article.toc}</summary><nav aria-label={copy.article.toc}><ol>{items.map((heading) => <li class:list={{ 'toc-sub': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav></details></aside>}

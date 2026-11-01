@@ -3,12 +3,17 @@ import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import ArticleCover from '../components/ArticleCover.astro';
 import TableOfContents from '../components/TableOfContents.astro';
-import type { Locale } from '../lib/i18n';
+import { getDictionary, getLocaleFromPath, getLocalePath, type Locale } from '../lib/i18n';
 interface Props { image?: { src: string; alt: string }; title: string; description: string; headings: MarkdownHeading[]; article?: { publishedAt: Date; updatedAt?: Date; author: string; cover?: string; coverAlt?: string }; locale?: Locale; noindex?: boolean; alternatePath?: string | null; }
 const { image, title, description, headings, article, locale, noindex = false, alternatePath } = Astro.props;
+const resolvedLocale = locale ?? getLocaleFromPath(Astro.url.pathname);
+const copy = getDictionary(resolvedLocale);
+const isWriting = Astro.url.pathname.includes('/writing/');
+const backPath = getLocalePath(resolvedLocale, isWriting ? '/writing' : '/work');
 ---
 <BaseLayout image={image} title={title} description={description} article={article} locale={locale} noindex={noindex} alternatePath={alternatePath}>
   <div class="shell detail-page">
+    <a class="detail-back text-link" href={backPath} data-return-results>{isWriting ? copy.nav.backToWriting : copy.nav.backToWork}</a>
     <slot name="header" />
     {article?.cover ? <figure class="article-detail-cover"><ArticleCover src={article.cover} alt={article.coverAlt ?? title} loading="eager" /></figure> : <slot name="cover" />}
     <div class="reading-grid"><TableOfContents headings={headings} /><article class="prose"><slot /></article></div>

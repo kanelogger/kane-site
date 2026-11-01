@@ -17,8 +17,8 @@ let filterFocus: string | undefined;
 const unlocalizedPath = (pathname: string) => pathname.replace(/^\/en(?=\/|$)/, '') || '/';
 
 const copy = () => document.documentElement.lang === 'en'
-  ? { entries: 'entries', backToResults: '← Back to results' }
-  : { entries: '项内容', backToResults: '← 返回结果' };
+  ? { entries: 'entries', backToResults: 'Back to results' }
+  : { entries: '项内容', backToResults: '返回结果' };
 
 const pageURL = () => location.pathname + location.search;
 const state = (): ContentState => history.state?.[stateKey] ?? {};

@@ -1,19 +1,17 @@
 ---
-import ThemeControl from './ThemeControl.astro';
 import { getAlternateLocale, getDictionary, getLocaleFromPath, getLocalePath, normalizeLocale, type Locale } from '../lib/i18n';
 interface Props { locale?: Locale; alternateHref?: string; }
 const locale = normalizeLocale(Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname));
 const copy = getDictionary(locale);
-const links = [[copy.nav.content, '/dashboard'], [copy.nav.work, '/work'], [copy.nav.writing, '/writing'], [copy.nav.apps, '/apps']];
+const links = [[copy.nav.work, '/work'], [copy.nav.writing, '/writing'], [copy.nav.apps, '/apps']];
 const route = locale === 'en' && Astro.url.pathname.startsWith('/en') ? Astro.url.pathname.slice(3) || '/' : Astro.url.pathname;
-const reading = /^\/(writing|work)\/.+/.test(route);
-const backPath = route.startsWith('/writing/') ? '/writing' : '/work';
 const alternateLocale = getAlternateLocale(locale);
 const alternateHref = Astro.props.alternateHref ?? getLocalePath(alternateLocale, route);
 ---
 <header class="site-header">
   <div class="shell header-inner">
-    <a href={getLocalePath(locale, '/')} class="wordmark" aria-label="KANE">Kane<span aria-hidden="true">_</span></a>
-    <div class="header-tools"><nav aria-label={copy.nav.primary}>{reading ? <a href={getLocalePath(locale, backPath)} data-return-results>← {backPath === '/writing' ? copy.nav.backToWriting : copy.nav.backToWork}</a> : links.map(([label, href]) => <a href={getLocalePath(locale, href)} aria-current={route.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav><a class="language-switch" href={alternateHref}>{copy.nav.language}</a><ThemeControl locale={locale} /></div>
+    <a href={getLocalePath(locale, '/')} class="wordmark" aria-label="Kane"><span class="brand-symbol" aria-hidden="true">k.</span><span>KANELOGGER</span></a>
+    <nav aria-label={copy.nav.primary}>{links.map(([label, href]) => <a href={getLocalePath(locale, href)} aria-current={route.startsWith(href) ? 'page' : undefined}>{label}</a>)}</nav>
+    <a class="language-switch" href={alternateHref} lang={alternateLocale} hreflang={alternateLocale}>{copy.nav.language}</a>
   </div>
 </header>

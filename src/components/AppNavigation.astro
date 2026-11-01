@@ -2,6 +2,9 @@
 import ThemeControl from './ThemeControl.astro';
 import defaultData from '../data/app-navigation-defaults.json';
 import { getAlternateLocale, getDictionary, getLocalePath, type Locale } from '../lib/i18n';
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/noto-sans-sc';
+import '../styles/apps-base.css';
 import '../styles/app-navigation.css';
 
 interface Props { locale: Locale; }
@@ -25,6 +28,8 @@ const fallbackGroups = defaultData.categories.map((category) => ({
 const bootstrap = JSON.stringify({ copy, starterApps, starterCategories: defaultData.categories }).replaceAll('<', '\\u003c');
 ---
 <svg class="apps-svg-sprite" aria-hidden="true">
+  <symbol id="apps-icon-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></symbol>
+  <symbol id="apps-icon-category" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M3 6h.01M3 12h.01M3 18h.01"></path></symbol>
   <symbol id="apps-icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></symbol>
   <symbol id="apps-icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></symbol>
   <symbol id="apps-icon-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7.5" ry="3"></ellipse><path d="M4.5 5.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6M4.5 11.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"></path></symbol>
@@ -43,116 +48,105 @@ const bootstrap = JSON.stringify({ copy, starterApps, starterCategories: default
   <script is:inline type="application/json" data-app-navigation-bootstrap set:html={bootstrap}></script>
 
   <header class="apps-topbar">
-    <a class="apps-brand" href={getLocalePath(locale, '/')} aria-label="Kane">
-      <span class="apps-brand-mark" aria-hidden="true">K</span>
-      <span class="apps-brand-copy"><strong>{copy.title}</strong><small>{copy.meta}</small></span>
-    </a>
-    <div class="apps-header-actions">
-      <a class="apps-language" href={getLocalePath(alternateLocale, '/apps')}>{locale === 'en' ? '中' : 'EN'}</a>
-      <ThemeControl locale={locale} />
-      <div class="apps-data-control" data-app-enhancement>
-        <button class="apps-action apps-action-secondary" type="button" data-data-menu-button aria-label={copy.openData} aria-expanded="false">
-          <svg aria-hidden="true"><use href="#apps-icon-database"></use></svg><span>{copy.data}</span><svg class="apps-chevron" aria-hidden="true"><use href="#apps-icon-chevron"></use></svg>
-        </button>
-        <div class="apps-data-menu" data-data-menu hidden>
-          <button type="button" data-import-button><svg aria-hidden="true"><use href="#apps-icon-upload"></use></svg><span><strong>{copy.import}</strong><small>{copy.importHint}</small></span></button>
-          <button type="button" data-export-button><svg aria-hidden="true"><use href="#apps-icon-download"></use></svg><span><strong>{copy.export}</strong><small>{copy.exportHint}</small></span></button>
-          <div class="apps-menu-separator"></div>
-          <button class="apps-danger-menu-item" type="button" data-clear-button><svg aria-hidden="true"><use href="#apps-icon-trash"></use></svg><span><strong>{copy.clear}</strong><small>{copy.clearHint}</small></span></button>
+    <div class="apps-topbar-inner">
+      <a class="apps-brand" href={getLocalePath(locale, '/')} aria-label="Kane">
+        <span class="apps-brand-mark" aria-hidden="true">k.</span>
+        <span class="apps-brand-copy"><strong>Kane</strong></span>
+      </a>
+      <div class="apps-header-actions">
+        <button class="apps-action apps-action-primary" type="button" data-add-button data-app-enhancement aria-label={copy.add}><svg aria-hidden="true"><use href="#apps-icon-plus"></use></svg><span>{copy.add}</span></button>
+        <div class="apps-data-control" data-app-enhancement>
+          <button class="apps-action apps-action-secondary" type="button" data-data-menu-button aria-label={copy.openData} aria-expanded="false" aria-controls="apps-data-menu">
+            <svg aria-hidden="true"><use href="#apps-icon-database"></use></svg><span>{copy.data}</span><svg class="apps-chevron" aria-hidden="true"><use href="#apps-icon-chevron"></use></svg>
+          </button>
+          <div class="apps-data-menu" id="apps-data-menu" data-data-menu hidden>
+            <button type="button" data-import-button><svg aria-hidden="true"><use href="#apps-icon-upload"></use></svg><span><strong>{copy.import}</strong><small>{copy.importHint}</small></span></button>
+            <button type="button" data-export-button><svg aria-hidden="true"><use href="#apps-icon-download"></use></svg><span><strong>{copy.export}</strong><small>{copy.exportHint}</small></span></button>
+            <div class="apps-menu-separator"></div>
+            <button class="apps-danger-menu-item" type="button" data-clear-button><svg aria-hidden="true"><use href="#apps-icon-trash"></use></svg><span><strong>{copy.clear}</strong><small>{copy.clearHint}</small></span></button>
+          </div>
         </div>
+        <ThemeControl locale={locale} />
+        <a class="apps-language" href={getLocalePath(alternateLocale, '/apps')} lang={alternateLocale} hreflang={alternateLocale}>{locale === 'en' ? '中' : 'EN'}</a>
       </div>
-      <button class="apps-action apps-action-primary" type="button" data-add-button data-app-enhancement aria-label={copy.add}><svg aria-hidden="true"><use href="#apps-icon-plus"></use></svg><span>{copy.add}</span></button>
     </div>
   </header>
 
-  <div class="apps-atlas" id="workspace-content" tabindex="-1">
-    <section class="apps-command-bar" aria-labelledby="apps-hero-title">
-      <div class="apps-command-copy">
-        <span class="apps-eyebrow">{copy.eyebrow}</span>
-        <h1 id="apps-hero-title" class="sr-only">{copy.title}</h1>
-        <div class="apps-meta-line" data-app-enhancement><span><strong data-total-apps>0</strong> {copy.appCount}</span><span><strong data-total-categories>0</strong> {copy.categories}</span><span>{copy.localOnly}</span></div>
-      </div>
-      <div class="apps-command-tools" data-app-enhancement>
-        <label class="apps-search">
-          <svg aria-hidden="true"><use href="#apps-icon-search"></use></svg>
-          <span class="sr-only">{copy.searchLabel}</span>
-          <input type="search" data-search-input placeholder={copy.searchPlaceholder} autocomplete="off" />
-          <kbd>⌘ K</kbd>
-        </label>
-        <select class="apps-sort" data-sort-select aria-label={copy.sortLabel}>
-          <option value="default">{copy.sortDefault}</option>
-          <option value="name">{copy.sortName}</option>
-          <option value="category">{copy.sortCategory}</option>
-        </select>
-      </div>
-    </section>
-
-    <section class="apps-quick" data-app-enhancement aria-labelledby="apps-quick-title">
-      <div class="apps-quick-label"><h2 id="apps-quick-title">{copy.quickTitle}</h2><span data-favorite-count>00 / PINNED</span></div>
-      <div class="apps-quick-list" data-favorite-orbit></div>
-    </section>
-
-    <section class="apps-directory" data-app-enhancement aria-label={copy.directoryLabel}>
-      <aside class="apps-category-panel">
-        <header><h2>{copy.categoryIndex}</h2><span>COUNT</span></header>
+  <div class="apps-workspace" id="workspace-content" tabindex="-1">
+    <aside class="apps-category-panel" data-category-desktop data-app-enhancement>
+      <div class="apps-category-surface" data-category-panel>
+        <header><h2 id="apps-category-title">{copy.categoryIndex}</h2><button class="apps-icon-button apps-mobile-category-close" type="button" data-close-categories aria-label={copy.closeCategories}><svg aria-hidden="true"><use href="#apps-icon-close"></use></svg></button></header>
         <nav class="apps-category-list" data-category-atlas aria-label={copy.filterByCategory}></nav>
-      </aside>
-      <div class="apps-directory-main">
-        <header class="apps-directory-head">
-          <div><h2 data-explore-title>{copy.exploreAll}</h2><p data-result-count role="status" aria-live="polite" aria-atomic="true">0 {copy.appCount}</p></div>
-          <div class="apps-directory-tools"><span>{copy.compactView}</span><button class="apps-action apps-action-secondary" type="button" data-reset-filter hidden>{copy.backToAtlas}</button></div>
-        </header>
-        <div class="apps-grid" data-app-list>
-          <section class="apps-empty"><h2>{copy.emptyTitle}</h2><p>{copy.emptyHint}</p></section>
-        </div>
       </div>
-    </section>
-
-    <noscript>
-      <section class="apps-noscript" aria-labelledby="apps-fallback-title">
-        <div class="apps-section-heading">
-          <div><span class="apps-section-index">03 / DIRECTORY</span><h2 id="apps-fallback-title">{copy.exploreAll}</h2></div>
-          <p>{copy.noScript}</p>
+    </aside>
+    <div class="apps-main">
+      <header class="apps-page-heading"><h1>{copy.title}</h1><p>{copy.intro}</p></header>
+      <p class="apps-loading" data-app-loading role="status" hidden>{copy.loading}</p>
+      <section class="apps-storage-error" data-storage-error role="alert" hidden><h2>{copy.storageUnavailableTitle}</h2><p>{copy.storageUnavailable}</p><button class="apps-action" type="button" data-retry-storage>{copy.retry}</button></section>
+      <section class="apps-command-bar" aria-label={copy.searchLabel} data-app-enhancement>
+        <div class="apps-command-tools">
+          <label class="apps-search">
+            <svg aria-hidden="true"><use href="#apps-icon-search"></use></svg>
+            <span class="sr-only">{copy.searchLabel}</span>
+            <input type="search" data-search-input placeholder={copy.searchPlaceholder} autocomplete="off" />
+            <kbd aria-hidden="true">⌘ K</kbd>
+          </label>
+          <button class="apps-action apps-mobile-category-trigger" type="button" data-open-categories aria-label={copy.chooseCategory} aria-haspopup="dialog" aria-controls="apps-category-dialog"><svg aria-hidden="true"><use href="#apps-icon-category"></use></svg><span data-current-category>{copy.exploreAll}</span><span class="apps-category-trigger-count" data-current-category-count>0</span><svg class="apps-chevron" aria-hidden="true"><use href="#apps-icon-chevron"></use></svg></button>
+          <select class="apps-sort" data-sort-select aria-label={copy.sortLabel}>
+            <option value="default">{copy.sortDefault}</option>
+            <option value="name">{copy.sortName}</option>
+            <option value="category">{copy.sortCategory}</option>
+          </select>
         </div>
+      </section>
+      <section class="apps-quick" data-app-enhancement aria-labelledby="apps-quick-title">
+        <div class="apps-quick-label"><h2 id="apps-quick-title">{copy.quickTitle}</h2></div>
+        <div class="apps-quick-list" data-favorite-orbit></div>
+        <details class="apps-favorite-overflow" data-favorite-overflow hidden><summary><span data-favorite-overflow-label></span></summary><div class="apps-quick-list" data-favorite-overflow-list></div></details>
+      </section>
+      <section class="apps-directory" data-app-enhancement aria-label={copy.directoryLabel}>
+        <div class="apps-directory-main">
+          <header class="apps-directory-head">
+            <div><h2 data-explore-title>{copy.exploreAll}</h2><p data-result-count role="status" aria-live="polite" aria-atomic="true">0 {copy.appCount}</p></div>
+            <button class="apps-action apps-action-quiet" type="button" data-reset-filter hidden>{copy.backToAtlas}</button>
+          </header>
+          <div class="apps-grid" data-app-list></div>
+        </div>
+      </section>
+      <section class="apps-noscript" data-app-fallback aria-labelledby="apps-fallback-title">
+        <div class="apps-section-heading"><h2 id="apps-fallback-title">{copy.defaultDirectory}</h2><noscript><p>{copy.noScript}</p></noscript></div>
         <div class="apps-fallback-groups">
           {fallbackGroups.map((group) => (
-            <section class="apps-fallback-group">
-              <h3>{group.category}</h3>
-              <ul>
-                {group.apps.map((app) => (
-                  <li>
-                    <a href={app.url} target="_blank" rel="noreferrer">{app.name}</a>
-                    {app.description && <p>{app.description}</p>}
-                  </li>
-                ))}
-              </ul>
-            </section>
+            <section class="apps-fallback-group"><h3>{group.category}</h3><ul>{group.apps.map((app) => <li><a href={app.url} target="_blank" rel="noreferrer">{app.name}</a>{app.description && <p>{app.description}</p>}</li>)}</ul></section>
           ))}
         </div>
       </section>
-    </noscript>
+    </div>
   </div>
+
+  <dialog class="apps-dialog apps-category-dialog" id="apps-category-dialog" data-category-dialog aria-labelledby="apps-category-title"></dialog>
 
   <input type="file" accept="application/json,.json" data-import-input hidden />
 
-  <dialog class="apps-dialog" data-app-dialog>
+  <dialog class="apps-dialog" data-app-dialog aria-labelledby="apps-form-title">
     <form data-app-form method="dialog" novalidate>
-      <div class="apps-dialog-header"><div><span class="apps-eyebrow" data-form-eyebrow>{copy.newEntry}</span><h2 data-form-title>{copy.add}</h2></div><button class="apps-icon-button" type="button" data-close-app-dialog aria-label={copy.close}><svg aria-hidden="true"><use href="#apps-icon-close"></use></svg></button></div>
+      <div class="apps-dialog-header"><div><span class="apps-eyebrow" data-form-eyebrow>{copy.newEntry}</span><h2 id="apps-form-title" data-form-title>{copy.add}</h2></div><button class="apps-icon-button" type="button" data-close-app-dialog aria-label={copy.close}><svg aria-hidden="true"><use href="#apps-icon-close"></use></svg></button></div>
       <input type="hidden" data-app-id />
       <div class="apps-form-grid">
-        <label class="apps-field apps-field-wide"><span>{copy.name} <b aria-label={copy.required}>*</b></span><input name="name" type="text" data-app-name placeholder={copy.namePlaceholder} required maxlength="80" /><small class="apps-error" data-error-for="name"></small></label>
-        <label class="apps-field apps-field-wide"><span>{copy.url} <b aria-label={copy.required}>*</b></span><input name="url" type="url" data-app-url placeholder={copy.urlPlaceholder} required maxlength="2048" /><small class="apps-error" data-error-for="url"></small></label>
-        <label class="apps-field"><span>{copy.category} <b aria-label={copy.required}>*</b></span><input name="category" type="text" data-app-category list="apps-category-options" placeholder={copy.categoryPlaceholder} required maxlength="40" /><datalist id="apps-category-options" data-category-options></datalist><small class="apps-error" data-error-for="category"></small></label>
+        <label class="apps-field apps-field-wide"><span>{copy.name} <b aria-label={copy.required}>*</b></span><input name="name" type="text" data-app-name aria-describedby="apps-error-name" placeholder={copy.namePlaceholder} required maxlength="80" /><small class="apps-error" id="apps-error-name" data-error-for="name"></small></label>
+        <label class="apps-field apps-field-wide"><span>{copy.url} <b aria-label={copy.required}>*</b></span><input name="url" type="url" data-app-url aria-describedby="apps-error-url" placeholder={copy.urlPlaceholder} required maxlength="2048" /><small class="apps-error" id="apps-error-url" data-error-for="url"></small></label>
+        <label class="apps-field"><span>{copy.category} <b aria-label={copy.required}>*</b></span><input name="category" type="text" data-app-category aria-describedby="apps-error-category" list="apps-category-options" placeholder={copy.categoryPlaceholder} required maxlength="40" /><datalist id="apps-category-options" data-category-options></datalist><small class="apps-error" id="apps-error-category" data-error-for="category"></small></label>
         <label class="apps-field"><span>{copy.shortcode}</span><input name="shortcode" type="text" data-app-shortcode placeholder={copy.shortcodePlaceholder} maxlength="2" /></label>
         <label class="apps-field apps-field-wide"><span>{copy.appDescription}</span><textarea name="description" rows="3" data-app-description placeholder={copy.descriptionPlaceholder} maxlength="240"></textarea></label>
         <label class="apps-favorite-toggle apps-field-wide"><input name="favorite" type="checkbox" data-app-favorite /><span class="apps-fake-check"><svg aria-hidden="true"><use href="#apps-icon-check"></use></svg></span><span><strong>{copy.favorite}</strong><small>{copy.favoriteHint}</small></span></label>
       </div>
+      <p class="apps-form-status" data-app-form-error role="alert" hidden></p>
       <div class="apps-dialog-footer"><button class="apps-action apps-action-quiet" type="button" data-cancel-app-dialog>{copy.cancel}</button><button class="apps-action apps-action-primary" type="submit"><span data-save-label>{copy.save}</span><svg aria-hidden="true"><use href="#apps-icon-arrow"></use></svg></button></div>
     </form>
   </dialog>
 
-  <dialog class="apps-dialog apps-dialog-small" data-confirm-dialog>
-    <form method="dialog" data-confirm-form><span class="apps-confirm-index">!</span><h2 data-confirm-title></h2><p data-confirm-message></p><div class="apps-dialog-footer"><button class="apps-action apps-action-quiet" type="button" data-confirm-cancel>{copy.cancel}</button><button class="apps-action apps-action-danger" type="submit" data-confirm-action></button></div></form>
+  <dialog class="apps-dialog apps-dialog-small" data-confirm-dialog aria-labelledby="apps-confirm-title" aria-describedby="apps-confirm-message">
+    <form method="dialog" data-confirm-form><span class="apps-confirm-index">!</span><h2 id="apps-confirm-title" data-confirm-title></h2><p id="apps-confirm-message" data-confirm-message></p><p class="apps-form-status" data-confirm-error role="alert" hidden></p><div class="apps-dialog-footer"><button class="apps-action apps-action-quiet" type="button" data-confirm-cancel>{copy.cancel}</button><button class="apps-action apps-action-danger" type="submit" data-confirm-action></button></div></form>
   </dialog>
 
   <div class="apps-toast-region" data-toast-region aria-live="polite" aria-atomic="true"></div>

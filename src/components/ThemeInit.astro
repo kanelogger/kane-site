@@ -11,6 +11,7 @@
     window.__kaneTheme = { preference, theme };
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#101917' : '#f3f6f0');
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    themeColor?.setAttribute('content', theme === 'dark' ? themeColor.getAttribute('data-dark-color') ?? '#101917' : themeColor.getAttribute('data-light-color') ?? '#f8f5ec');
   })();
 </script>
