@@ -3,6 +3,7 @@ const en = {
     content: 'Content',
     work: 'Work',
     writing: 'Writing',
+    notes: 'Notes',
     apps: 'Apps',
     about: 'About Kane',
     primary: 'Primary navigation',

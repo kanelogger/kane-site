@@ -13,7 +13,7 @@
     "test:deployment": "node scripts/test-deployment-verification.mjs",
     "test:build": "node scripts/test-build-verification.mjs",
     "test:apps": "node --test scripts/test-app-navigation.mjs",
-    "test:content": "node --test scripts/test-content-verification.mjs",
+    "test:content": "node --test scripts/test-content-verification.mjs scripts/test-notes.mjs",
     "agent:doctor": "node scripts/agent-doctor.mjs",
     "verify:agent": "node scripts/verify-agent-environment.mjs",
     "test:agent": "node --test scripts/test-agent-environment.mjs",

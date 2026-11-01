@@ -23,6 +23,13 @@
   .nav-wrap nav, .header-tools { gap: 4px; }
 }
 
+/* Keep all navigation targets usable on the narrowest phone screens. */
+@media (max-width: 380px) {
+  html { scroll-padding-top: 124px; }
+  .nav-wrap { flex-wrap: wrap; padding-block: 8px; }
+  .nav-wrap nav { order: 3; flex-basis: 100%; justify-content: center; }
+}
+
 /* A reading-width directory with matching cover layouts. */
 .section-space { padding-block: 56px 0; }
 .find-me { padding-bottom: 56px; }

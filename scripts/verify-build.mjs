@@ -217,6 +217,14 @@ for (const route of ['index.html', 'en/index.html']) {
 }
 assert(!pages.has(join(root, 'workshop/index.html')), 'Workshop must live at the home routes');
 console.log('Verified workshop home pages, introductions, contacts, apps links, language switches and section navigation without JavaScript.');
+for (const prefix of ['', '/en']) {
+  const notePage = pages.get(join(root, prefix.slice(1), 'notes/index.html'));
+  assert(notePage, `${prefix}/notes: missing statically built notes page`);
+  assert.match(notePage.html, /\bdata-notes-feed(?:\s|=|>)/, `${prefix}/notes: missing static feed`);
+  for (const file of ['index.html', 'writing/index.html']) {
+    assert(pages.get(join(root, prefix.slice(1), file)).html.includes(`href="${prefix}/notes"`), `${prefix}/${file}: missing notes navigation`);
+  }
+}
 const englishArticlePages = new Map([...pages].filter(([file]) => file.includes('/en/writing/')).map(([file, { html }]) => {
   const route = '/' + file.slice(root.length + 1).replace(/index\.html$/, '').replace(/\/$/, '');
   const meta = Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag]) => { const attrs = attributes(tag); return [attrs.property ?? attrs.name, attrs.content]; }));

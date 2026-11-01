@@ -1,0 +1,25 @@
+---
+import WorkspaceLayout from '../layouts/WorkspaceLayout.astro';
+import source from '../data/notes.md?raw';
+import { renderNotes } from '../../scripts/notes.mjs';
+import type { Locale } from '../lib/i18n';
+import '../styles/notes.css';
+
+interface Props { locale?: Locale; }
+const { locale = 'zh-CN' } = Astro.props;
+const en = locale === 'en';
+const entries = await renderNotes(source);
+const title = en ? 'Notes' : '说说';
+const description = en ? 'Thoughts, everyday moments, and things I want to remember.' : '一些想法、日常，以及想留下的话。';
+---
+<WorkspaceLayout title={title} description={description} active="notes" locale={locale}>
+  <header class="workspace-heading"><h1>{title}</h1><p>{description}</p></header>
+  <div class="notes-feed" data-notes-feed>
+    {entries.length ? entries.map((entry) => (
+      <article class="notes-entry" id={entry.id} aria-labelledby={`${entry.id}-date`}>
+        <h2 id={`${entry.id}-date`}><a href={`#${entry.id}`} aria-label={`${en ? 'Link to note' : '此条说说链接'}：${entry.label}`}><time datetime={entry.datetime}>{entry.label}</time></a></h2>
+        <div class="notes-body" lang="zh-CN" set:html={entry.html} />
+      </article>
+    )) : <p class="notes-empty">{en ? 'No notes yet.' : '还没有说说。'}</p>}
+  </div>
+</WorkspaceLayout>

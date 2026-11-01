@@ -63,7 +63,7 @@ const projects = [
   <header class="site-header" data-tone="hero">
     <div class="nav-wrap">
       <a class="wordmark" href="#top" aria-label={copy.backToTop}><span class="brand-symbol" aria-hidden="true">k.</span><span>KANELOGGER</span></a>
-      <nav aria-label={dictionary.nav.primary}><a href="#work">{dictionary.nav.work}</a><a href="#notes">{copy.notes}</a><a href="#contact">{copy.contactTitle}</a></nav>
+      <nav aria-label={dictionary.nav.primary}><a href="#work">{dictionary.nav.work}</a><a href="#notes">{dictionary.nav.writing}</a><a href={getLocalePath(locale, '/notes')} data-astro-reload>{dictionary.nav.notes}</a><a href="#contact">{copy.contactTitle}</a></nav>
       <div class="header-tools"><a class="apps-link" href={getLocalePath(locale, '/apps')} data-astro-reload>{dictionary.nav.apps}</a><a class="language-switch" href={getLocalePath(alternateLocale, '/')} lang={alternateLocale} hreflang={alternateLocale} data-astro-reload>{dictionary.nav.language}</a></div>
     </div>
   </header>

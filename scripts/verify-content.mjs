@@ -3,6 +3,7 @@ import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
 import sharp from 'sharp';
+import { renderNotes } from './notes.mjs';
 
 const collections = ['blog', 'projects'];
 const locales = new Set(['zh-CN', 'en']);
@@ -92,6 +93,14 @@ export async function verifyContent(directory = process.cwd()) {
   const issues = [];
   const entries = [];
   const coverChecks = new Map();
+  const notesFile = join(root, 'src/data/notes.md');
+  if (existsSync(notesFile)) {
+    try {
+      await renderNotes(readFileSync(notesFile, 'utf8'), root);
+    } catch (error) {
+      issues.push(`src/data/notes.md: ${error.message}`);
+    }
+  }
 
   for (const collection of collections) {
     const base = join(root, 'src', 'content', collection);

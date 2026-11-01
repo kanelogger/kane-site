@@ -18,7 +18,7 @@
     "pnpm-lock.yaml", "pnpm-workspace.yaml", ".github/workflows/verify.yml",
     "docs/agent-environment/commands.md", "docs/agent-environment/services.md",
     "docs/agent-environment/capabilities.md", "docs/agent-environment/network-filesystem.md",
-    "docs/agent-environment/ci-parity.md", "docs/content-import.md",
+    "docs/agent-environment/ci-parity.md", "docs/content-import.md", "docs/notes.md",
     "tasks/README.md", "templates/task.md", "templates/blog.md", "templates/project.md",
     "scripts/agent-doctor.mjs", "scripts/verify-agent-environment.mjs", "scripts/test-agent-environment.mjs",
     "scripts/verify-content.mjs", "scripts/test-content-verification.mjs"

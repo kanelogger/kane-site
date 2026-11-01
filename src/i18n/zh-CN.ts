@@ -3,6 +3,7 @@ const zhCN = {
     content: '内容',
     work: '作品',
     writing: '文章',
+    notes: '说说',
     apps: '应用',
     about: '关于 Kane',
     primary: '主导航',
