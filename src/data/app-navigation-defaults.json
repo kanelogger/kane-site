@@ -1091,6 +1091,18 @@
       "favorite": false,
       "createdAt": 1793145600004,
       "updatedAt": 1793145600004
+    },
+    {
+      "id": "default-115",
+      "name": "Applore",
+      "url": "https://applore.app/zh",
+      "category": "开发交付",
+      "sortOrder": 97,
+      "shortcode": "AP",
+      "description": "收录 18,000+ App 图标，支持 AI 检索，为 Vibe Coding 寻找图标设计参考。",
+      "favorite": false,
+      "createdAt": 1793808000000,
+      "updatedAt": 1793808000000
     }
   ]
 }

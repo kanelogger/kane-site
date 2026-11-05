@@ -17,7 +17,7 @@ const META_STORE = 'meta';
 const KNOWN_STARTERS_KEY = 'knownStarterIds';
 const MAX_IMPORT_SIZE = 2 * 1024 * 1024;
 // One-time bridge for directories saved before knownStarterIds existed, so deleted defaults stay deleted. Later additions are filled from that record.
-const INTRODUCED_STARTER_IDS = new Set(['default-111', 'default-112', 'default-113', 'default-114']);
+const INTRODUCED_STARTER_IDS = new Set(['default-111', 'default-112', 'default-113', 'default-114', 'default-115']);
 
 type Copy = Record<string, string>;
 type StarterApp = Omit<AppEntry, 'createdAt' | 'updatedAt'>;
