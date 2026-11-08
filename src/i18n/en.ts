@@ -210,7 +210,7 @@ const en = {
     workIntro: 'Tools I use myself, built around problems in everyday development.',
     skillDescription: 'Manage local Agent Skills with a CLI and desktop app, and use the same skills across projects and agents.',
     quotaDescription: 'Check usage limits for AI coding services from the macOS menu bar, with fewer windows to switch.',
-    skillsDescription: 'Reusable Agent workflows for writing, verification, and engineering, packaged as independent skills.',
+    skillsDescription: '23 open-source Agent skills you can install individually. Find skills by task, see sample outputs, and copy install commands on the project site.',
     moreWork: 'All projects',
     notesLabel: 'WRITING',
     notesTitle: 'Articles & notes',
