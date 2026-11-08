@@ -106,6 +106,15 @@
 .apps-shell:not([data-ready='true']) .apps-workspace { grid-template-columns: minmax(0, 1fr); }
 .apps-shell:not([data-ready='true']) .apps-main { grid-column: 1; }
 
+/* Category hues follow directory order and share the same contrast in each theme. */
+@supports (color: light-dark(black, white)) {
+  .apps-shell :is(.apps-category-button, .apps-mobile-category-trigger, .apps-orbit-item, .apps-card, .apps-fallback-group) {
+    --atlas-category-ink: light-dark(oklch(.43 .12 var(--atlas-category-hue)), oklch(.79 .115 var(--atlas-category-hue)));
+    --atlas-category-tint: color-mix(in oklab, var(--atlas-category-ink) 18%, var(--atlas-surface-raised));
+  }
+  .apps-category-button:not([data-app-category-filter='']) span:first-child::before { display: inline-block; width: 8px; height: 8px; margin-inline-end: 8px; border-radius: 50%; background: var(--atlas-category-ink); content: ''; }
+}
+
 /* The topbar and workspace share a real grid instead of extending a narrow column. */
 .apps-toolbar-inner { display: flex; justify-content: flex-end; width: min(var(--atlas-content-max), calc(100% - 32px)); margin-inline: auto; padding-block: 12px; }
 .apps-header-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
@@ -140,10 +149,11 @@
 .apps-category-surface h2 { margin: 0; font-size: 15px; font-weight: 600; }
 .apps-category-list { display: flex; flex-direction: column; gap: 6px; padding: 4px; }
 .apps-category-button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; padding: 8px 12px; text-align: left; border-color: var(--atlas-transparent); background: var(--atlas-transparent); }
-.apps-category-button[aria-pressed='true'] { border-color: var(--atlas-control-border); box-shadow: inset 3px 0 var(--atlas-accent); background: var(--atlas-surface-active); color: var(--atlas-accent); font-weight: 600; }
+.apps-category-button[aria-pressed='true'] { border-color: var(--atlas-control-border); box-shadow: inset 3px 0 var(--atlas-category-ink, var(--atlas-accent)); background: var(--atlas-category-tint, var(--atlas-surface-active)); color: var(--atlas-category-ink, var(--atlas-accent)); font-weight: 600; }
 .apps-category-button span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .apps-category-button span:last-child { color: var(--atlas-text-tertiary); font: 12px/1.7 var(--atlas-font-mono); letter-spacing: 0; }
 .apps-mobile-category-close, .apps-mobile-category-trigger { display: none; }
+.apps-mobile-category-trigger [data-current-category] { color: var(--atlas-category-ink, var(--atlas-text)); }
 .apps-category-trigger-count { color: var(--atlas-text-tertiary); font: 12px/1.7 var(--atlas-font-mono); }
 
 /* Search leads the content area; counts stay with the results they describe. */
@@ -166,7 +176,7 @@
 .apps-orbit-item { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 56px; padding: 10px 12px; border: 1px solid var(--atlas-border); border-radius: 10px; color: var(--atlas-text); background: var(--atlas-surface-raised); text-decoration: none; }
 .apps-orbit-item:hover { border-color: var(--atlas-border-strong); background: var(--atlas-surface-hover); text-decoration: none; }
 .apps-orbit-item:active { background: var(--atlas-surface-active); }
-.apps-orbit-avatar, .apps-avatar { display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 auto; border-radius: 10px; color: var(--atlas-accent); background: var(--atlas-surface-active); font: 500 13px/1.7 var(--atlas-font-body); }
+.apps-orbit-avatar, .apps-avatar { display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 auto; border-radius: 10px; color: var(--atlas-category-ink, var(--atlas-accent)); background: var(--atlas-category-tint, var(--atlas-surface-active)); font: 500 13px/1.7 var(--atlas-font-body); }
 .apps-orbit-avatar { width: 32px; height: 32px; font-size: 12px; }
 .apps-orbit-copy { min-width: 0; }
 .apps-orbit-copy span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 500; }
@@ -195,7 +205,7 @@
 .apps-card-link { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; min-height: 44px; overflow: hidden; color: var(--atlas-text); font-size: 16px; font-weight: 600; line-height: 1.7; text-decoration: none; overflow-wrap: anywhere; }
 .apps-card-link:hover, .apps-card-link:active { color: var(--atlas-accent); text-decoration: underline; text-underline-offset: 4px; }
 .apps-domain { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 4px; color: var(--atlas-text-tertiary); font-size: 13px; line-height: 1.7; letter-spacing: 0; }
-.apps-card-category { display: block; margin-top: 6px; color: var(--atlas-text-secondary); font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.apps-card-category { display: block; margin-top: 6px; color: var(--atlas-category-ink, var(--atlas-text-secondary)); font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
 .apps-card-description { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-top: 8px; color: var(--atlas-text-secondary); font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
 .apps-card-actions { position: relative; display: flex; flex-direction: column; gap: 4px; }
 .apps-card-actions .apps-icon-button { border-color: var(--atlas-transparent); background: var(--atlas-transparent); color: var(--atlas-text-secondary); }
@@ -234,7 +244,7 @@
 .apps-section-index { display: none; }
 .apps-fallback-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
 .apps-fallback-group { min-width: 0; padding: 20px; border: 1px solid var(--atlas-border); border-radius: 12px; background: var(--atlas-surface-raised); }
-.apps-fallback-group h3 { margin-bottom: 12px; font-size: 18px; font-weight: 600; }
+.apps-fallback-group h3 { margin-bottom: 12px; color: var(--atlas-category-ink, var(--atlas-text)); font-size: 18px; font-weight: 600; }
 .apps-fallback-group ul { list-style: none; }
 .apps-fallback-group li + li { margin-top: 12px; }
 .apps-fallback-group a { display: inline-flex; align-items: center; min-height: 44px; color: var(--atlas-accent); font-size: 16px; text-decoration: underline; text-underline-offset: 4px; overflow-wrap: anywhere; }

@@ -1,3 +1,4 @@
+import { appCategoryHue } from '../lib/app-category-colors';
 import {
   AppDataError,
   appInitials,
@@ -77,6 +78,7 @@ class AppNavigationController {
   private abort = new AbortController();
   private database?: IDBDatabase;
   private apps: AppEntry[] = [];
+  private categoryHues = new Map<string, string>();
   private category = '';
   private query = '';
   private sort = 'default';
@@ -267,8 +269,8 @@ class AppNavigationController {
   private render() {
     if (this.destroyed) return;
     this.closeCardMenu();
-    this.renderOrbit();
     this.renderCategories();
+    this.renderOrbit();
     this.renderList();
   }
 
@@ -286,6 +288,9 @@ class AppNavigationController {
       || a.localeCompare(b, document.documentElement.lang));
   }
 
+  private applyCategoryHue(element: HTMLElement, category: string) {
+    element.style.setProperty('--atlas-category-hue', this.categoryHues.get(category) ?? '');
+  }
 
   private renderOrbit() {
     const favorites = sortApps(this.apps).filter((app) => app.favorite);
@@ -320,6 +325,7 @@ class AppNavigationController {
   private createOrbitItem(app: AppEntry): HTMLElement {
     const item = document.createElement('a');
     item.className = 'apps-orbit-item';
+    this.applyCategoryHue(item, app.category);
     item.href = app.url;
     item.target = '_blank';
     item.rel = 'noreferrer';
@@ -342,6 +348,7 @@ class AppNavigationController {
   private renderCategories() {
     const counts = this.categoryCounts();
     const categories = this.orderedCategories(counts);
+    this.categoryHues = new Map(categories.map((category, index) => [category, appCategoryHue(index)]));
     if (this.category && !counts.has(this.category)) this.category = '';
     const atlas = this.element<HTMLElement>('[data-category-atlas]');
     const focused = document.activeElement instanceof HTMLButtonElement && atlas.contains(document.activeElement)
@@ -351,6 +358,7 @@ class AppNavigationController {
       button.type = 'button';
       button.className = 'apps-category-button';
       button.dataset.appCategoryFilter = category;
+      this.applyCategoryHue(button, category);
       button.title = category || this.text('exploreAll');
       button.setAttribute('aria-pressed', String(this.category === category));
       button.setAttribute('aria-label', category ? this.text('openCategory', { name: category, count }) : this.text('exploreAll'));
@@ -366,6 +374,7 @@ class AppNavigationController {
       return createButton(category, count);
     }));
     this.element<HTMLElement>('[data-current-category]').textContent = this.category || this.text('exploreAll');
+    this.applyCategoryHue(this.element<HTMLButtonElement>('[data-open-categories]'), this.category);
     if (focused !== undefined) this.focusCategory(focused);
     this.element<HTMLDataListElement>('[data-category-options]').replaceChildren(...categories.map((category) => {
       const option = document.createElement('option');
@@ -421,6 +430,7 @@ class AppNavigationController {
     const card = document.createElement('article');
     card.className = `apps-card${app.favorite ? ' is-favorite' : ''}`;
     card.dataset.id = app.id;
+    this.applyCategoryHue(card, app.category);
     const avatar = document.createElement('div');
     avatar.className = 'apps-avatar';
     avatar.setAttribute('aria-hidden', 'true');
