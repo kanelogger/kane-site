@@ -204,10 +204,11 @@ for (const route of ['index.html', 'en/index.html']) {
   assert.doesNotMatch(html, /palette-panel|data-palette=|data-theme-control/, `${route}: home palette control must be removed`);
   const projectEntries = [...html.matchAll(/<a\b[^>]*class="project-entry"[^>]*>/g)];
   assert.equal(projectEntries.length, 3, `${route}: home must show three projects`);
-  for (const [index, slug] of ['skill-port', 'quota-bar', 'kane-skills'].entries()) {
-    const projectPrefix = english && slug !== 'kane-skills' ? '/en' : '';
-    assert.equal(attributes(projectEntries[index][0]).href, `${projectPrefix}/work/${slug}`, `${route}: project must link to its internal article`);
-  }
+  assert.deepEqual(projectEntries.map(([tag]) => attributes(tag).href), [
+    '/work/kane-skills',
+    `${prefix}/work/skill-port`,
+    'https://kanelogger.github.io/formtempo/',
+  ], `${route}: home projects must link in order to Kane Skills, Skill Port, and the FormTempo atlas`);
   const notes = [...html.matchAll(/<a\b[^>]*class="note"[^>]*>([\s\S]*?)<\/a>/g)];
   assert.equal(notes.length, 3, `${route}: home must show three notes`);
   for (const [, note] of notes) {

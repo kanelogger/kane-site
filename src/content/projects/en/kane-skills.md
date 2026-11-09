@@ -14,7 +14,7 @@ tags: ['agent-skills', 'typescript', 'ai-workflow', 'developer-tools']
 cover: "/assets/projects/kane-skills/cover-79a0eead80.webp"
 coverAlt: "A reusable skill library with writing, checking, engineering, visual, and delivery modules"
 featured: true
-order: 3
+order: 1
 website: "https://kanelogger.github.io/kane-skills/en/"
 github: "https://github.com/kanelogger/kane-skills"
 designDoc: "https://github.com/kanelogger/kane-skills/blob/main/README.md"

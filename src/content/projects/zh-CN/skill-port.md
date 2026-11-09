@@ -15,7 +15,7 @@ tags: ["Agent Skills", "CLI", "Electron", "SQLite", "Developer Tools"]
 cover: "/assets/projects/skill-port/cover-f7d21f8cb6.webp"
 coverAlt: "一份技能从本地 Hub 按需启用到项目、终端与桌面入口"
 featured: true
-order: 1
+order: 2
 github: "https://github.com/kanelogger/SkillPort"
 release: "https://github.com/kanelogger/SkillPort/releases/"
 ---

@@ -12,8 +12,8 @@ role: "Product design and development"
 tags: ["Web", "CSS", "GSAP"]
 cover: "/assets/projects/formtempo/cover-d2e2c4032d.webp"
 coverAlt: "A forest-green pocket motion atlas with a cream lid opened to the right, two offset frames on its screen, and an orange slider"
-featured: false
-order: 10
+featured: true
+order: 3
 website: "https://kanelogger.github.io/formtempo/"
 directLink: true
 github: "https://github.com/kanelogger/formtempo"

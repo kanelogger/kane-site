@@ -12,8 +12,8 @@ role: "产品设计与开发"
 tags: ["Web", "CSS", "GSAP"]
 cover: "/assets/projects/formtempo/cover-d2e2c4032d.webp"
 coverAlt: "墨绿色的掌上动效图鉴向右翻开奶白色侧盖，屏幕上是两张错位画面，下方有橙色滑键"
-featured: false
-order: 10
+featured: true
+order: 3
 website: "https://kanelogger.github.io/formtempo/"
 directLink: true
 github: "https://github.com/kanelogger/formtempo"

@@ -14,8 +14,8 @@ role: "产品设计、Swift 架构与开发、多平台探针、测试与发布�
 tags: ["Swift", "macOS", "SwiftUI", "AppKit", "Developer Tools"]
 cover: "/assets/projects/quota-bar/cover-da91d8361d.webp"
 coverAlt: "四个独立额度指标汇入菜单栏，突出显示最紧张的一项"
-featured: true
-order: 2
+featured: false
+order: 4
 github: "https://github.com/kanelogger/QuotaBar"
 release: "https://github.com/kanelogger/QuotaBar/releases"
 ---

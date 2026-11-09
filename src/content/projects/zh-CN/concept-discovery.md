@@ -13,7 +13,7 @@ tags: ["Agent", "Markdown"]
 cover: "/assets/projects/concept-discovery/cover-7b8831c212.webp"
 coverAlt: "几张知识卡放在墨绿色卡盒中，一张被选出的卡片上，放大镜对准橙色标记的原文"
 featured: false
-order: 7
+order: 5
 website: "https://github.com/kanelogger/concept-discovery"
 directLink: true
 ---

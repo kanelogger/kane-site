@@ -15,9 +15,15 @@ const { locale = 'zh-CN' } = Astro.props;
 const en = locale === 'en';
 const dictionary = getDictionary(locale);
 const copy = dictionary.workshop;
-const projectCovers = new Map((await getCollection('projects', ({ data }) => data.locale === 'zh-CN')).map(({ data }) => [data.slug, data]));
-const localizedCovers = new Map((await getCollection('projects', ({ data }) => data.locale === locale)).map(({ data }) => [data.slug, data]));
-const coverAlt = (slug: string) => localizedCovers.get(slug)?.coverAlt ?? projectCovers.get(slug)!.coverAlt;
+const projects = (await getCollection('projects', ({ data }) => data.locale === 'zh-CN' && data.featured))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+const translations = en ? await getCollection('projects', ({ data }) => data.locale === 'en') : [];
+const localizedProjects = new Map(translations.map(({ data }) => [data.slug, data]));
+const projectCopy: Record<string, { platform: string; description: string } | undefined> = {
+  'kane-skills': { platform: 'Agent Skills', description: copy.skillsDescription },
+  'skill-port': { platform: 'CLI + Desktop', description: copy.skillDescription },
+};
 const title = copy.title;
 const description = copy.description;
 const canonical = new URL(getLocalePath(locale, '/'), Astro.site!);
@@ -25,11 +31,6 @@ const shareImage = new URL('/og.png', Astro.site!);
 const alternateLocale = en ? 'zh-CN' : 'en';
 const noteSlugs = ['agent-project-recovery', 'agent-hard-gates', en ? 'ai-native-development-system' : 'learning-pi-in-practice'];
 const articles = new Map((await getCollection('blog', ({ data }) => data.locale === locale)).map(({ data }) => [data.slug, data]));
-const projects = [
-  { slug: 'skill-port', platform: 'CLI + Desktop', description: copy.skillDescription },
-  { slug: 'quota-bar', platform: 'macOS', description: copy.quotaDescription },
-  { slug: 'kane-skills', platform: 'Agent Skills', description: copy.skillsDescription },
-];
 ---
 <!doctype html>
 
@@ -107,15 +108,22 @@ const projects = [
           <p class="section-intro">{copy.workIntro}</p>
         </div>
         <ul class="project-list">
-          {projects.map(({ slug, platform, description }) => {
-            const project = projectCovers.get(slug)!;
+          {projects.map((source) => {
+            const { slug } = source;
+            const project = localizedProjects.get(slug) ?? source;
+            const platform = projectCopy[slug]?.platform ?? project.tags[0];
+            const description = projectCopy[slug]?.description ?? project.cardDescription ?? project.description;
+            const href = project.directLink ? project.website : getLocalePath(
+              en && project.translationStatus !== 'reviewed' ? 'zh-CN' : locale,
+              `/work/${slug}`,
+            );
             return <li>
-              <a class="project-entry" href={getLocalePath(en && localizedCovers.get(slug)?.translationStatus !== 'reviewed' ? 'zh-CN' : locale, `/work/${slug}`)} aria-labelledby={`project-${slug}`}>
+              <a class="project-entry" href={href} aria-labelledby={`project-${slug}`} aria-describedby={`project-description-${slug}`}>
                 <div class="project-copy">
                   <div class="project-heading"><h3 id={`project-${slug}`}>{project.title}</h3><span class="project-platform">{platform}</span></div>
-                  <p>{description}</p>
+                  <p id={`project-description-${slug}`}>{description}</p>
                 </div>
-                <img class="project-cover" src={project.cover} width="1200" height="900" loading="lazy" decoding="async" alt={coverAlt(slug)}>
+                <img class="project-cover" src={project.cover} width="1200" height="900" loading="lazy" decoding="async" alt={project.coverAlt}>
               </a>
             </li>;
           })}

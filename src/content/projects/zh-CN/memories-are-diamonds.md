@@ -15,7 +15,7 @@ tags: ["Agent", "日记", "TypeScript", "Markdown"]
 cover: "/assets/projects/memories-are-diamonds/cover-ec269be52d.webp"
 coverAlt: "日记中的真实经历经过整理与复盘积累成珍贵回忆"
 featured: false
-order: 4
+order: 7
 ---
 
 ## 项目初衷

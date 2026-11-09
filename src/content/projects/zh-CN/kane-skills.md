@@ -15,7 +15,7 @@ tags: ["Agent Skills", "TypeScript", "AI Workflow", "Developer Tools"]
 cover: "/assets/projects/kane-skills/cover-79a0eead80.webp"
 coverAlt: "装有写作、核验、工程、视觉与交付模块的可复用技能库"
 featured: true
-order: 3
+order: 1
 website: "https://kanelogger.github.io/kane-skills/"
 github: "https://github.com/kanelogger/kane-skills"
 designDoc: "https://github.com/kanelogger/kane-skills/blob/main/README-CN.md"

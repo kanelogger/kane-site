@@ -48,7 +48,7 @@ try {
     const source = await readFile(path, 'utf8');
     const prefix = route.startsWith('en/') ? '/en' : '';
     for (const [label, mutate, expected] of [
-      ['external project destination', (html) => html.replace(`href="${prefix}/work/skill-port"`, 'href="https://github.com/kanelogger"'), 'project must link to its internal article'],
+      ['wrong project destination', (html) => html.replace(`href="${prefix}/work/skill-port"`, 'href="https://github.com/kanelogger"'), 'home projects must link in order'],
       ['missing note cover', (html) => html.replace(/<img\b[^>]*class="note-cover"[^>]*>/, ''), 'note needs a local cover and alt text'],
       ['home palette control', (html) => html.replace('</body>', '<details class="palette-panel"></details></body>'), 'home palette control must be removed'],
       ['missing introduction paragraph', (html) => html.replace(/(<div\b[^>]*class="hero-statement"[^>]*>)\s*<p\b[^>]*>[\s\S]*?<\/p>/, '$1'), 'home introduction must retain four readable paragraphs'],

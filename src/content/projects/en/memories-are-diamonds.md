@@ -14,7 +14,7 @@ tags: ['agent', 'journal', 'typescript', 'markdown']
 cover: "/assets/projects/memories-are-diamonds/cover-ec269be52d.webp"
 coverAlt: "Real experiences recorded in a journal become lasting memories through reflection"
 featured: false
-order: 4
+order: 7
 ---
 
 ## Project overview

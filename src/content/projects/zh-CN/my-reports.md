@@ -15,7 +15,7 @@ tags: ["Static Site", "GitHub Pages", "Node.js", "Research Archive"]
 cover: "/assets/projects/my-reports/cover-0bd9f5953f.webp"
 coverAlt: "独立研究报告与互动页面通过时间索引归入报告馆"
 featured: false
-order: 5
+order: 10
 website: "https://kanelogger.github.io/my-reports/"
 github: "https://github.com/kanelogger/my-reports"
 ---

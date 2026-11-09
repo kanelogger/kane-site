@@ -14,8 +14,8 @@ role: "Product design, Swift architecture and development, multi-platform probes
 tags: ["Swift", "macOS", "SwiftUI", "AppKit", "Developer Tools"]
 cover: "/assets/projects/quota-bar/cover-da91d8361d.webp"
 coverAlt: "Four independent quota indicators feed a menu bar that highlights the tightest metric"
-featured: true
-order: 2
+featured: false
+order: 4
 github: "https://github.com/kanelogger/QuotaBar"
 release: "https://github.com/kanelogger/QuotaBar/releases"
 ---
